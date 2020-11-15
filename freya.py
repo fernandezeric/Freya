@@ -3,8 +3,9 @@
 - [ ] Mejorar código: argparse, pascal case, setup.py
 - [ ] Crear un catálogo en Freya
 """
-from Freya.core.base import AddCatalog,AddResource,NewAPI
+from Freya.core.base import AddCatalog,AddResource,NewAPI # seria mejor dividir en varios archivoss
 from Freya.catalogs.core import GetData # seria mejor dividir en varios archivoss
+import os
 import argparse
 
 
@@ -21,44 +22,42 @@ parser.add_argument('-na','--newapi', action='store_true', help="create a new Fr
 #--------------------------------------------------------------------------------------#                        
 parser.add_argument('-ar','--addresource', action='store', type=str, nargs=1, 
                         metavar=('name'),help="add module catalog who resource in FreyaApi")
-#--------------------------------------------------------------------------------------#                        
+#--------------------------------------------------------------------------------------#      
+parser.add_argument('-p','--prueba', action='store_true', help="que wea nanito?")                  
+#--------------------------------------------------------------------------------------#   
 args = parser.parse_args()
 
 
 if args.newcatalog :
     print("Created new catalog...")
-    print(args.newcatalog)
-    # try:
-    #     AddCatalog(args.newcatalog)
-    # except:
-    #     raise TypeError (f'Fallo al intentar crear el modulo catalogo {sys.argv[2]}')
+    try:
+        AddCatalog(name=args.newcatalog[0],source =args.newcatalog[1])
+    except:
+        raise TypeError (f'failed to create new catalog : {args.newcatalog[0]} inside Freya')
 elif args.newcatalog_local : 
     print("Created new local catalog...")
     print(args.newcatalog_local)
-    # try:
-    #     AddCatalog(args.newcatalog)
-    # except:
-    #     raise TypeError (f'Fallo al intentar crear el modulo catalogo {sys.argv[2]}')
+
 elif args.newapi :
     print("Created new FreyaAPI...")
-    print(args.newapi)
-    # try:
-    #     AddCatalog(args.newcatalog)
-    # except:
-    #     raise TypeError (f'Fallo al intentar crear el modulo catalogo {sys.argv[2]}')
+    #print(args.newapi)
+    try:
+        NewAPI(path=os.path.dirname(os.path.abspath(__file__)))
+    except:
+        raise TypeError ('failed to create new base to FreaAPI')
 elif args.addresource : 
     print("add new resource to FreyaAPI...")
-    print(args.addresource)
-    # try:
-    #     AddCatalog(args.newcatalog)
-    # except:
-    #     raise TypeError (f'Fallo al intentar crear el modulo catalogo {sys.argv[2]}')
+    #print(args.addresource)
+    try:
+        AddResource(name=args.addresource[0],path=os.path.dirname(os.path.abspath(__file__)))
+    except:
+        raise TypeError (f'failed to create resouce : {args.addresource[0]} inside FreyaAPI')
 
-# elif sys.argv[1] == 'prueba':
-#     data = GetData(catalogs="ztf",ra=1,dec=2,radius=3,format=4).get_lc_deg_all()
-#     print("*"*10)
-#     print(data)
-#     print("*"*10)
+elif args.prueba :
+    data = GetData(catalogs="ztf",ra=1,dec=2,radius=3,format=4).get_lc_deg_all()
+    print("*"*10)
+    print(data)
+    print("*"*10)
 
 # else :
 #     raise TypeError (f'Comando {sys.argv[1]} no valido, unicamente validos [newcatalog,newapi,addresource]')

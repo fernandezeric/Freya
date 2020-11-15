@@ -11,7 +11,7 @@ Los retornos de estas funciones deben ser del siguiente tipo
 }
 """
 
-from .methods import metodo_generico
+from .methods import methods
 
 def get_lc_deg_all(ra,dec,radius,format):
     retorno = {'get_lc_deg_all' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'el mejor'}}

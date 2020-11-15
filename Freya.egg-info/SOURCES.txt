@@ -1,0 +1,9 @@
+README.md
+setup.py
+Freya/__init__.py
+Freya/freya.py
+Freya.egg-info/PKG-INFO
+Freya.egg-info/SOURCES.txt
+Freya.egg-info/dependency_links.txt
+Freya.egg-info/not-zip-safe
+Freya.egg-info/top_level.txt

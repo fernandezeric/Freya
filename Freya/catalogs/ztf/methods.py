@@ -6,10 +6,19 @@ import requests
 import io
 from Freya.core import utils as u
 
-def metodo_generico ():
-    return 1
 
-def metodo_generico_2():
-    return 2
+class replace():
+
+    def metodo_generico ():
+        return 1
+
+    def metodo_generico_2():
+        return 2
+
+    replace
 
 
+
+
+
+### replace
