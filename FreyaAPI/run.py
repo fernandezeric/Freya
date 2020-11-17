@@ -9,16 +9,13 @@ import importlib
 
 app = Flask(__name__)
 
-
-#from resources.ztf_resource.resource import resource_ztf
-
 def call_resource(names_resources,ra,dec,radius,format):
     data = {}
     for catalog in names_resources:
-        module = f'resources.{catalog}_resource.resource'
-        mod = importlib.import_module(module)
-        my_class = getattr(mod, 'resource')
-        my_instance = my_class(catalog=catalog,ra=ra,dec=dec,radius=radius,format=format).get_lc_deg_all() #el ultimo termino tiene que cambiar o tendra que ser manuali
+        module = f'resources.{catalog}_resource.resource_name' # importa el archivo
+        mod = importlib.import_module(module) # importa el archivo
+        my_class = getattr(mod, 'resource') # llama a la clase
+        my_instance = my_class(catalog=catalog,ra=ra,dec=dec,radius=radius,format=format).get_lc_deg_all()# llama al metodo de la clase
         data[f'{catalog}'] = my_instance
     return data
 

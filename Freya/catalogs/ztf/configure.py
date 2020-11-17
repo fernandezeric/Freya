@@ -1,5 +1,5 @@
 """
-Los retornos de estas funciones deben ser del siguiente tipo
+Need with you return method as follow : 
 
 {
     'id_1' : 'data_1',
@@ -11,20 +11,22 @@ Los retornos de estas funciones deben ser del siguiente tipo
 }
 """
 
-from .methods import methods
+from Freya.catalogs.NAME import methods
 
-def get_lc_deg_all(ra,dec,radius,format):
-    retorno = {'get_lc_deg_all' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'el mejor'}}
-    return retorno
+class Configure_NAME():
 
-def get_lc_hms_all(hms,radius,format):
-    retorno = {'get_lc_hms_all' : {'hms':hms,'radius':radius,'format':format,'chiki':'genio'}}
-    return retorno
+    def get_lc_deg_all(ra,dec,radius,format):
+        retorno = {'get_lc_deg_all' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'el mejor'}}
+        return retorno
 
-def get_lc_deg_nearest(ra,dec,radius,format):
-    retorno = {'get_lc_deg_nearest' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'podeoro'}}
-    return retorno
+    def get_lc_hms_all(hms,radius,format):
+        retorno = {'get_lc_hms_all' : {'hms':hms,'radius':radius,'format':format,'chiki':'genio'}}
+        return retorno
 
-def get_lc_hms_nearest(hms,radius,format):
-    retorno = {'get_lc_hms_nearest' : {'hms':hms,'radius':radius,'format':format,'chiki':'bestia'}}
-    return retorno
+    def get_lc_deg_nearest(ra,dec,radius,format):
+        retorno = {'get_lc_deg_nearest' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'podeoro'}}
+        return retorno
+
+    def get_lc_hms_nearest(hms,radius,format):
+        retorno = {'get_lc_hms_nearest' : {'hms':hms,'radius':radius,'format':format,'chiki':'bestia'}}
+        return retorno

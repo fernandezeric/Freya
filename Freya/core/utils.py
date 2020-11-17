@@ -1,11 +1,4 @@
-import os
-import sys
-import Freya.catalogs # __path__
-# from astropy.coordinates import SkyCoord
 
-# aqui poner las metodos mas generimos que se me ocurran
-# por ejemplo el que busca el mas cercano dado un conjunto de coordenadas
-# el que cambia de tipo de coordenada
 class Utils():
     def __init__(self):
         pass

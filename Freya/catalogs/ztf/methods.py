@@ -1,24 +1,14 @@
 """
-Aquí van los metodos que se necesiten para lograr completar 'configure.py',
-toy dudanto de esto porque requiere una major adaptabilidad a la hora de crear archivos
+In this file you can created methods for 'configure.py'  
 """
 import requests
 import io
 from Freya.core import utils as u
 
+class Methods_NAME():
 
-class replace():
-
-    def metodo_generico ():
+    def method_NAME():
         return 1
 
-    def metodo_generico_2():
+    def method_NAME_2():
         return 2
-
-    replace
-
-
-
-
-
-### replace
