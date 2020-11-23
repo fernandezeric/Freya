@@ -46,7 +46,7 @@ class Base():
     
     def create_new_api(self):
         path_template_api = self.path_file_template_new_api()
-        path_new_api =  os.path.join(self.path,'IIIII')
+        path_new_api =  os.path.join(self.path,'FreyaAPI')
         try:
             os.mkdir(path_new_api)
             extract_zip = zipfile.ZipFile(path_template_api)
@@ -58,7 +58,7 @@ class Base():
     
     def create_new_resource(self):
         path_template_resource = self.path_file_template_resource()
-        path_new_api =  os.path.join(self.path,'IIIII')#'/home/jonimottg/Escritorio/Avance/IIIII' #CAMBIAR POR FreyaAPI y que sea la unica
+        path_new_api =  os.path.join(self.path,'FreyaAPI')#'/home/jonimottg/Escritorio/Avance/IIIII' #CAMBIAR POR FreyaAPI y que sea la unica
         path_new_resource = os.path.join(path_new_api,f'resources/{self.name}_resource') # join(newapi,nombre_resource)
         try:
             os.mkdir(path_new_resource)

@@ -1,5 +1,6 @@
 from setuptools import setup
 
+# pip install . -e
 setup(name='Freya',
       version='0.1',
       description='This is a Framework',

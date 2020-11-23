@@ -3,6 +3,7 @@
 - [ ] Mejorar código: argparse, pascal case, setup.py
 - [ ] Crear un catálogo en Freya
 """
+## crear modulo cli para los comandos dentro de freya
 from Freya.core.base import AddCatalog,AddResource,NewAPI # seria mejor dividir en varios archivoss
 from Freya.catalogs.core import GetData # seria mejor dividir en varios archivoss
 import os
