@@ -6,7 +6,7 @@ import importlib
 from Freya.catalogs.ztf.configure import Configure_ztf
 class Resource_ztf():
 
-    def __init__(self,*args,**kwagrs):
+    def __init__(self,**kwagrs):
         self.catalog = kwagrs.get('catalog') 
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')

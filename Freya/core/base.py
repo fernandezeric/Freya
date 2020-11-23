@@ -24,15 +24,17 @@ class Base():
         return os.path.join(Freya.files.__path__[0],'file_templates','newresource.zip')
 
     def create_module_catalog(self):
+
         if self.source not in ['api','bd'] :
-            raise TypeError (f'La fuente {self.source} no es valida')
-        dir_catalogs = Freya.catalogs.__path__[0] # directorios modulos catalogos
+            raise TypeError (f'The source {self.source} not is valid')
+
+        if files_.Cheak().cheak_catalog(self.name) :
+            raise TypeError ('catalog already created')
+        
+        dir_catalogs = Freya.catalogs.__path__[0]
         path_new_catalog = os.path.join(dir_catalogs,self.name)
         path_tample_files_ = self.path_files_template_from()
-
-        if self.name  in os.listdir(dir_catalogs) :
-           raise TypeError ('catalog already created')
-
+        
         try: 
             os.mkdir(path_new_catalog) # crea la carpeta , pero esta vacia
             extract_zip = zipfile.ZipFile(path_tample_files_)
@@ -43,6 +45,10 @@ class Base():
             files_.Files(list_path,'NAME',self.name).replace_in_files()
         except OSError as error:
             print(error) 
+    
+    
+    # ARREGLAR EL TEMA DEL PATH
+    # Y ESTA LIGADO A LA LINAS DE COMANDO DE FREYA
     
     def create_new_api(self):
         path_template_api = self.path_file_template_new_api()
@@ -57,6 +63,9 @@ class Base():
     
     
     def create_new_resource(self):
+        if not files_.Cheak().cheak_catalog(self.name) :
+            raise TypeError ('first created catalog inside Freya')
+
         path_template_resource = self.path_file_template_resource()
         path_new_api =  os.path.join(self.path,'FreyaAPI')#'/home/jonimottg/Escritorio/Avance/IIIII' #CAMBIAR POR FreyaAPI y que sea la unica
         path_new_resource = os.path.join(path_new_api,f'resources/{self.name}_resource') # join(newapi,nombre_resource)

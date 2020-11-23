@@ -1,7 +1,9 @@
 """
 Cambiar todo esto y dejarlo creando archivos bonitos con un poco de contenido
 """
-import fileinput #replace into files 
+import fileinput #replace into files
+import Freya.catalogs # __path__
+import os
 
 class Files():
     """
@@ -20,3 +22,13 @@ class Files():
             with fileinput.FileInput(f'{file}', inplace=True) as file_:
                 for line in file_:
                     print(line.replace(f'{self.replace_word}', f'{self.word}'), end='')
+
+
+class Cheak():
+
+    def cheak_catalog(self,name):
+        self.name = name
+        dir_catalogs = Freya.catalogs.__path__[0] # dir modules
+        if self.name  in os.listdir(dir_catalogs) :
+             return True 
+        return False

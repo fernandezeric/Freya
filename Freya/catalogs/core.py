@@ -17,14 +17,14 @@ class GetData ():
 
     def get_lc_deg_all(self):
         for catalog in self.catalogs:
-            try :
+            # try :
                 module = f'Freya.catalogs.{catalog}.configure'
                 mod = importlib.import_module(module) # import module
                 class_ =  getattr(mod,f'Configure_{catalog}') # call class
                 method_ = class_().get_lc_deg_all(self.ra,self.dec,self.radius,self.format)# call method
                 #data_method = getattr(mod,'get_lc_deg_all')(self.ra,self.dec,self.radius,self.format)
                 self.dataReturn[f'{catalog}'] = method_
-            except :
+            # except :
                 print(f'No find the catalog : {catalog}')
 
         return self.dataReturn
