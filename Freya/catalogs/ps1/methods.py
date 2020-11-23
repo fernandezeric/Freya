@@ -14,12 +14,12 @@ from astropy import units as u
 
 class Methods_ps1():
 
-    def __init__(self,**kwargs):
-        self.ra = kwargs.get('ra')
-        self.dec = kwargs.get('dec')
-        self.radius = kwargs.get('radius')
-        self.format = kwargs.get('format')
-        self.nearest = kwargs.get('nearest')
+    def __init__(self,ra,dec,radius,format,nearest):
+        self.ra = ra
+        self.dec = dec
+        self.radius = radius
+        self.format = format
+        self.nearest = nearest
 
     def ps1cone(self,table="mean",release="dr1",format="csv",columns=None,
             baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",
@@ -95,7 +95,7 @@ class Methods_ps1():
         Parameters
         ----------
         """
-        ids = self.ps1ids(self.ra,self.dec,self.radius,self.nearest)
+        ids = self.ps1ids()
         ps1dic = {}
         if ids == -1:
             ps1dic['0'] = 'not found' # not object find

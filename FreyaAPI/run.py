@@ -25,7 +25,7 @@ def get_lc_all():
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
-        my_instance = my_class(catalog=catalog,ra=ra,dec=dec,radius=radius,format=format).get_lc_deg_all()
+        my_instance = my_class(ra,dec,radius,format).get_lc_deg_all()
         data[f'{catalog}'] = my_instance
     return data
 
