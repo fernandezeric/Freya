@@ -20,10 +20,10 @@ class Methods_ps1():
         self.radius = radius
         self.format = format
         self.nearest = nearest
+        #print(self.ra,self.dec)
 
-    def ps1cone(self,table="mean",release="dr1",format="csv",columns=None,
-            baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",
-            **kw):
+    def ps1cone(self, baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", **kw):
+            #table="mean",release="dr1",format="csv",columns=None,
         """Do a cone search of the PS1 catalog
         Parameters
         ----------
@@ -32,25 +32,26 @@ class Methods_ps1():
         data['ra'] = self.ra
         data['dec'] = self.dec
         data['radius'] = self.radius
-        return self.ps1search(table=table,release=release,format=self.format,columns=columns,
-                        baseurl=baseurl, **data)
+        data['format'] = self.format
+        #print(data)
+        return self.ps1search(baseurl=baseurl, **data)
 
     #https://ps1images.stsci.edu/ps1_dr2_api.html
-    def ps1search(self,format,table="mean",release="dr1",columns=None,
-            baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",
-            **kw):
+    def ps1search(self,table="mean",release="dr1",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
+        #table="mean",release="dr1",columns=None,
         """Do a general search of the PS1 catalog (possibly without ra/dec/radius)
         
         Parameters
         ----------
         """
         data = kw.copy()
-        url = f"{baseurl}/{release}/{table}.{format}"
+        url = f"{baseurl}/{release}/{table}.{self.format}"
         data['columns'] = '[{}]'.format(','.join(columns))
         # either get or post works
+        #print(data)
         r = requests.get(url, params=data)
         r.raise_for_status()
-        if format == "json":
+        if self.format == "json":
             return r.json()
         else:
             return r.text
@@ -62,9 +63,7 @@ class Methods_ps1():
         """
         constraints = {'nDetections.gt':1}
         columns = ['objID','raMean','decMean']
-        results = self.ps1cone(self.ra,self.dec,self.radius,release='dr2',columns=columns,**constraints)
-
-
+        results = self.ps1cone(release='dr2',columns=columns,**constraints)
         # if results.status_code != '200': 
         #     return -99 #'not found' # change to more general
 
@@ -95,8 +94,8 @@ class Methods_ps1():
         Parameters
         ----------
         """
-        ids = self.ps1ids()
         ps1dic = {}
+        ids = self.ps1ids()
         if ids == -1:
             ps1dic['0'] = 'not found' # not object find
             return ps1dic
@@ -104,19 +103,26 @@ class Methods_ps1():
         # elif ids == -99: 
         #     ps1dic['not found'] = 'result.status_code '
         #     return ps1dic
-
+        #ps1dic['ids'] = ids
         for id in ids:
             dconstraints = {'objID': id}
-            dcolumns = ("""objID,detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
-                        psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3""").split(',')
+            dcolumns = ("""objID""").split(',') 
+            """
+            detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
+                        psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3
+            """
             dcolumns = [x.strip() for x in dcolumns]
             dcolumns = [x for x in dcolumns if x and not x.startswith('#')]
-            dresults = self.ps1search(format,table='detection',release='dr2',columns=dcolumns,**dconstraints)
-            if(format == 'csv'):
-                dresults = ascii.read(dresults)
-                buf = io.StringIO()
-                ascii.write(dresults,buf,format='csv')
-                ps1dic[str(id)] =  buf.getvalue()
-            else :
-                ps1dic[str(id)] = dresults
+            dresults = self.ps1search(table='detection',release='dr2',columns=dcolumns,**dconstraints)
+            ps1dic['ids'] = dresults
+
+            # ARREGLAR PARA QUE LO SEPARE
+
+            # if(self.format == 'csv'):
+            #     dresults = ascii.read(dresults)
+            #     buf = io.StringIO()
+            #     ascii.write(dresults,buf,self.format='csv')
+            #     ps1dic[str(id)] =  buf.getvalue()
+            # else :
+            #     ps1dic[str(id)] = dresults
         return ps1dic

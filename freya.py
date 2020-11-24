@@ -1,4 +1,8 @@
 """
+source ../Entornos/Freya/bin/activate
+"""
+
+"""
 - [ ] Nuevo caso de uso: Crear catalogo de manera local
 - [ ] Mejorar código: argparse, pascal case, setup.py
 - [ ] Crear un catálogo en Freya
@@ -55,7 +59,7 @@ elif args.addresource :
         raise TypeError (f'failed to create resouce : {args.addresource[0]} inside FreyaAPI')
 
 elif args.prueba :
-    data = GetData(catalogs="ztf",ra=1,dec=2,radius=3,format=4).get_lc_deg_all()
+    data = GetData(catalogs="ps1",ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv').get_lc_deg_all()
     print("*"*10)
     print(data)
     print("*"*10)

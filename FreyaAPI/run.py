@@ -40,7 +40,7 @@ def get_lc_nearest():
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
-        my_instance = my_class(catalog=catalog,ra=ra,dec=dec,radius=radius,format=format).get_lc_deg_nearest()
+        my_instance = my_class(catalog,ra,dec,radius,format).get_lc_deg_nearest()
         data[f'{catalog}'] = my_instance
     return data
 
@@ -54,7 +54,7 @@ def get_lc_hms_all():
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
-        my_instance = my_class(catalog=catalog,hms=hms,radius=radius,format=format).get_lc_hms_all()
+        my_instance = my_class(catalog,hms,radius,format).get_lc_hms_all()
         data[f'{catalog}'] = my_instance
     return data
 
@@ -68,7 +68,7 @@ def get_lc_hms_nearest():
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
-        my_instance = my_class(catalog=catalog,hms=hms,radius=radius,format=format).get_lc_hms_nearest()
+        my_instance = my_class(catalog,hms,radius,format).get_lc_hms_nearest()
         data[f'{catalog}'] = my_instance
     return data
 

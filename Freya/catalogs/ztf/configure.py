@@ -15,18 +15,25 @@ from Freya.catalogs.ztf import methods
 
 class Configure_ztf():
 
-    def get_lc_deg_all(self,ra,dec,radius,format):
-        retorno = {'get_lc_deg_all' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'el mejor'}}
+    def __init__(self,**kwagrs):
+        self.ra = kwagrs.get('ra')
+        self.dec = kwagrs.get('dec')
+        self.hms = kwagrs.get('hms')
+        self.radius = kwagrs.get('radius')
+        self.format = kwagrs.get('format')
+
+    def get_lc_deg_all(self):
+        retorno = {'get_lc_deg_all' : {'ra':self.ra,'dec':self.dec,'radius':self.radius,'format':self.format,'chiki':'el mejor'}}
         return retorno
 
-    def get_lc_hms_all(self,hms,radius,format):
-        retorno = {'get_lc_hms_all' : {'hms':hms,'radius':radius,'format':format,'chiki':'genio'}}
+    def get_lc_hms_all(self):
+        retorno = {'get_lc_hms_all' : {'hms':self.hms,'radius':self.radius,'format':self.format,'chiki':'genio'}}
         return retorno
 
-    def get_lc_deg_nearest(self,ra,dec,radius,format):
-        retorno = {'get_lc_deg_nearest' : {'ra':ra,'dec':dec,'radius':radius,'format':format,'chiki':'podeoro'}}
+    def get_lc_deg_nearest(self):
+        retorno = {'get_lc_deg_nearest' : {'ra':self.ra,'dec':self.dec,'radius':self.radius,'format':self.format,'chiki':'podeoro'}}
         return retorno
 
-    def get_lc_hms_nearest(self,hms,radius,format):
-        retorno = {'get_lc_hms_nearest' : {'hms':hms,'radius':radius,'format':format,'chiki':'bestia'}}
+    def get_lc_hms_nearest(self):
+        retorno = {'get_lc_hms_nearest' : {'hms':self.hms,'radius':self.radius,'format':self.format,'chiki':'bestia'}}
         return retorno
