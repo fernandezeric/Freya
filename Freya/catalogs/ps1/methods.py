@@ -104,9 +104,12 @@ class Methods_ps1():
         #     ps1dic['not found'] = 'result.status_code '
         #     return ps1dic
         #ps1dic['ids'] = ids
+        #print(ids)
+        # split ids in dict
         for id in ids:
             dconstraints = {'objID': id}
-            dcolumns = ("""objID""").split(',') 
+            dcolumns = ("""objID, detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
+                        psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3""").split(',') 
             """
             detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
                         psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3
@@ -114,15 +117,16 @@ class Methods_ps1():
             dcolumns = [x.strip() for x in dcolumns]
             dcolumns = [x for x in dcolumns if x and not x.startswith('#')]
             dresults = self.ps1search(table='detection',release='dr2',columns=dcolumns,**dconstraints)
-            ps1dic['ids'] = dresults
 
-            # ARREGLAR PARA QUE LO SEPARE
-
-            # if(self.format == 'csv'):
-            #     dresults = ascii.read(dresults)
-            #     buf = io.StringIO()
-            #     ascii.write(dresults,buf,self.format='csv')
-            #     ps1dic[str(id)] =  buf.getvalue()
-            # else :
-            #     ps1dic[str(id)] = dresults
+            if(self.format == 'csv'):
+                dresults = ascii.read(dresults)
+                buf = io.StringIO()
+                ascii.write(dresults,buf,format='csv')
+                ps1dic[str(id)] =  buf.getvalue()
+            else :
+                ps1dic[str(id)] = dresults
         return ps1dic
+
+
+
+        

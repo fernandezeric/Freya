@@ -11,9 +11,9 @@ Need with you return method as follow :
 }
 """
 
-from Freya.catalogs.ztf import methods
+from Freya.catalogs.zft.methods import Methods_zft as mzft
 
-class Configure_ztf():
+class Configure_zft():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
@@ -21,7 +21,7 @@ class Configure_ztf():
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
-
+    #ztf = mztf.zftcurves(ra,dec,radius,format,nearest) LLAMAR ASI
     def get_lc_deg_all(self):
         retorno = {'get_lc_deg_all' : {'ra':self.ra,'dec':self.dec,'radius':self.radius,'format':self.format,'chiki':'el mejor'}}
         return retorno
