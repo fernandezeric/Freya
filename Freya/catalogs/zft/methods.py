@@ -20,19 +20,19 @@ class Methods_zft():
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
 
-    def id_nearest (ra,dec,radius,results):
-        """ Get object id most closet to ra dec
+    def id_nearest (self,results):
+        """ Get object id most closet to ra dec use a min angle
         Parameters
         ----------
         """
         angle = []
-        c1 = SkyCoord(ra=ra,dec=dec,unit=u.degree)
+        c1 = SkyCoord(ra=self.ra,dec=self.dec,unit=u.degree)
         for group in results.groups:
             c2 = SkyCoord(group['ra'][0],group['dec'][0],unit=u.degree)
             angle.append(c1.separation(c2))
         return angle.index(min(angle))
 
-    def csv_format(ra,dec,radius,nearest,result):
+    def csv_format(self,result):
         ztfdic = {}
         result = ascii.read(result.text)
 
@@ -43,9 +43,9 @@ class Methods_zft():
         results = result.group_by('oid')
 
         #the most close object to radius
-        if nearest is True:
+        if self.nearest is True:
 
-            minztf = id_nearest(ra,dec,radius,results)
+            minztf = self.id_nearest(results)
                 
             buf = io.StringIO()
             ascii.write(results.groups[minztf],buf,format='csv')
@@ -60,7 +60,7 @@ class Methods_zft():
                 ztfdic[str(group['oid'][0])] =  buf.getvalue()
             return ztfdic
 
-    def votable_format(ra,dec,radius,nearest,result):
+    def votable_format(self,result):
         ztfdic = {}
         votable = result.text.encode(encoding='UTF-8')
         bio = io.BytesIO(votable)
@@ -76,7 +76,7 @@ class Methods_zft():
         #the most close object to radius
         if nearest is True:
                 
-            minztf = id_nearest(ra,dec,radius,tablas)
+            minztf = self.id_nearest(tablas)
 
             buf = io.BytesIO()
             votable = from_table(tablas.groups[minztf])
@@ -92,7 +92,7 @@ class Methods_zft():
                 ztfdic[str(group['oid'][0])] = (buf.getvalue().decode("utf-8"))
             return ztfdic
 
-    def json_format(ra,dec,radius,nearest,result):
+    def json_format(self,result):
         ztfdic = {}
         result = ascii.read(result.text)
 
@@ -105,7 +105,7 @@ class Methods_zft():
         #the most close object to radius
         if nearest is True:
 
-            minztf = id_nearest(ra,dec,radius,results)
+            minztf = self.id_nearest(results)
                 
             #buf = io.StringIO()
             #ascii.write(results.groups[minztf],buf,format='pandas.json')
@@ -121,18 +121,18 @@ class Methods_zft():
                 ztfdic[str(group['oid'][0])] =  group.to_pandas().to_json()#buf.getvalue()
             return ztfdic
 
-    def zftcurves(ra,dec,radius,format,nearest):
+    def zftcurves(self):
         """ Get light curves of ztf objects 
         Parameters
         ----------
         """
         baseurl="https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves"
         data = {}
-        data['POS']=f'CIRCLE {ra} {dec} {radius}'
+        data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
         #data['BANDNAME']='r'
-        data['FORMAT'] = format
+        data['FORMAT'] = self.format
         #temporal
-        if format == 'json':
+        if self.format == 'json':
             data['FORMAT'] = 'csv'
         result = requests.get(baseurl,params=data)
         ztfdic = {}
@@ -143,12 +143,12 @@ class Methods_zft():
         
         #if select csv 
         elif format == 'csv':
-            return csv_format(ra,dec,radius,nearest,result)
+            return csv_format(result)
 
         # if select VOTable 
         elif format == 'votable':
-            return votable_format(ra,dec,radius,nearest,result)
+            return votable_format(result)
         
         #if select json
         elif format == 'json':
-            return json_format(ra,dec,radius,nearest,result)
+            return json_format(result)

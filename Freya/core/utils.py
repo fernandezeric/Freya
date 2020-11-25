@@ -1,7 +1,9 @@
+#
+# ## PROBAR
+#
+from astropy.coordinates import SkyCoord
 
-class Utils():
-    def __init__(self):
-        pass
+class Utils:
 
     def deg_to_hms(self):
         """
@@ -9,13 +11,16 @@ class Utils():
         """
         pass
 
-    def hms_to_deg(self):
+    def hms_to_deg(self,hms):
         """
         coord = SkyCoord(request.form['hms'],frame='icrs') #transform coord
         ra = coord.ra.degree
         dec = coord.dec.degree
         """
-        pass
+        coord = SkyCoord(hms,frame='icrs') #transform coord
+        ra = coord.ra.degree
+        dec = coord.dec.degree
+        return ra,dec
 
     def nearest(self):
         pass

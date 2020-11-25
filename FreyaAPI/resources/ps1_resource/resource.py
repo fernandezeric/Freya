@@ -17,7 +17,7 @@ class Resource_ps1():
         return data_method
 
     def get_lc_hms_all(self):
-        data_method = Configure_ps1().get_lc_hms_all(self.hms,self.radius,self.format)
+        data_method = Configure_ps1(self.hms,self.radius,self.format).get_lc_hms_all()
         return data_method
 
     def get_lc_deg_nearest(self):
@@ -25,5 +25,5 @@ class Resource_ps1():
         return data_method
 
     def get_lc_hms_nearest(self):
-        data_method = Configure_ps1().get_lc_hms_nearest(self.hms,self.radius,self.format) 
+        data_method = Configure_ps1(self.hms,self.radius,self.format).get_lc_hms_nearest() 
         return data_method
