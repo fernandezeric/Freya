@@ -5,7 +5,6 @@ import requests
 import io
 from Freya.core import utils
 
-
 from astropy.io import ascii
 from astropy.table import Table
 from astropy.coordinates import SkyCoord
@@ -14,13 +13,13 @@ from astropy import units as u
 
 class Methods_ps1():
 
-    def __init__(self,ra,dec,radius,format,nearest):
-        self.ra = ra
-        self.dec = dec
-        self.radius = radius
-        self.format = format
-        self.nearest = nearest
-        #print(self.ra,self.dec)
+    def __init__(self,**kwagrs):
+        self.ra = kwagrs.get('ra')
+        self.dec = kwagrs.get('dec')
+        self.hms = kwagrs.get('hms')
+        self.radius = kwagrs.get('radius')
+        self.format = kwagrs.get('format')
+        self.nearest = kwagrs.get('nearest')
 
     def ps1cone(self, baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", **kw):
             #table="mean",release="dr1",format="csv",columns=None,
@@ -33,7 +32,6 @@ class Methods_ps1():
         data['dec'] = self.dec
         data['radius'] = self.radius
         data['format'] = self.format
-        #print(data)
         return self.ps1search(baseurl=baseurl, **data)
 
     #https://ps1images.stsci.edu/ps1_dr2_api.html
@@ -47,8 +45,6 @@ class Methods_ps1():
         data = kw.copy()
         url = f"{baseurl}/{release}/{table}.{self.format}"
         data['columns'] = '[{}]'.format(','.join(columns))
-        # either get or post works
-        #print(data)
         r = requests.get(url, params=data)
         r.raise_for_status()
         if self.format == "json":
@@ -64,6 +60,7 @@ class Methods_ps1():
         constraints = {'nDetections.gt':1}
         columns = ['objID','raMean','decMean']
         results = self.ps1cone(release='dr2',columns=columns,**constraints)
+
         # if results.status_code != '200': 
         #     return -99 #'not found' # change to more general
 
@@ -72,7 +69,6 @@ class Methods_ps1():
 
         results = ascii.read(results)
 
-
         if self.nearest is True:
             angle = []
             c1 = SkyCoord(ra=self.ra,dec=self.dec,unit=u.degree)
@@ -80,7 +76,6 @@ class Methods_ps1():
                 c2 = SkyCoord(ra=re['raMean'],dec=re['decMean'],unit=u.degree)
                 angle.append(c1.separation(c2))
             minps1 = angle.index(min(angle))
-            #temporal 4 meses de temporal xD
             temp = []
             temp.append(results[minps1]['objID'])
             return temp
@@ -99,21 +94,15 @@ class Methods_ps1():
         if ids == -1:
             ps1dic['0'] = 'not found' # not object find
             return ps1dic
-        # #when request failed in api
+        #when request failed in api
         # elif ids == -99: 
         #     ps1dic['not found'] = 'result.status_code '
         #     return ps1dic
-        #ps1dic['ids'] = ids
-        #print(ids)
-        # split ids in dict
+        #split ids in dict
         for id in ids:
             dconstraints = {'objID': id}
             dcolumns = ("""objID, detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
                         psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3""").split(',') 
-            """
-            detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
-                        psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3
-            """
             dcolumns = [x.strip() for x in dcolumns]
             dcolumns = [x for x in dcolumns if x and not x.startswith('#')]
             dresults = self.ps1search(table='detection',release='dr2',columns=dcolumns,**dconstraints)

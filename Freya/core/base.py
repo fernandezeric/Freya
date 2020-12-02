@@ -2,6 +2,7 @@ import os
 import Freya.catalogs # __path__
 import Freya.files.list_file as files_
 import zipfile #read zip files
+from Freya.files.verify_file import Verify
 
 
 class Base():
@@ -25,10 +26,10 @@ class Base():
 
     def create_module_catalog(self):
 
-        if self.source not in ['api','bd'] :
+        if Verify().verify_source(self.source):
             raise TypeError (f'The source {self.source} not is valid')
 
-        if files_.Cheak().cheak_catalog(self.name) :
+        if Verify().verify_catalog(self.name):
             raise TypeError ('catalog already created')
         
         dir_catalogs = Freya.catalogs.__path__[0]
@@ -36,7 +37,7 @@ class Base():
         path_tample_files_ = self.path_files_template_from()
         
         try: 
-            os.mkdir(path_new_catalog) # crea la carpeta , pero esta vacia
+            os.mkdir(path_new_catalog) # created empty folder
             extract_zip = zipfile.ZipFile(path_tample_files_)
             extract_zip.extractall(path_new_catalog)
             extract_zip.close()
@@ -59,11 +60,11 @@ class Base():
     
     
     def create_new_resource(self):
-        if not files_.Cheak().cheak_catalog(self.name) :
+        if not Verify().verify_catalog(self.name) :
             raise TypeError ('first created catalog inside Freya')
 
         path_template_resource = self.path_file_template_resource()
-        path_new_api =  self.path#os.path.join(self.path,'FreyaAPI')#'/home/jonimottg/Escritorio/Avance/IIIII' #CAMBIAR POR FreyaAPI y que sea la unica
+        path_new_api =  self.path#os.path.join(self.path,'FreyaAPI')
         path_new_resource = os.path.join(path_new_api,f'resources/{self.name}_resource') # join(newapi,nombre_resource)
         try:
             os.mkdir(path_new_resource)
@@ -76,22 +77,6 @@ class Base():
             files_.Files(list_path,'NAME',self.name).replace_in_files()
         except OSError as error:
             print(error) 
-          
-class AddCatalog(Base):  #más bonito
-    def __init__(self,**kwargs):
-        super().__init__(**kwargs)
-        super().create_module_catalog()
-
-class AddResource(Base):
-    def __init__(self,**kwargs):
-        super().__init__(**kwargs)
-        super().create_new_resource()
-
-class NewAPI(Base):
-    def __init__(self,**kwargs):
-        super().__init__(**kwargs)
-        super().create_new_api()
-      
 
 
 

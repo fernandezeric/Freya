@@ -11,7 +11,7 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 from astropy.io.votable import parse,parse_single_table,from_table, writeto
 
-class Methods_zft():
+class Methods_ztf():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
@@ -19,6 +19,7 @@ class Methods_zft():
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
+        self.nearest = kwagrs.get('nearest')
 
     def id_nearest (self,results):
         """ Get object id most closet to ra dec use a min angle
@@ -34,27 +35,25 @@ class Methods_zft():
 
     def csv_format(self,result):
         ztfdic = {}
-        result = ascii.read(result.text)
+        result_ = ascii.read(result.text)
+        if len(result_) <= 0:
+            ztfdic['-999'] = 'light curve not found' 
+            return ztfdic
 
-        if len(result) <= 0:
-            ztfdic['-1'] = 'not found' 
-            return ztfdic # change to more general
-
-        results = result.group_by('oid')
-
+        result_ = result_.group_by('oid')
         #the most close object to radius
         if self.nearest is True:
 
-            minztf = self.id_nearest(results)
+            minztf = self.id_nearest(result_)
                 
             buf = io.StringIO()
-            ascii.write(results.groups[minztf],buf,format='csv')
-            ztfdic[str(results.groups[minztf]['oid'][0])] =  buf.getvalue()
+            ascii.write(result_.groups[minztf],buf,format='csv')
+            ztfdic[str(result_.groups[minztf]['oid'][0])] =  buf.getvalue()
             return ztfdic
 
         # all objects in radius
         else:
-            for group in results.groups:
+            for group in result_.groups:
                 buf = io.StringIO()
                 ascii.write(group,buf,format='csv')
                 ztfdic[str(group['oid'][0])] =  buf.getvalue()
@@ -92,35 +91,6 @@ class Methods_zft():
                 ztfdic[str(group['oid'][0])] = (buf.getvalue().decode("utf-8"))
             return ztfdic
 
-    def json_format(self,result):
-        ztfdic = {}
-        result = ascii.read(result.text)
-
-        if len(result) <= 0:
-            ztfdic['-1'] = 'not found' 
-            return ztfdic # change to more general
-
-        results = result.group_by('oid')
-
-        #the most close object to radius
-        if nearest is True:
-
-            minztf = self.id_nearest(results)
-                
-            #buf = io.StringIO()
-            #ascii.write(results.groups[minztf],buf,format='pandas.json')
-            ztfdic[str(results.groups[minztf]['oid'][0])] =  results.groups[minztf].to_pandas().to_json()#buf.getvalue()
-            return ztfdic
-
-        # all objects in radius
-        else:
-            for group in results.groups:
-                #buf = io.StringIO()
-                #print(group.to_pandas().to_json())
-                #buf.write(group,format='pandas.json', sep=' ', header=False)
-                ztfdic[str(group['oid'][0])] =  group.to_pandas().to_json()#buf.getvalue()
-            return ztfdic
-
     def zftcurves(self):
         """ Get light curves of ztf objects 
         Parameters
@@ -131,24 +101,16 @@ class Methods_zft():
         data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
         #data['BANDNAME']='r'
         data['FORMAT'] = self.format
-        #temporal
-        if self.format == 'json':
-            data['FORMAT'] = 'csv'
         result = requests.get(baseurl,params=data)
         ztfdic = {}
-
+        #self.csv_format(result)
+        #return result
         if result.status_code != 200: 
-            ztfdic['not found'] = result.status_code 
-            return ztfdic #'not found' # change to more general
-        
+            ztfdic['error code status'] = result.status_code 
+            return ztfdic
         #if select csv 
-        elif format == 'csv':
-            return csv_format(result)
-
-        # if select VOTable 
-        elif format == 'votable':
-            return votable_format(result)
-        
-        #if select json
-        elif format == 'json':
-            return json_format(result)
+        if self.format == 'csv':
+            return self.csv_format(result)
+        # # if select VOTable 
+        # elif self.format == 'votable':
+        #     return self.votable_format(result)
