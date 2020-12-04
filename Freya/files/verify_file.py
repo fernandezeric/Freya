@@ -6,13 +6,25 @@ class Verify():
 
     """
     """
-    def verify_catalog(self,name):
+    def verify_catalog_inside(self,name):
         self.name = name
         dir_catalogs = Freya.catalogs.__path__[0]
         if self.name  in os.listdir(dir_catalogs) :
              return True 
         return False
 
+    """
+    """
+    def verify_catalog_local(self,name):
+        self.name = name
+        try :
+            mod = importlib.import_module('LocalCatalogs.catalogs')
+            dir_catalogs = mod.__path__[0]
+            if self.name  in os.listdir(dir_catalogs) :
+                return True 
+            return False
+        except:
+            return False
     """
     """  
     def verify_source(self,source):

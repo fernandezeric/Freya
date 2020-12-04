@@ -1,16 +1,9 @@
-"""
-source ../Entornos/Freya/bin/activate
-"""
-"""
-- [ ] Nuevo caso de uso: Crear catalogo de manera local
-- [ ] Mejorar código: argparse, pascal case, setup.py
-- [ ] Crear un catálogo en Freya
-"""
-#from Freya.core.base import AddCatalog,AddResource,NewAPI # seria mejor dividir en varios archivoss
 from Freya.core.commands.addcatalog import AddCatalog
+from Freya.core.commands.addcataloglocal import AddCatalogLocal
 from Freya.core.commands.addresource import AddResource
 from Freya.core.commands.newapi import NewAPI
-from Freya.catalogs.core import GetData # seria mejor dividir en varios archivoss
+from Freya.core.commands.newfolderlocal import NewFolderLocal
+from Freya.catalogs.core import GetData
 import os
 import argparse
 import sys
@@ -23,8 +16,10 @@ def main():
     parser.add_argument('-nc','--newcatalog', action='store', type=str, nargs=2, 
                             metavar=('<name>','<source>'),help="add new catalog inside Freya")
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-ncl','--newcatalog_local', action='store', type=str, nargs=3, 
-                            metavar=('<name>','<source>','path'),help="add new catalog who local module")
+    parser.add_argument('-ncl','--newcataloglocal', action='store', type=str, nargs=2, 
+                            metavar=('<name>','<source>'),help="add new catalog who local module")
+    #--------------------------------------------------------------------------------------#     
+    parser.add_argument('-nfl','--newfolderlocal', action='store_true', help="create a new folder local from catalogs")
     #--------------------------------------------------------------------------------------#     
     parser.add_argument('-na','--newapi', action='store_true', help="create a new FreyaAPI")
     #--------------------------------------------------------------------------------------#                        
@@ -32,35 +27,47 @@ def main():
                             metavar=('<name>'),help="add module catalog who resource in FreyaApi")
     #--------------------------------------------------------------------------------------#      
     parser.add_argument('-p','--prueba', action='store_true', help="PRUEBAS - ELIMINAR")                  
-    #--------------------------------------------------------------------------------------#   
+    #--------------------------------------------------------------------------------------# 
     args = parser.parse_args()
 
 
     if args.newcatalog :
         print("Created new catalog...")
         try:
-            AddCatalog(name=args.newcatalog[0],source =args.newcatalog[1])
+            AddCatalog(name=args.newcatalog[0],source=args.newcatalog[1])
         except:
-            raise TypeError (f'failed to create new catalog : {args.newcatalog[0]} inside Freya')
+            raise TypeError (f'Failed to create new catalog : {args.newcatalog[0]} inside Freya')
 
-    elif args.newcatalog_local : 
+    elif args.newcataloglocal : 
         print("Created new local catalog...")
-        print(args.newcatalog_local)
+        #print(args.newcatalog_local,os.getcwd())
+        try:
+            AddCatalogLocal(name=args.newcataloglocal[0],source =args.newcataloglocal[1],path=os.getcwd())
+        except:
+            raise TypeError ('Fauled to create local module')
 
     elif args.newapi :
         print("Created new FreyaAPI...")
         try:
             NewAPI(path=os.getcwd())
         except:
-            raise TypeError ('failed to create new base to FreaAPI')
+            raise TypeError ('Failed to create new base to FreaAPI')
 
     elif args.addresource : 
-        print("add new resource to FreyaAPI...")
+        print("Add new resource to FreyaAPI...")
         try:
-            #AddResource(name=args.addresource[0],path=os.path.dirname(os.path.abspath(__file__)))
             AddResource(name=args.addresource[0],path=os.getcwd())
         except:
-            raise TypeError (f'failed to create resouce : {args.addresource[0]} inside FreyaAPI')
+            raise TypeError (f'Failed to create resouce : {args.addresource[0]} inside FreyaAPI')
+
+    elif args.newfolderlocal :
+        print("Created a new folder from local catalogs...")
+        try:
+            NewFolderLocal(path=os.getcwd())
+        except:
+            raise TypeError ('Failed to create new local folder')
+
+
 
     elif args.prueba :
         data = GetData(catalogs="ztf",ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv').get_lc_deg_all()

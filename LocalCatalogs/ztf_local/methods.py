@@ -4,9 +4,8 @@ In this file you can created methods for 'configure.py'
 import requests
 import io
 from Freya.core import utils as u
-from Freya.catalogs.NAME.connect import Connect_NAME
 
-class Methods_NAME():
+class Methods_ztf_local():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
@@ -15,8 +14,8 @@ class Methods_NAME():
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
 
-    def method_NAME():
+    def method_ztf_local():
         return 1
 
-    def method_NAME_2():
+    def method_ztf_local_2():
         return 2

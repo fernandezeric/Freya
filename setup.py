@@ -3,7 +3,7 @@ from setuptools import setup
 # pip install -e .
 setup(
       name='Freya',
-      version='0.1.2.1',
+      version='0.1.3.0',
       description='This is a Framework',
       url='',
       author='Jonimott de Malpais',

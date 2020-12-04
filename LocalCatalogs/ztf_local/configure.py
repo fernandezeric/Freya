@@ -11,10 +11,9 @@ Need with you return method as follow :
 }
 """
 
-from Freya.catalogs.NAME.methods import Methods_NAME as mNAME
-from Freya.catalogs.NAME.connect import Connect_NAME
+from LocalCatalogs.ztf_local.methods import Methods_ztf_local as mztf_local
 
-class Configure_NAME():
+class Configure_ztf_local():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
@@ -36,6 +35,6 @@ class Configure_NAME():
         return data_return
 
     def get_lc_hms_nearest(self):
-        data_return = {} 
+        data_return = {}
         return data_return
 
