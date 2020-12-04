@@ -24,7 +24,7 @@ class GetData ():
                 
                 if Verify().verify_catalog_inside(catalog):
                     module = f'Freya.catalogs.{catalog}.configure'
-                else :
+                elif Verify().verify_catalog_local(catalog) :
                     module = f'LocalCatalogs.{catalog}.configure'
 
                 mod = importlib.import_module(module) # import module
@@ -54,7 +54,7 @@ class GetData ():
                 #self.dataReturn[f'{catalog}'] = method_
                 return method_
             except :
-               print(f'No find the catalog : {catalog}')
+                print(f'No find the catalog : {catalog}')
 
     def get_lc_deg_all(self):
         #self.generic_call_data('get_lc_deg_all')

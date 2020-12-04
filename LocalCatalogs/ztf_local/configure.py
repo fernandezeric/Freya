@@ -23,18 +23,19 @@ class Configure_ztf_local():
         self.format = kwagrs.get('format')
 
     def get_lc_deg_all(self):
-        data_return = {}
+        data_return = mztf_local(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=False).zftcurves() 
         return data_return
 
     def get_lc_hms_all(self):
-        data_return = {}
+        data_return = mztf_local(hms=self.hms,radius=self.radius,format=self.format,nearest=False).zftcurves() 
         return data_return
 
     def get_lc_deg_nearest(self):
-        data_return = {}
+        data_return = mztf_local(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=True).zftcurves() 
         return data_return
 
     def get_lc_hms_nearest(self):
-        data_return = {}
+        data_return = mztf_local(hms=self.hms,radius=self.radius,format=self.format,nearest=True).zftcurves() 
         return data_return
+
 

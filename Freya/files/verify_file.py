@@ -1,6 +1,7 @@
 
 import Freya.catalogs # __path__ # dir modules
 import os
+import importlib
 
 class Verify():
 
@@ -18,7 +19,7 @@ class Verify():
     def verify_catalog_local(self,name):
         self.name = name
         try :
-            mod = importlib.import_module('LocalCatalogs.catalogs')
+            mod = importlib.import_module('LocalCatalogs')
             dir_catalogs = mod.__path__[0]
             if self.name  in os.listdir(dir_catalogs) :
                 return True 
@@ -40,3 +41,5 @@ class Verify():
         if self.format not in ['csv']:
             return True
         return False
+
+#print(Verify().verify_catalog_local('ztf_local'))
