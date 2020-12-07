@@ -13,15 +13,14 @@ app = Flask(__name__)
 def hello():    
     return 'Hello, World!'
 
-@app.route('/Get_Lc')
+@app.route('/Get_Lc',methods=['POST'])
 def get_lc_all():
-    #request.form['XXX'] para post
-    ra = request.args.get('ra')
-    dec = request.args.get('dec')
-    radius = request.args.get('radius')
-    format = request.args.get('format')
+    ra = request.form['ra']
+    dec = request.form['dec']
+    radius = request.form['radius']
+    format = request.form['format']
     data = {}
-    for catalog in request.args.get('catalogs').split(","):
+    for catalog in request.form['catalogs'].split(","):
         module = f'resources.{catalog}_resource.resource'
         print(module)
         mod = importlib.import_module(module)
@@ -30,14 +29,14 @@ def get_lc_all():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
-@app.route('/Get_LC_Nearest') #methods=['POST']
+@app.route('/Get_LC_Nearest',methods=['POST'])
 def get_lc_nearest():
     data = {}
-    ra = request.args.get('ra')
-    dec = request.args.get('dec')
-    radius = request.args.get('radius')
-    format = request.args.get('format')
-    for catalog in request.args.get('catalogs').split(","):
+    ra = request.form['ra']
+    dec = request.form['dec']
+    radius = request.form['radius']
+    format = request.form['format']
+    for catalog in request.form['catalogs'].split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
@@ -45,13 +44,13 @@ def get_lc_nearest():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
-@app.route('/Get_LC_Hms')#methods=['POST']
+@app.route('/Get_LC_Hms',methods=['POST'])
 def get_lc_hms_all():
     data = {}
-    hms = request.args.get('hms')
-    radius = request.args.get('radius')
-    format = request.args.get('format')
-    for catalog in request.args.get('catalogs').split(","):
+    hms = request.form['hms']
+    radius = request.form['radius']
+    format = request.form['format']
+    for catalog in request.form['catalogs'].split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
@@ -59,13 +58,13 @@ def get_lc_hms_all():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
-@app.route('/Get_LC_Hms_Nearest')#methods=['POST']
+@app.route('/Get_LC_Hms_Nearest',methods=['POST'])
 def get_lc_hms_nearest():
     data = {}
-    hms = request.args.get('hms')
-    radius = request.args.get('radius')
-    format = request.args.get('format')
-    for catalog in request.args.get('catalogs').split(","):
+    hms = request.form['hms']
+    radius = request.form['radius']
+    format = request.form['format']
+    for catalog in request.form['catalogs'].split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')

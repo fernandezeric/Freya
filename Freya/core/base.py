@@ -1,9 +1,11 @@
 import os
 import sys
+import subprocess
 import Freya.catalogs # __path__
 import Freya.files.list_file as files_
 import zipfile #read zip files
 from Freya.files.verify_file import Verify
+
 
 
 class Base():
@@ -94,6 +96,7 @@ class Base():
     def create_new_api(self):
         path_template_api = self.path_file_template_new_api()
         path_new_api =  os.path.join(self.path,'FreyaAPI')
+        #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
         try:
             os.mkdir(path_new_api)
             extract_zip = zipfile.ZipFile(path_template_api)
