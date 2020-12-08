@@ -1,13 +1,19 @@
+#command Freya
 from Freya.core.commands.addcatalog import AddCatalog
 from Freya.core.commands.addcataloglocal import AddCatalogLocal
 from Freya.core.commands.addresource import AddResource
 from Freya.core.commands.newapi import NewAPI
 from Freya.core.commands.newfolderlocal import NewFolderLocal
+# PRUEBA
 from Freya.catalogs.core import GetData
+#
 import os
 import argparse
 import sys
 
+"""
+Define the CLI for Freya specific command line. 
+"""
 def main():
 
     #----------------------------COMMAND LINE----------------------------------------------#
@@ -30,7 +36,9 @@ def main():
     #--------------------------------------------------------------------------------------# 
     args = parser.parse_args()
 
-
+    """
+    Check what was the command line called, try call associated method.
+    """
     if args.newcatalog :
         print("Created new catalog...")
         try:
@@ -40,7 +48,6 @@ def main():
 
     elif args.newcataloglocal : 
         print("Created new local catalog...")
-        #print(args.newcatalog_local,os.getcwd())
         try:
             AddCatalogLocal(name=args.newcataloglocal[0],source =args.newcataloglocal[1],path=os.getcwd())
         except:

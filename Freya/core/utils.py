@@ -1,6 +1,9 @@
 
 from astropy.coordinates import SkyCoord
 
+"""
+This class represent the generic methods
+"""
 class Utils:
 
     def deg_to_hms(self):

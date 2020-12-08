@@ -1,12 +1,13 @@
-"""
-"""
 import fileinput #replace into files
 import Freya.catalogs # __path__
 import os
 
+"""
+Class to replace words in files.
+"""
 class Files():
     """
-    Replace a word for new word in specific file
+    Replace a 'word' for 'new word' in specific file.
     """
     def __init__(self,paths,raplace_word,word):
         self.list_path = paths

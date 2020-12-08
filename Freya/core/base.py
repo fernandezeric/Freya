@@ -7,7 +7,10 @@ import zipfile #read zip files
 from Freya.files.verify_file import Verify
 
 
-
+"""
+Base class to command line Freya, contains method for add new catalog inside Freya or in local folder, 
+created new local folder, new api (FreyaAPI), and add resources in FreyaAPI.
+"""
 class Base():
 
     def __init__(self,**kwargs):
@@ -15,22 +18,34 @@ class Base():
         self.source = kwargs.get('source')
         self.path = kwargs.get('path')
         self.local = kwargs.get('local')
+
     """
+    Method for select path of *.zip to extract, depend the source catalogue.
     """
     def path_files_template_from(self):
         if self.source == 'api':
             return os.path.join(Freya.files.__path__[0],'file_templates','fromapi.zip')
         else :
             return os.path.join(Freya.files.__path__[0],'file_templates','fromdb.zip')
+    
     """
+    Method for get the path of FreyaAPI generic data for extracted.
     """
     def path_file_template_new_api(self):
         return os.path.join(Freya.files.__path__[0],'file_templates','newapi.zip')
+    
     """
+    Method for get the path of FreyaAPI resource generic data for extracted.
     """
     def path_file_template_resource(self):
         return os.path.join(Freya.files.__path__[0],'file_templates','newresource.zip')
+    
     """
+    Method to create new catalogue module inside Freya,
+    first verify if source catalog is valid, 
+    second verify the catalog already exist then get path
+    for new module catalogue and path template data,
+    finaly try create the new module folder and extract the data.
     """
     def create_module_catalog(self):
 
@@ -45,17 +60,27 @@ class Base():
         path_tample_files_ = self.path_files_template_from()
         
         try: 
-            os.mkdir(path_new_catalog) # created empty folder
+            # Created empty folder
+            os.mkdir(path_new_catalog)
+            # Extract data template inside folder
             extract_zip = zipfile.ZipFile(path_tample_files_)
             extract_zip.extractall(path_new_catalog)
             extract_zip.close()
-            #Replace word 'NAME' from the name catalog
+            # Replace word 'NAME' from the name catalog
             list_path = [os.path.join(path_new_catalog,'configure.py'),os.path.join(path_new_catalog,'methods.py')]
             files_.Files(list_path,'NAME',self.name).replace_in_files()
         except OSError as error:
             print(error)
+    
     """
+    Method to create new local catalogue module ,
+    first verify if source catalog is valid, 
+    second verify the catalog already exist then get path
+    for new module catalogue and path template data,
+    finaly try create the new module folder and extract the data.
 
+    The catalogue create in path with call the freya-admin.
+    Need call inside local folder to take Freya.
     """
     def create_module_catalog_local(self):
         if Verify().verify_source(self.source):
@@ -68,18 +93,20 @@ class Base():
         path_tample_files_ = self.path_files_template_from()
         
         try: 
-            os.mkdir(path_new_catalog) # created empty folder
+            # Created empty folder
+            os.mkdir(path_new_catalog)
+            # Extract data template inside folder
             extract_zip = zipfile.ZipFile(path_tample_files_)
             extract_zip.extractall(path_new_catalog)
             extract_zip.close()
-            #Replace word 'NAME' from the name catalog
+            # Replace word 'NAME' from the name catalog
             list_path = [os.path.join(path_new_catalog,'configure.py'),os.path.join(path_new_catalog,'methods.py')]
             files_.Files(list_path,'Freya.catalogs','LocalCatalogs').replace_in_files()
             files_.Files(list_path,'NAME',self.name).replace_in_files()
         except OSError as error:
             print(error)
     """
-    Created local folder from catalogs and add path to sys
+    Created local folder from catalogs and add path to sys.
     """
     def folder_local_catalog(self):
         path_folder_local = os.path.join(self.path,'LocalCatalogs')
@@ -91,27 +118,43 @@ class Base():
 
         except OSError as error:
             print(error)
+
     """
+    Method to create a new FreyaAPI, the new api created in path
+    with call the freya-admin --newapi
     """
     def create_new_api(self):
+        # Get the path template data for FreyaAPI
         path_template_api = self.path_file_template_new_api()
+        # Get the path when create new api
         path_new_api =  os.path.join(self.path,'FreyaAPI')
-        #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
+        # Install Flask 
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
         try:
+            # Create new folder empy for FreyaAPI
             os.mkdir(path_new_api)
+            # Extract template data
             extract_zip = zipfile.ZipFile(path_template_api)
             extract_zip.extractall(path_new_api)
             extract_zip.close()
         except OSError as error:
             print(error)
+    
     """
+    Method what add resource to FreyaAPI, first verify the catalog exist inside Freya 
+    or in the local catalogs folder.
     """
     def create_new_resource(self):
+
+        # Verify 
         if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) :
             raise TypeError ('first created catalog inside Freya or local ')
-
+        
+        # Get path to template files
         path_template_resource = self.path_file_template_resource()
-        path_new_api =  self.path#os.path.join(self.path,'FreyaAPI')
+        # New path 
+        path_new_api =  self.path
+        # 
         path_new_resource = os.path.join(path_new_api,f'resources/{self.name}_resource')
         try:
             os.mkdir(path_new_resource)
