@@ -2,6 +2,9 @@ from Freya.core.base import Base
 
 """
 Created new FreyaAPI
+--------------------------------------
+Parameters
+path : (string) path where created FreyaAPI.
 """
 class NewAPI(Base):
     def __init__(self,**kwargs):

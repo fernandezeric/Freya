@@ -8,6 +8,15 @@ degrees (ra,dec,radius) or use the format hh:mm:ss (hh:mm:ss,radius).
 Other option is get the only light curve of object most close to area selected.
 """
 class GetData ():
+    """
+    Parameters
+    --------------------------------------
+    ra (float): (degrees) Right Ascension
+    dec (float): (degrees) Declination
+    hms (string): format hh:mm:ss
+    radius (float): Search radius
+    format (string): csv,
+    """
 
     def __init__(self,**kwargs):
         self.catalogs = kwargs.get('catalogs').strip().split(",") #split catalogs in a list

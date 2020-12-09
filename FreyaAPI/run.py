@@ -4,18 +4,33 @@ import importlib
 
 
 """
- Aplication flask for Freya, name FreyaAPI 
+Aplication flask for Freya, name FreyaAPI 
 """
 
 
 app = Flask(__name__)
 
+"""
+Base rute
+"""
 @app.route('/')
 def hello():    
     return 'Hello, New World Falling Into Darkness'
 
 """
-Rute 
+Rute that gets light curve data from catalogs,
+use specific area in degrees.
+--------------------------------------
+
+Parameters
+
+catalogs (string) : string with contains the names of catalogs separated with coma.
+ra (float): (degrees) Right Ascension
+dec (float): (degrees) Declination
+hms (string): format hh:mm:ss
+radius (float): Search radius
+format (string): csv,
+
 """
 @app.route('/Get_Lc',methods=['POST'])
 def get_lc_all():
@@ -33,6 +48,12 @@ def get_lc_all():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
+"""
+Rute
+--------------------------------------
+Parameters
+
+"""
 @app.route('/Get_LC_Nearest',methods=['POST'])
 def get_lc_nearest():
     data = {}
@@ -48,6 +69,12 @@ def get_lc_nearest():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
+"""
+Rute
+--------------------------------------
+Parameters
+
+"""
 @app.route('/Get_LC_Hms',methods=['POST'])
 def get_lc_hms_all():
     data = {}
@@ -62,6 +89,12 @@ def get_lc_hms_all():
         data[f'{catalog}'] = my_instance
     return make_response(data)
 
+"""
+Rute
+--------------------------------------
+Parameters
+
+"""
 @app.route('/Get_LC_Hms_Nearest',methods=['POST'])
 def get_lc_hms_nearest():
     data = {}

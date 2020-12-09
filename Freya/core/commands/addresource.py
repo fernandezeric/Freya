@@ -1,7 +1,9 @@
 from Freya.core.base import Base
 
 """
-Add resource to FreyaAPI
+Add resource to FreyaAPI, need call inside FreyaAPI
+--------------------------------------
+name : (string) name catalogue in Freya what adds resource in FreyaAPI.
 """
 class AddResource(Base):
     def __init__(self,**kwargs):

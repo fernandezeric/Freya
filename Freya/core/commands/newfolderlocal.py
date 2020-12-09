@@ -1,7 +1,10 @@
 from Freya.core.base import Base
 
 """
-Created new folder for local catalogue 
+Created new folder for local catalogs
+--------------------------------------
+Parameters
+path : (string) path where created local folder for catalogs
 """
 class NewFolderLocal(Base):
     def __init__(self,**kwargs):

@@ -12,12 +12,20 @@ Base class to command line Freya, contains method for add new catalog inside Fre
 created new local folder, new api (FreyaAPI), and add resources in FreyaAPI.
 """
 class Base():
+    """
+    Parameters
+    --------------------------------------
+    name : (string) name with add catalogue inside Freya or in local folder
+                    and is the same name with add resource in FreyaAPI
+    source : (string) origin source catalogue [api,db]
+    path : (string) path where created FreyaAPI, local folder for catalogs and
+                    add resources in FreyaAPI.
+    """
 
     def __init__(self,**kwargs):
         self.name = kwargs.get('name')
         self.source = kwargs.get('source')
         self.path = kwargs.get('path')
-        self.local = kwargs.get('local')
 
     """
     Method for select path of *.zip to extract, depend the source catalogue.
@@ -42,15 +50,15 @@ class Base():
     
     """
     Method to create new catalogue module inside Freya,
-    first verify if source catalog is valid, 
-    second verify the catalog already exist then get path
+    first verify if source catalogue is valid, 
+    second verify the catalogue already exist then get path
     for new module catalogue and path template data,
     finaly try create the new module folder and extract the data.
     """
     def create_module_catalog(self):
 
         if Verify().verify_source(self.source):
-            raise TypeError (f'The source {self.source} not is valid')
+            raise TypeError (f'The source not is valid')
 
         if Verify().verify_catalog_inside(self.name) or Verify().verify_catalog_local(self.name):  
             raise TypeError ('catalog already created')
