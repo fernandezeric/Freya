@@ -1,5 +1,5 @@
 # GO GO MEMORI2
-
+### Here it is the module python catalog 'Freya', the api 'FreyaAPI' and local folder. Is a complete example.
 Freya is a Fremework <3, and this github is the python code.
 
 ## Start 🚀
