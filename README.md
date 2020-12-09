@@ -16,6 +16,10 @@ Have option by CLI 'freya-admin', the options are:
 * pip install -e .
 ## Build with 🛠️
 * python
-* 
+## Diagrama (para que los vea el Chiki)
+### Diagrama General
+https://raw.githubusercontent.com/fernandezeric/Memoria/mainr/Diagrama/Diagrama_General.png
+### Diagrama Comandos (freya-admin)
+https://raw.githubusercontent.com/fernandezeric/Memoria/mainr/Diagrama/Comandos.png
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)
