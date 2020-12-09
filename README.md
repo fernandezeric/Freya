@@ -18,9 +18,8 @@ Have option by CLI 'freya-admin', the options are:
 * python
 ## Diagrama (para que los vea el Chiki)
 ### Diagrama General
-https://raw.githubusercontent.com/fernandezeric/Memoria/main/Diagrama/Diagrama_General.png
-https://raw.github.com/fernandezeric/Memoria/main/Diagrama/Diagrama_General.png
+
 ### Diagrama Comandos (freya-admin)
-https://raw.githubusercontent.com/fernandezeric/Memoria/main/Diagrama/Comandos.png
+![ScreenShot](https://raw.github.com/fernandezeric/Memoria/main/Diagrama/Comandos.png)
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)
