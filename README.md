@@ -20,6 +20,6 @@ Have option by CLI 'freya-admin', the options are:
 ### Diagrama General
 
 ### Diagrama Comandos (freya-admin)
-![ScreenShot](https://raw.github.com/fernandezeric/Memoria/main/Diagrama/Comandos.png)
+![ScreenShot](https://raw.github.com/fernandezeric/Memoria/tree/main/Diagrama/Comandos.png)
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)
