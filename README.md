@@ -6,7 +6,7 @@ Freya is a Fremework <3, and this github is the python code.
 With Freya get light curve data is more simple.
 Have option by CLI 'freya-admin', the options are:
   
-  * Creates new catalogue who module inside Freya, where <name> is the name of catalogue what choose and <source>
+  * Creates new catalogue who module inside Freya, where name is the name of catalogue what choose and source
   is where it comes from (available options: api,db).
   ```
   freya-admin --newcatalog <name> <source>
@@ -27,7 +27,7 @@ Have option by CLI 'freya-admin', the options are:
   freya-admin --newfolderlocal
   ```
   * And want creates new catalogue who module in local folder, need call --newcataloglocal inside the folder created with --newfolderlocal.
-  where <name> is the name of catalogue what choose and <source> is where it comes from (available options: api,db).
+  where name is the name of catalogue what choose and source is where it comes from (available options: api,db).
   ```
   freya-admin --newcataloglocal <name> <source>
   ```
