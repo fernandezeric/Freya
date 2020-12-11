@@ -2,7 +2,7 @@
 ### Here it is the module python catalog 'Freya', the api 'FreyaAPI' and local folder. Is a complete example.
 Freya is a Fremework <3, and this github is the python code.
 
-## Start 🚀
+## Start (Install and add catalogs)🚀
 With Freya get light curve data is more simple.
 Have option by CLI 'freya-admin', the options are:
   
@@ -60,9 +60,45 @@ freya-admin --newapi
 freya-admin --addresource ztf
 freya-admin --addresource ztf_local
 ```
+## Start (Who use)🚀
+How to use the Freya and FreyaAPI.
+First you look the Demo in this github()
 
+### How use the rute FreyaAPI
+The rutes in FreyaAPI are get methods and have four rutes.
+```
+ # Get light curves of objects with area in degrees.
+ args : catalogs,ra,dec,radius,format
+ Example:
+  http://0.0.0.0:5000/get_lc?catalogs=ztf,ztf_local&ra=(float)&dec=(float)&radius=(float)&formnat=csv
+ 
+ # Get light curve of object most close to area in degrees.
+ args : catalogs,ra,dec,radius,format
+ Example:
+  http://0.0.0.0:5000/get_lc_nearest?catalogs=ztf,ztf_local&ra=(float)&dec=(float)&radius=(float)&formnat=csv    
+```
+```
+ # Get light curves of objects with area in hh:mm:ss.
+ args : catalogshms,radius,format
+ Example:
+  http://0.0.0.0:5000/get_lc_hms?catalogs=ztf,ztf_local&hms=(string)&radius=(float)&formnat=csv
+ 
+ # Get light curve of object most close to area in hh:mm:ss.
+ args : catalogshms,radius,format
+ Example:
+   http://0.0.0.0:5000/get_lc_hms_nearest?catalogs=ztf,ztf_local&hms=(string)&radius=(float)&formnat=csv   
+```
+### How use a only Freya
+If you want use Freya but without installing, you can use the method 'GetData'.
+```
+from Freya.catalogs.core import GetData
+
+data_all_deg = GetData(catalogs='ztf',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_all()
+data_one_deg = GetData(catalogs='ztf_local',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_nearest()
+data_all_hms = GetData(catalogs='ztf',hms=(string),radius=(float),format='csv').get_lc_hms_all()
+data_one_hms = GetData(catalogs='ztf,ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
+```
 ## Build with 🛠️
 * python
-* 
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)
