@@ -4,8 +4,6 @@ from Freya.core.commands.addcataloglocal import AddCatalogLocal
 from Freya.core.commands.addresource import AddResource
 from Freya.core.commands.newapi import NewAPI
 from Freya.core.commands.newfolderlocal import NewFolderLocal
-# PRUEBA
-from Freya.catalogs.core import GetData
 #
 import os
 import argparse
@@ -32,8 +30,6 @@ def main():
     parser.add_argument('-ar','--addresource', action='store', type=str, nargs=1, 
                             metavar=('<name>'),help="add module catalog who resource in FreyaApi")
     #--------------------------------------------------------------------------------------#      
-    parser.add_argument('-p','--prueba', action='store_true', help="PRUEBAS - ELIMINAR")                  
-    #--------------------------------------------------------------------------------------# 
     args = parser.parse_args()
 
     """
@@ -73,19 +69,6 @@ def main():
             NewFolderLocal(path=os.getcwd())
         except:
             raise TypeError ('Failed to create new local folder')
-
-
-
-    elif args.prueba :
-        data = GetData(catalogs="ztf",ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv').get_lc_deg_all()
-        print("*"*10)
-        print(data)
-        print("*"*10)
-        #print(__file__)
-        #print(os.path.abspath(__file__))
-        #print(sys.argv)
-        ## path of execute freya-admin
-        #print(os.path.join(os.getcwd(), 'FreyaAPI'))
 
 if __name__ == ' __main__':
           main()

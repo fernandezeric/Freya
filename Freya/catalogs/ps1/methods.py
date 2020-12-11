@@ -95,9 +95,9 @@ class Methods_ps1():
             ps1dic['0'] = 'not found' # not object find
             return ps1dic
         #when request failed in api
-        # elif ids == -99: 
-        #     ps1dic['not found'] = 'result.status_code '
-        #     return ps1dic
+        elif ids == -99: 
+            ps1dic['not found'] = 'result.status_code '
+            return ps1dic
         #split ids in dict
         for id in ids:
             dconstraints = {'objID': id}

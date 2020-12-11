@@ -4,7 +4,7 @@ import importlib
 
 
 """
-Aplication flask for Freya, name FreyaAPI 
+Aplication flask for Freya, name FreyaAPI.
 """
 
 
@@ -27,19 +27,18 @@ Parameters
 catalogs (string) : string with contains the names of catalogs separated with coma.
 ra (float): (degrees) Right Ascension
 dec (float): (degrees) Declination
-hms (string): format hh:mm:ss
 radius (float): Search radius
 format (string): csv,
 
 """
-@app.route('/Get_Lc',methods=['POST'])
+@app.route('/get_lc')
 def get_lc_all():
-    ra = request.form['ra']
-    dec = request.form['dec']
-    radius = request.form['radius']
-    format = request.form['format']
+    ra = request.args.get('ra')
+    dec = request.args.get('dec')
+    radius = request.args.get('radius')
+    format = request.args.get('format')
     data = {}
-    for catalog in request.form['catalogs'].split(","):
+    for catalog in request.args.get('catalogs').split(","):
         module = f'resources.{catalog}_resource.resource'
         print(module)
         mod = importlib.import_module(module)
@@ -49,19 +48,27 @@ def get_lc_all():
     return make_response(data)
 
 """
-Rute
+Rute that get the light curve data most close to specific area in degrees
+from catalogs indicateds,
 --------------------------------------
+
 Parameters
 
+catalogs (string) : string with contains the names of catalogs separated with coma.
+ra (float): (degrees) Right Ascension
+dec (float): (degrees) Declination
+radius (float): Search radius
+format (string): csv,
+
 """
-@app.route('/Get_LC_Nearest',methods=['POST'])
+@app.route('/get_lc_nearest')
 def get_lc_nearest():
+    ra = request.args.get('ra')
+    dec = request.args.get('dec')
+    radius = request.args.get('radius')
+    format = request.args.get('format')
     data = {}
-    ra = request.form['ra']
-    dec = request.form['dec']
-    radius = request.form['radius']
-    format = request.form['format']
-    for catalog in request.form['catalogs'].split(","):
+    for catalog in request.args.get('catalogs').split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
@@ -70,18 +77,25 @@ def get_lc_nearest():
     return make_response(data)
 
 """
-Rute
+Rute that get the light curve data most close to specific area in
+format hh:mm:ss from catalogs indicateds,
 --------------------------------------
+
 Parameters
 
+catalogs (string) : string with contains the names of catalogs separated with coma.
+hms (string): format hh:mm:ss
+radius (float): Search radius
+format (string): csv,
+
 """
-@app.route('/Get_LC_Hms',methods=['POST'])
+@app.route('/get_lc_hms')
 def get_lc_hms_all():
+    hms = request.args.get('hms')
+    radius = request.args.get('radius')
+    format = request.args.get('format')
     data = {}
-    hms = request.form['hms']
-    radius = request.form['radius']
-    format = request.form['format']
-    for catalog in request.form['catalogs'].split(","):
+    for catalog in request.args.get('catalogs').split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')
@@ -90,18 +104,25 @@ def get_lc_hms_all():
     return make_response(data)
 
 """
-Rute
+Rute that gets light curve data from catalogs,
+use specific area in format hh:mm:ss.
 --------------------------------------
+
 Parameters
 
+catalogs (string) : string with contains the names of catalogs separated with coma.
+hms (string): format hh:mm:ss
+radius (float): Search radius
+format (string): csv,
+
 """
-@app.route('/Get_LC_Hms_Nearest',methods=['POST'])
+@app.route('/get_lc_hms_nearest',methods=['POST'])
 def get_lc_hms_nearest():
+    hms = request.args.get('hms')
+    radius = request.args.get('radius')
+    format = request.args.get('format')
     data = {}
-    hms = request.form['hms']
-    radius = request.form['radius']
-    format = request.form['format']
-    for catalog in request.form['catalogs'].split(","):
+    for catalog in request.args.get('catalogs').split(","):
         module = f'resources.{catalog}_resource.resource'
         mod = importlib.import_module(module)
         my_class = getattr(mod, f'Resource_{catalog}')

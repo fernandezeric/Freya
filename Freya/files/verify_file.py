@@ -41,6 +41,6 @@ class Verify():
     """  
     def verify_source(self,source):
         self.source = source
-        if self.source not in ['api']:
+        if self.source not in ['api','db']:
             return True
         return False

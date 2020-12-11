@@ -1,9 +1,3 @@
-#LEER
-#https://www.freecodecamp.org/news/connect-python-with-sql/
-#https://stackoverflow.com/questions/38076220/python-mysqldb-connection-in-a-class
-"""
-BUILDING PROCESS
-"""
 """
 Example for connect data base postgreSQL using psycopg2
 """
