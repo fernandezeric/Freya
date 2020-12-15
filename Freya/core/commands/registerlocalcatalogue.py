@@ -7,7 +7,7 @@ need use inside the catalogue
 Parameters
 path : (string) path where
 """
-class RegisterLocalCatalogue(Base):
+class RegisterLocalCatalog(Base):
     def __init__(self,**kwargs):
         super().__init__(**kwargs)
-        super().register_local_catalogue()
+        super().register_local_catalog()

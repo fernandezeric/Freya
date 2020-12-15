@@ -3,7 +3,7 @@ import importlib
 from Freya.files.verify_file import Verify
 
 """
-Class to get data from module catalogue configured in Freya, first check if catalog exist inside Freya
+Class to get data from module catalog configured in Freya, first check if catalog exist inside Freya
 and if not exist try import catalog from local folder. The data get is all ligh curve of object in area use
 degrees (ra,dec,radius) or use the format hh:mm:ss (hh:mm:ss,radius).
 Other option is get the only light curve of object most close to area selected.
@@ -20,7 +20,7 @@ class GetData ():
     """
 
     def __init__(self,**kwargs):
-        self.catalogue = kwargs.get('catalogue').strip()
+        self.catalog = kwargs.get('catalog').strip()
         self.ra = kwargs.get('ra')
         self.dec = kwargs.get('dec')
         self.hms = kwargs.get('hms')
@@ -35,19 +35,19 @@ class GetData ():
     def generic_call_data(self,call_method):
         try :
             """
-            Search catalogue insiede Freya, if not exist search inside local folder.
+            Search catalog insiede Freya, if not exist search inside local folder.
             """
-            if Verify().verify_catalog_inside(self.catalogue):
-                module = f'Freya.catalogs.{self.catalogue}.configure'
-            elif Verify().verify_catalog_local(self.catalogue) :
-                module = f'LocalCatalogs.{self.catalogue}.configure'
-            elif Verify().verify_catalog_local_(self.catalogue):
-                module = f'{self.catalogue}.configure'
+            if Verify().verify_catalog_inside(self.catalog):
+                module = f'Freya.catalogs.{self.catalog}.configure'
+            elif Verify().verify_catalog_local(self.catalog) :
+                module = f'LocalCatalogs.{self.catalog}.configure'
+            elif Verify().verify_catalog_local_(self.catalog):
+                module = f'{self.catalog}.configure'
 
-            # Import self.catalogue
+            # Import self.catalog
             mod = importlib.import_module(module)
             # Call class
-            class_ =  getattr(mod,f'Configure_{self.catalogue}') 
+            class_ =  getattr(mod,f'Configure_{self.catalog}') 
             # Call method especific of class
             if call_method == 'get_lc_deg_all':
                 method_ = class_(ra = self.ra,
@@ -71,7 +71,7 @@ class GetData ():
                                     format = self.format).get_lc_hms_nearest()
             return method_
         except :
-            print(f'No find the catalog : {self.catalogue}')
+            print(f'No find the catalog : {self.catalog}')
 
     # Return all light curve object in degrees area
     def get_lc_deg_all(self):

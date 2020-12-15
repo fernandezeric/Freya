@@ -1,14 +1,6 @@
 """
 Need with you return method as follow : 
 
-{
-    'id_1' : 'data_1',
-    'id_2' : 'data_2',
-    .
-    .
-    .
-    'id_n' : 'data_n'
-}
 """
 
 from Freya.catalogs.ztf.methods import Methods_ztf as mztf

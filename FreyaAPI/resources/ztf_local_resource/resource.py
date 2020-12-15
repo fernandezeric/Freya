@@ -11,17 +11,17 @@ class Resource_ztf_local():
         self.format = kwagrs.get('format')
         
     def get_lc_deg_all(self):
-        data_method = GetData(catalogue='ztf_local',ra=self.ra,dec=self.dec,radius=self.radius,format=self.format).get_lc_deg_all()
+        data_method = GetData(catalog='ztf_local',ra=self.ra,dec=self.dec,radius=self.radius,format=self.format).get_lc_deg_all()
         return data_method
 
     def get_lc_deg_nearest(self):
-        data_method = GetData(catalogue='ztf_local',ra=self.ra,dec=self.dec,radius=self.radius,format=self.format).get_lc_deg_nearest()
+        data_method = GetData(catalog='ztf_local',ra=self.ra,dec=self.dec,radius=self.radius,format=self.format).get_lc_deg_nearest()
         return data_method
     
     def get_lc_hms_all(self):
-        data_method = GetData(catalogue='ztf_local',hms=self.hms,radius=self.radius,format=self.format).get_lc_hms_all()
+        data_method = GetData(catalog='ztf_local',hms=self.hms,radius=self.radius,format=self.format).get_lc_hms_all()
         return data_method
 
     def get_lc_hms_nearest(self):
-        data_method = GetData(catalogue='ztf_local',hms=self.hms,radius=self.radius,format=self.format).get_lc_hms_nearest() 
+        data_method = GetData(catalog='ztf_local',hms=self.hms,radius=self.radius,format=self.format).get_lc_hms_nearest() 
         return data_method

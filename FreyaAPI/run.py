@@ -68,12 +68,12 @@ def get_lc_all():
         if format == 'csv':
             if first :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = my_instance_
                 first = False
             else :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = vstack([results_,my_instance_])
     #
     if format == 'csv':
@@ -116,12 +116,12 @@ def get_lc_nearest():
         if format == 'csv':
             if first :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = my_instance_
                 first = False
             else :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = vstack([results_,my_instance_])
     #
     if format == 'csv':
@@ -163,12 +163,12 @@ def get_lc_hms_all():
         if format == 'csv':
             if first :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = my_instance_
                 first = False
             else :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = vstack([results_,my_instance_])
     #
     if format == 'csv':
@@ -210,12 +210,12 @@ def get_lc_hms_nearest():
         if format == 'csv':
             if first :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = my_instance_
                 first = False
             else :
                 my_instance_ = ascii.read(my_instance)
-                my_instance_.add_column(f'{catalog}',name='catalogue')
+                my_instance_.add_column(f'{catalog}',name='catalog')
                 results_ = vstack([results_,my_instance_])
     #
     if format == 'csv':

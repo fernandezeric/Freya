@@ -15,9 +15,9 @@ class Base():
     """
     Parameters
     --------------------------------------
-    name : (string) name with add catalogue inside Freya or in local folder
+    name : (string) name with add catalog inside Freya or in local folder
                     and is the same name with add resource in FreyaAPI
-    source : (string) origin source catalogue [api,db]
+    source : (string) origin source catalog [api,db]
     path : (string) path where created FreyaAPI, local folder for catalogs and
                     add resources in FreyaAPI.
     """
@@ -28,7 +28,7 @@ class Base():
         self.path = kwargs.get('path')
 
     """
-    Method for select path of *.zip to extract, depend the source catalogue.
+    Method for select path of *.zip to extract, depend the source catalog.
     """
     def path_files_template_from(self):
         if self.source == 'api':
@@ -49,10 +49,10 @@ class Base():
         return os.path.join(Freya.files.__path__[0],'file_templates','newresource.zip')
     
     """
-    Method to create new catalogue module inside Freya,
-    first verify if source catalogue is valid, 
-    second verify the catalogue already exist then get path
-    for new module catalogue and path template data,
+    Method to create new catalog module inside Freya,
+    first verify if source catalog is valid, 
+    second verify the catalog already exist then get path
+    for new module catalog and path template data,
     finaly try create the new module folder and extract the data.
     """
     def create_module_catalog(self):
@@ -81,13 +81,13 @@ class Base():
             print(error)
     
     """
-    Method to create new local catalogue module ,
+    Method to create new local catalog module ,
     first verify if source catalog is valid, 
     second verify the catalog already exist then get path
-    for new module catalogue and path template data,
+    for new module catalog and path template data,
     finaly try create the new module folder and extract the data.
 
-    The catalogue create in path with call the freya-admin.
+    The catalog create in path with call the freya-admin.
     Need call inside local folder to take Freya.
     """
     def create_module_catalog_local(self):
@@ -177,9 +177,9 @@ class Base():
             print(error) 
         
     """
-    Register path of local catalogue in sys, use inside catalogue folder
+    Register path of local catalog in sys, use inside catalog folder
     """
-    def register_local_catalogue(self):
+    def register_local_catalog(self):
        #print(self.path)
        #print(self.path.split('/'))
        aux = self.path.split('/')

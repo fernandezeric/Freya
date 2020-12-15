@@ -36,6 +36,7 @@ class Verify():
             return False
 
     """
+    Verify if catalogue path exist in any place.
     """
     def verify_catalog_local_(self,name):
         self.name = name
