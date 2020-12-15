@@ -6,7 +6,7 @@ import io
 from Freya.core import utils
 
 from astropy.io import ascii
-from astropy.table import Table
+from astropy.table import Table,vstack
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
@@ -89,31 +89,39 @@ class Methods_ps1():
         Parameters
         ----------
         """
-        ps1dic = {}
+        ps1dic = ''
+        first = True
         ids = self.ps1ids()
         if ids == -1:
-            ps1dic['0'] = 'not found' # not object find
+            ps1dic = 'not found' # not object find
             return ps1dic
         #when request failed in api
         elif ids == -99: 
-            ps1dic['not found'] = 'result.status_code '
+            ps1dic = 'result.status_code'
             return ps1dic
+
+        dcolumns = ("""objID, detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
+                    psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3""").split(',') 
+        dcolumns = [x.strip() for x in dcolumns]
+        dcolumns = [x for x in dcolumns if x and not x.startswith('#')]
+
         #split ids in dict
         for id in ids:
             dconstraints = {'objID': id}
-            dcolumns = ("""objID, detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
-                        psfQfPerfect,apFlux,apFluxErr,infoFlag,infoFlag2,infoFlag3""").split(',') 
-            dcolumns = [x.strip() for x in dcolumns]
-            dcolumns = [x for x in dcolumns if x and not x.startswith('#')]
             dresults = self.ps1search(table='detection',release='dr2',columns=dcolumns,**dconstraints)
-
             if(self.format == 'csv'):
-                dresults = ascii.read(dresults)
-                buf = io.StringIO()
-                ascii.write(dresults,buf,format='csv')
-                ps1dic[str(id)] =  buf.getvalue()
-            else :
-                ps1dic[str(id)] = dresults
+                if first :
+                    dresults_ = ascii.read(dresults)
+                    first = False
+                #
+                dresults_ = vstack([dresults_,ascii.read(dresults)])
+        
+        #remane colmun objID -> oid and obsTime -> mjd
+        dresults_.rename_column('objID', 'oid')
+        dresults_.rename_column('obsTime', 'mjd')
+        buf = io.StringIO()
+        ascii.write(dresults_,buf,format='csv')
+        ps1dic =  buf.getvalue()
         return ps1dic
 
 

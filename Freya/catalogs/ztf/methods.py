@@ -34,33 +34,30 @@ class Methods_ztf():
         return angle.index(min(angle))
 
     def csv_format(self,result):
-        ztfdic = {}
+        ztfdic = ''
         result_ = ascii.read(result.text)
         if len(result_) <= 0:
-            ztfdic['-999'] = 'light curve not found' 
+            ztfdic = 'light curve not found' 
             return ztfdic
 
-        result_ = result_.group_by('oid')
         #the most close object to radius
         if self.nearest is True:
-
+            
+            result_ = result_.group_by('oid')
             minztf = self.id_nearest(result_)
-                
+            
             buf = io.StringIO()
             ascii.write(result_.groups[minztf],buf,format='csv')
-            ztfdic[str(result_.groups[minztf]['oid'][0])] =  buf.getvalue()
+            ztfdic =  buf.getvalue()
             return ztfdic
 
         # all objects in radius
         else:
-            for group in result_.groups:
-                buf = io.StringIO()
-                ascii.write(group,buf,format='csv')
-                ztfdic[str(group['oid'][0])] =  buf.getvalue()
+            ztfdic = result.text
             return ztfdic
 
     def votable_format(self,result):
-        ztfdic = {}
+        ztfdic = ''
         votable = result.text.encode(encoding='UTF-8')
         bio = io.BytesIO(votable)
         votable = parse(bio)
@@ -70,25 +67,19 @@ class Methods_ztf():
             ztfdic['0'] = 'not found' 
             return ztfdic #'not found'
 
-        tablas = table.group_by('oid')
 
         #the most close object to radius
         if nearest is True:
-                
+            tablas = table.group_by('oid')
             minztf = self.id_nearest(tablas)
-
             buf = io.BytesIO()
             votable = from_table(tablas.groups[minztf])
             writeto(votable,buf)
-            ztfdic[str(tablas.groups[minztf]['oid'][0])] = (buf.getvalue().decode("utf-8"))
+            ztfdic = (buf.getvalue().decode("utf-8"))
             return ztfdic
         # all objects in radius
         else :
-            for group in tablas.groups:
-                buf = io.BytesIO()
-                votable = from_table(group)
-                writeto(votable,buf)
-                ztfdic[str(group['oid'][0])] = (buf.getvalue().decode("utf-8"))
+            ztfdic = result.text
             return ztfdic
 
     def zftcurves(self):
@@ -102,11 +93,11 @@ class Methods_ztf():
         #data['BANDNAME']='r'
         data['FORMAT'] = self.format
         result = requests.get(baseurl,params=data)
-        ztfdic = {}
+        ztfdic = ''
         #self.csv_format(result)
         #return result
         if result.status_code != 200: 
-            ztfdic['error code status'] = result.status_code 
+            ztfdic = result.status_code 
             return ztfdic
         #if select csv 
         if self.format == 'csv':

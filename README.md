@@ -1,5 +1,5 @@
-# GO GO MEMORI2
-### Here it is the module python catalog 'Freya', the api 'FreyaAPI' and local folder. Is a complete example.
+# GO GO MEMORI2 [Pensando que esta solamente Freya]
+### Here it is the module python catalog 'Freya'.
 Freya is a Fremework <3, and this github is the python code.
 
 ## Start (Install and add catalogs)🚀
@@ -9,7 +9,7 @@ Have option by CLI 'freya-admin', the options are:
   * Creates new catalogue who module inside Freya, where name is the name of catalogue what choose and source
   is where it comes from (available options: api,db).
   ```
-  freya-admin --newcatalog <name> <source>
+  freya-admin --newcatalogue <name> <source>
   ```
   * Creates new api called FreyaAPI in path with call freya-admin, this opcion create a new flask application with
   all rutes necessaries.
@@ -29,8 +29,14 @@ Have option by CLI 'freya-admin', the options are:
   * And want creates new catalogue who module in local folder, need call --newcataloglocal inside the folder created with --newfolderlocal.
   where name is the name of catalogue what choose and source is where it comes from (available options: api,db).
   ```
-  freya-admin --newcataloglocal <name> <source>
+  freya-admin --newcataloguelocal <name> <source>
   ```
+  * If you download any catalogue and want need rapid register, can use --registercatalogue. This method register path of local 
+  catalogue for use need call inside catalogue folder (register in sys python).
+  ```
+  freya-admin --registercatalogue
+  ```
+
 ### Install Freya and create module.🔧
 #####pensando que el repositorio solo tiene el modulo Freya
 First clone repository
@@ -60,6 +66,15 @@ freya-admin --newapi
 freya-admin --addresource ztf
 freya-admin --addresource ztf_local
 ```
+## Start (Configure new catalogue)🚀
+After add new local catalogue or created catalogue inside Freya 
+and before use in FreyaApi or local with method gedData, 
+need catalogue modify inside configure.py in folder of catalogue.
+
+Specifically, you need to complete the four methods within configure.py,
+if you want can use the methods.py to create generic methods and call
+this in configure.py
+
 ## Start (Who use)🚀
 How to use the Freya and FreyaAPI.
 First you look the Demo in this github()
@@ -93,10 +108,10 @@ If you want use Freya but without installing, you can use the method 'GetData'.
 ```
 from Freya.catalogs.core import GetData
 
-data_all_deg = GetData(catalogs='ztf',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_all()
-data_one_deg = GetData(catalogs='ztf_local',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_nearest()
-data_all_hms = GetData(catalogs='ztf',hms=(string),radius=(float),format='csv').get_lc_hms_all()
-data_one_hms = GetData(catalogs='ztf,ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
+data_all_deg = GetData(catalogue='ztf',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_all()
+data_one_deg = GetData(catalogue='ztf_local',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_nearest()
+data_all_hms = GetData(catalogue='ztf',hms=(string),radius=(float),format='csv').get_lc_hms_all()
+data_one_hms = GetData(catalcatalogueogs='ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
 ```
 ## Build with 🛠️
 * python

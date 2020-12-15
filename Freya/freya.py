@@ -4,6 +4,7 @@ from Freya.core.commands.addcataloglocal import AddCatalogLocal
 from Freya.core.commands.addresource import AddResource
 from Freya.core.commands.newapi import NewAPI
 from Freya.core.commands.newfolderlocal import NewFolderLocal
+from Freya.core.commands.registerlocalcatalogue import RegisterLocalCatalogue
 #
 import os
 import argparse
@@ -17,14 +18,16 @@ def main():
     #----------------------------COMMAND LINE----------------------------------------------#
     parser = argparse.ArgumentParser()
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-nc','--newcatalog', action='store', type=str, nargs=2, 
+    parser.add_argument('-nc','--newcatalogue', action='store', type=str, nargs=2, 
                             metavar=('<name>','<source>'),help="add new catalog inside Freya")
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-ncl','--newcataloglocal', action='store', type=str, nargs=2, 
+    parser.add_argument('-ncl','--newcataloguelocal', action='store', type=str, nargs=2, 
                             metavar=('<name>','<source>'),help="add new catalog who local module")
     #--------------------------------------------------------------------------------------#     
     parser.add_argument('-nfl','--newfolderlocal', action='store_true', help="create a new folder local from catalogs")
-    #--------------------------------------------------------------------------------------#     
+    #--------------------------------------------------------------------------------------#
+    parser.add_argument('-rcl','--registercatalogue',action='store_true',help="register local catalogue")
+    #--------------------------------------------------------------------------------------# 
     parser.add_argument('-na','--newapi', action='store_true', help="create a new FreyaAPI")
     #--------------------------------------------------------------------------------------#                        
     parser.add_argument('-ar','--addresource', action='store', type=str, nargs=1, 
@@ -35,17 +38,17 @@ def main():
     """
     Check what was the command line called, try call associated method.
     """
-    if args.newcatalog :
-        print("Created new catalog...")
+    if args.newcatalogue :
+        print("Created new catalogue...")
         try:
-            AddCatalog(name=args.newcatalog[0],source=args.newcatalog[1])
+            AddCatalog(name=args.newcatalogue[0],source=args.newcatalogue[1])
         except:
-            raise TypeError (f'Failed to create new catalog : {args.newcatalog[0]} inside Freya')
+            raise TypeError (f'Failed to create new catalogue : {args.newcatalogue[0]} inside Freya')
 
-    elif args.newcataloglocal : 
-        print("Created new local catalog...")
+    elif args.newcataloguelocal : 
+        print("Created new local catalogue...")
         try:
-            AddCatalogLocal(name=args.newcataloglocal[0],source =args.newcataloglocal[1],path=os.getcwd())
+            AddCatalogLocal(name=args.newcataloguelocal[0],source =args.newcataloguelocal[1],path=os.getcwd())
         except:
             raise TypeError ('Fauled to create local module')
 
@@ -69,6 +72,13 @@ def main():
             NewFolderLocal(path=os.getcwd())
         except:
             raise TypeError ('Failed to create new local folder')
+    
+    elif args.registercatalogue:
+        print("Register new local catalogue")
+        try:
+            RegisterLocalCatalogue(path=os.getcwd())
+        except:
+            raise TypeError ('Failed to register new local catalogue')
 
 if __name__ == ' __main__':
           main()

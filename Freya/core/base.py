@@ -136,8 +136,9 @@ class Base():
         path_template_api = self.path_file_template_new_api()
         # Get the path when create new api
         path_new_api =  os.path.join(self.path,'FreyaAPI')
-        # Install Flask 
+        # Install Flask - Astropy
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
+        #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'astropy'])
         try:
             # Create new folder empy for FreyaAPI
             os.mkdir(path_new_api)
@@ -174,6 +175,17 @@ class Base():
             files_.Files(list_path,'NAME',self.name).replace_in_files()
         except OSError as error:
             print(error) 
+        
+    """
+    Register path of local catalogue in sys, use inside catalogue folder
+    """
+    def register_local_catalogue(self):
+       #print(self.path)
+       #print(self.path.split('/'))
+       aux = self.path.split('/')
+       del aux[-1]
+       #print('/'.join(aux))
+       sys.path.append('/'.join(aux))
 
 
 

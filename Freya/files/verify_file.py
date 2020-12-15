@@ -36,6 +36,16 @@ class Verify():
             return False
 
     """
+    """
+    def verify_catalog_local_(self,name):
+        self.name = name
+        try:
+            mod = importlib.import_module(f'{self.name}')
+            return True
+        except:
+            return False
+    
+    """
     Verify if source of catalog is permitted who source.
     Return True if source not is valid.
     """  
@@ -44,3 +54,6 @@ class Verify():
         if self.source not in ['api','db']:
             return True
         return False
+
+
+#pint(Verify().verify_catalog_local_('PRUEBA'))
