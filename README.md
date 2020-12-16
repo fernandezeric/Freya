@@ -88,7 +88,7 @@ with ligth curves.
 
 Opcional you can use 'methods.py' for not overburden 'configure.py'
 ```
-* For example with catalog ztf inside in Freya default
+* For example default catalog ztf inside in Freya. 
 
 '~/Freya/catalogs/ztf/configure.py'
 ```python
@@ -266,7 +266,7 @@ from Freya.catalogs.core import GetData
 data_all_deg = GetData(catalog='ztf',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_all()
 data_one_deg = GetData(catalog='ztf_local',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_nearest()
 data_all_hms = GetData(catalog='ztf',hms=(string),radius=(float),format='csv').get_lc_hms_all()
-data_one_hms = GetData(catalcatalogueogs='ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
+data_one_hms = GetData(catalog='ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
 ```
 # Build with 🛠️
 * python
