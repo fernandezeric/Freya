@@ -26,9 +26,8 @@ class GetData ():
         self.hms = kwargs.get('hms')
         self.radius = kwargs.get('radius')
         self.format = kwargs.get('format')
-        self.dataReturn = {}
 
-        if self.format not in ['csv']:
+        if self.format not in ['csv','votable']:
              return "inadmissible format in consult data"
     
 
@@ -86,3 +85,5 @@ class GetData ():
     def get_lc_hms_nearest(self):
         return self.generic_call_data('get_lc_hms_nearest')
 
+# Data = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable').get_lc_hms_nearest()
+# print(Data)

@@ -16,7 +16,6 @@ class Methods_ps1():
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')
-        self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
         self.nearest = kwagrs.get('nearest')
@@ -115,14 +114,23 @@ class Methods_ps1():
                     first = False
                 #
                 dresults_ = vstack([dresults_,ascii.read(dresults)])
+                # 
+            # elif(self.format == 'votable'):
+            #     if first :
+            #         dresults_ = ????????
+            #         first = False
+            #     dresults_ = vstack([?????????????])
+                
+
         
         #remane colmun objID -> oid and obsTime -> mjd
-        dresults_.rename_column('objID', 'oid')
-        dresults_.rename_column('obsTime', 'mjd')
-        buf = io.StringIO()
-        ascii.write(dresults_,buf,format='csv')
-        ps1dic =  buf.getvalue()
-        return ps1dic
+        if (self.format == 'csv'): 
+            dresults_.rename_column('objID', 'oid')
+            dresults_.rename_column('obsTime', 'mjd')
+            buf = io.StringIO()
+            ascii.write(dresults_,buf,format='csv')
+            ps1dic =  buf.getvalue()
+            return ps1dic
 
 
 

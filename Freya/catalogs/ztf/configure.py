@@ -4,6 +4,7 @@ Need with you return method as follow :
 """
 
 from Freya.catalogs.ztf.methods import Methods_ztf as mztf
+from Freya.core.utils import Utils
 
 class Configure_ztf():
 
@@ -19,7 +20,8 @@ class Configure_ztf():
         return data_return
 
     def get_lc_hms_all(self):
-        data_return = mztf(hms=self.hms,radius=self.radius,format=self.format,nearest=False).zftcurves() 
+        ra_,dec_ = Utils().hms_to_deg(self.hms)
+        data_return = mztf(ra=ra_,dec=dec_,radius=self.radius,format=self.format,nearest=False).zftcurves() 
         return data_return
 
     def get_lc_deg_nearest(self):
@@ -27,5 +29,6 @@ class Configure_ztf():
         return data_return
 
     def get_lc_hms_nearest(self):
-        data_return = mztf(hms=self.hms,radius=self.radius,format=self.format,nearest=True).zftcurves() 
+        ra_,dec_ = Utils().hms_to_deg(self.hms)
+        data_return = mztf(ra=ra_,dec=dec_,radius=self.radius,format=self.format,nearest=True).zftcurves() 
         return data_return

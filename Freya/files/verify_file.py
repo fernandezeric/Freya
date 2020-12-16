@@ -55,6 +55,3 @@ class Verify():
         if self.source not in ['api','db']:
             return True
         return False
-
-
-#pint(Verify().verify_catalog_local_('PRUEBA'))

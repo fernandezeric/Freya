@@ -21,4 +21,3 @@ class Utils:
 
     def nearest(self):
         pass
-

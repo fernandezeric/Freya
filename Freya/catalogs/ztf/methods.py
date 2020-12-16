@@ -16,7 +16,6 @@ class Methods_ztf():
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')
-        self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
         self.nearest = kwagrs.get('nearest')
@@ -65,11 +64,11 @@ class Methods_ztf():
 
         if len(table) <= 0:
             ztfdic['0'] = 'not found' 
-            return ztfdic #'not found'
+            return ztfdic #'not found'0
 
 
         #the most close object to radius
-        if nearest is True:
+        if self.nearest is True:
             tablas = table.group_by('oid')
             minztf = self.id_nearest(tablas)
             buf = io.BytesIO()
@@ -102,6 +101,6 @@ class Methods_ztf():
         #if select csv 
         if self.format == 'csv':
             return self.csv_format(result)
-        # # if select VOTable 
-        # elif self.format == 'votable':
-        #     return self.votable_format(result)
+        # if select VOTable 
+        elif self.format == 'votable':
+            return self.votable_format(result)
