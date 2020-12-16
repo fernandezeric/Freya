@@ -37,19 +37,19 @@ Have option by CLI 'freya-admin', the options are:
   freya-admin --registercatalog
   ```
 
-## Install Freya. 🔧
+# Install Freya. 🔧
 First clone repository.
 ```
 pip install . 
 
 ```
-### Add new catalogs in Freya or local folders. 🔧
-If you want add modules catalogs inside Freya use for example:
+## Add new catalogs in Freya or local folders. 🔧
+* If you want add modules catalogs inside Freya use for example:
 ```
 freya-admin --newcatalog ztf api
 
 ```
-If you want use local folder and add new catalogs inside use for example:
+* If you want use local folder and add new catalogs inside use for example:
 ```
 # In any place of you system
 freya-admin --newlocalfolder
@@ -58,14 +58,15 @@ freya-admin --newlocalfolder
 freya-admin --newcataloglocal ztf_local api
 
 ```
-If you download any catalog for the github or other site use for example:
+* If you download any catalog for the github or other site use for example:
 ```
 # Inside catalog
 freya-admin --registercatalog
 
 ```
 
-Independet of how add a catalog the next step is to connect catalog with Freya.
+Independet how add catalog the next step is to connect catalog with Freya,
+for this need completed fourt generic methods.
 ```
 Inside folder new catalog find the following files
 - configure.py
@@ -74,22 +75,22 @@ Inside folder new catalog find the following files
 
 now inside 'configure.py' it find 
 
-  - def get_lc_deg_all():
+  - def get_lc_deg_all()
 
-   - def get_lc_hms_all():
+  - def get_lc_hms_all()
 
-   - def get_lc_deg_nearest():
+  - def get_lc_deg_nearest()
 
-  - def get_lc_hms_nearest():
+  - def get_lc_hms_nearest()
 
-This methods need completed and return is who:
-  'PONER AQUI COMO ERA LA COSA'
+This methods need completed and return csv data 
+with ligth curves.
 
 Opcional you can use 'methods.py' for not overburden 'configure.py'
 ```
-* For example with catalog ztf inside in Freya default
+* For example default catalog ztf inside in Freya. 
 
-'configure.py'
+'~/Freya/catalogs/ztf/configure.py'
 ```python
 
 from Freya.catalogs.ztf.methods import Methods_ztf as mztf
@@ -120,11 +121,9 @@ class Configure_ztf():
         return data_return
 
 ```
-'methods.py'
+'~/Freya/catalogs/ztf/methods.py'
 ```python
-"""
-In this file you can created methods for 'configure.py'  
-"""
+
 import requests
 import io
 from Freya.core import utils as u
@@ -180,32 +179,6 @@ class Methods_ztf():
             ztfdic = result.text
             return ztfdic
 
-    def votable_format(self,result):
-        ztfdic = ''
-        votable = result.text.encode(encoding='UTF-8')
-        bio = io.BytesIO(votable)
-        votable = parse(bio)
-        table = parse_single_table(bio).to_table()
-
-        if len(table) <= 0:
-            ztfdic['0'] = 'not found' 
-            return ztfdic #'not found'
-
-
-        #the most close object to radius
-        if nearest is True:
-            tablas = table.group_by('oid')
-            minztf = self.id_nearest(tablas)
-            buf = io.BytesIO()
-            votable = from_table(tablas.groups[minztf])
-            writeto(votable,buf)
-            ztfdic = (buf.getvalue().decode("utf-8"))
-            return ztfdic
-        # all objects in radius
-        else :
-            ztfdic = result.text
-            return ztfdic
-
     def zftcurves(self):
         """ Get light curves of ztf objects 
         Parameters
@@ -214,11 +187,9 @@ class Methods_ztf():
         baseurl="https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves"
         data = {}
         data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
-        #data['BANDNAME']='r'
         data['FORMAT'] = self.format
         result = requests.get(baseurl,params=data)
         ztfdic = ''
-        #self.csv_format(result)
         #return result
         if result.status_code != 200: 
             ztfdic = result.status_code 
@@ -227,43 +198,43 @@ class Methods_ztf():
         if self.format == 'csv':
             return self.csv_format(result)
 ```
+
+And if you use catalog with source data base, need complete 'connect.py'
+```
+# Inside file connect.py
+ - user
+ - password
+ - host
+ - port
+ - database
+```
 ## New FreyaAPI
-Other application of Freya is a rapid creation for API in flask with:
+Other application of Freya is quick creation for the API used flask:
 ```
+# In any directory in your system
 freya-admin --newapi
 
 ```
-Now 
-## Install Freya and FreyaAPI then add resource from module Freya and use the local module.🔧
+In folder where is called create new flask application, it contains the
+necessary routes generic that you only call and not modified, but first you need
+add catalogs resources with :
+
 ```
-pip install .
-
-freya-admin --newcatalog ztf api|db
-
-freya-admin --newlocalfolder
-
-# Inside local folder catalogs
-freya-admin --newcataloglocal ztf_local api|db
-
-freya-admin --newapi
 # Inside folder FreyaAPI
+
 freya-admin --addresource ztf
 freya-admin --addresource ztf_local
+
+# Only add resources if the catalog exists inside Freya, LocalFolder or 
+# if you call --registercatalog.
 ```
-# Start (Configure new catalog)🚀
-After add new local catalog or created catalog inside Freya 
-and before use in FreyaApi or local with method gedData, 
-need catalog modify inside configure.py in folder of catalog.
+Now you can run the FreyaAPI using : 
 
-Specifically, you need to complete the four methods within configure.py,
-if you want can use the methods.py to create generic methods and call
-this in configure.py
-
-## Start (Who use)🚀
+# Start (Who use)🚀
 How to use the Freya and FreyaAPI.
-First you look the Demo in this github()
+First you look the complete demo (link al git que tenga todo)
 
-### How use the rute FreyaAPI
+## How use the rute FreyaAPI
 The rutes in FreyaAPI are get methods and have four rutes.
 ```
  # Get light curves of objects with area in degrees.
@@ -287,7 +258,7 @@ The rutes in FreyaAPI are get methods and have four rutes.
  Example:
    http://0.0.0.0:5000/get_lc_hms_nearest?catalogs=ztf,ztf_local&hms=(string)&radius=(float)&formnat=csv   
 ```
-### How use a only Freya
+## How use a only Freya
 If you want use Freya but without installing, you can use the method 'GetData'.
 ```
 from Freya.catalogs.core import GetData
@@ -295,9 +266,9 @@ from Freya.catalogs.core import GetData
 data_all_deg = GetData(catalog='ztf',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_all()
 data_one_deg = GetData(catalog='ztf_local',ra=(float),dec=(float),radius=(float),format='csv').get_lc_deg_nearest()
 data_all_hms = GetData(catalog='ztf',hms=(string),radius=(float),format='csv').get_lc_hms_all()
-data_one_hms = GetData(catalcatalogueogs='ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
+data_one_hms = GetData(catalog='ztf_local',hms=(string),radius=(float),format='csv').get_lc_hms_nearest()
 ```
-## Build with 🛠️
+# Build with 🛠️
 * python
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)
