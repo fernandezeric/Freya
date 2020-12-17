@@ -132,7 +132,6 @@ import pandas
 from astropy.io import ascii
 from astropy.coordinates import SkyCoord
 from astropy import units as u
-from astropy.io.votable import parse,parse_single_table,from_table, writeto
 
 class Methods_ztf():
 

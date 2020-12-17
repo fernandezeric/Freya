@@ -2,6 +2,7 @@ from flask import Flask
 from flask import request,jsonify, make_response,abort
 from astropy.io import ascii
 from astropy.table import Table,vstack
+from astropy.io.votable import parse,parse_single_table, writeto
 import io
 import importlib
 
@@ -87,13 +88,21 @@ def get_lc_all():
         elif format == 'votable':
             if first:
                 try:
-                    pass
+                    votable = my_instance.encode(encoding='UTF-8')
+                    bio = io.BytesIO(votable)
+                    votable = parse(bio)
+                    table = parse_single_table(bio).to_table()
+                    results_ = table
                 except:
                     pass
                 first = False
             else :
                 try:
-                    pass
+                    votable = my_instance.encode(encoding='UTF-8')
+                    bio = io.BytesIO(votable)
+                    votable = parse(bio)
+                    table = parse_single_table(bio).to_table()
+                    results_ = vstack([results_,table])
                 except:
                     pass
     # Make response
@@ -110,7 +119,12 @@ def get_lc_all():
             return make_response('No light curve data find in catalog(s)')
     elif format == 'votable':
         try:
-            return make_response('votable')
+            buf = io.BytesIO()
+            writeto(results_,buf)
+            data = make_response(buf.getvalue().decode("utf-8"))
+            data.headers["Content-Disposition"] = "attachment; filename=.xml"
+            data.headers["Content-type"] = "text/xml"
+            return data
         except:
             return make_response('no votable but votable')
 """

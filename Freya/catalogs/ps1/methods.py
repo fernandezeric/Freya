@@ -9,6 +9,7 @@ from astropy.io import ascii
 from astropy.table import Table,vstack
 from astropy.coordinates import SkyCoord
 from astropy import units as u
+from astropy.io.votable import parse,parse_single_table, writeto
 
 
 class Methods_ps1():
@@ -20,7 +21,7 @@ class Methods_ps1():
         self.format = kwagrs.get('format')
         self.nearest = kwagrs.get('nearest')
 
-    def ps1cone(self, baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", **kw):
+    def ps1cone(self, format='csv',baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", **kw):
             #table="mean",release="dr1",format="csv",columns=None,
         """Do a cone search of the PS1 catalog
         Parameters
@@ -30,11 +31,11 @@ class Methods_ps1():
         data['ra'] = self.ra
         data['dec'] = self.dec
         data['radius'] = self.radius
-        data['format'] = self.format
-        return self.ps1search(baseurl=baseurl, **data)
+        #data['format'] = self.format
+        return self.ps1search(format=format,baseurl=baseurl, **data)
 
     #https://ps1images.stsci.edu/ps1_dr2_api.html
-    def ps1search(self,table="mean",release="dr1",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
+    def ps1search(self,format='csv',table="mean",release="dr1",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
         #table="mean",release="dr1",columns=None,
         """Do a general search of the PS1 catalog (possibly without ra/dec/radius)
         
@@ -42,7 +43,7 @@ class Methods_ps1():
         ----------
         """
         data = kw.copy()
-        url = f"{baseurl}/{release}/{table}.{self.format}"
+        url = f"{baseurl}/{release}/{table}.{format}"
         data['columns'] = '[{}]'.format(','.join(columns))
         r = requests.get(url, params=data)
         r.raise_for_status()
@@ -60,13 +61,10 @@ class Methods_ps1():
         columns = ['objID','raMean','decMean']
         results = self.ps1cone(release='dr2',columns=columns,**constraints)
 
-        # if results.status_code != '200': 
-        #     return -99 #'not found' # change to more general
-
-        if len(results) <= 0: # if no return some object
-            return -1
-
-        results = ascii.read(results)
+        try:
+            results = ascii.read(results)
+        except:
+            return []
 
         if self.nearest is True:
             angle = []
@@ -91,12 +89,8 @@ class Methods_ps1():
         ps1dic = ''
         first = True
         ids = self.ps1ids()
-        if ids == -1:
+        if not any(ids):
             ps1dic = 'not found' # not object find
-            return ps1dic
-        #when request failed in api
-        elif ids == -99: 
-            ps1dic = 'result.status_code'
             return ps1dic
 
         dcolumns = ("""objID, detectID,filterID,obsTime,ra,dec,psfFlux,psfFluxErr,psfMajorFWHM,psfMinorFWHM,
@@ -107,21 +101,27 @@ class Methods_ps1():
         #split ids in dict
         for id in ids:
             dconstraints = {'objID': id}
-            dresults = self.ps1search(table='detection',release='dr2',columns=dcolumns,**dconstraints)
+            dresults = self.ps1search(format =self.format,table='detection',release='dr2',columns=dcolumns,**dconstraints)
             if(self.format == 'csv'):
                 if first :
                     dresults_ = ascii.read(dresults)
                     first = False
                 #
-                dresults_ = vstack([dresults_,ascii.read(dresults)])
+                else :
+                    dresults_ = vstack([dresults_,ascii.read(dresults)])
                 # 
-            # elif(self.format == 'votable'):
-            #     if first :
-            #         dresults_ = ????????
-            #         first = False
-            #     dresults_ = vstack([?????????????])
-                
+            elif(self.format == 'votable'):
+                votable = dresults.encode(encoding='UTF-8')
+                bio = io.BytesIO(votable)
+                votable = parse(bio)
+                table = parse_single_table(bio).to_table()
+                if first :
+                    dresults_ = table
+                    first = False
 
+                else :
+                    dresults_ = vstack([dresults_,table])
+                               
         
         #remane colmun objID -> oid and obsTime -> mjd
         if (self.format == 'csv'): 
@@ -131,6 +131,15 @@ class Methods_ps1():
             ascii.write(dresults_,buf,format='csv')
             ps1dic =  buf.getvalue()
             return ps1dic
+            
+        elif (self.format == 'votable'):
+            dresults_.rename_column('objID', 'oid')
+            dresults_.rename_column('obsTime', 'mjd')
+            buf = io.BytesIO()
+            writeto(dresults_,buf)
+            ps1dic = (buf.getvalue().decode("utf-8"))
+            return ps1dic
+
 
 
 
