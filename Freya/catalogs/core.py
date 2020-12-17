@@ -85,6 +85,6 @@ class GetData ():
     def get_lc_hms_nearest(self):
         return self.generic_call_data('get_lc_hms_nearest')
 
-Data = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.00356,format='csv').get_lc_hms_nearest()
+#Data = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.00356,format='csv').get_lc_hms_nearest()
 #Data = GetData(catalog='ps1',ra=139.33444972,dec=68.6350604,radius=0.00356,format='csv').get_lc_deg_all()
 #print(Data)
