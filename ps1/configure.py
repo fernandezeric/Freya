@@ -1,5 +1,5 @@
 
-from Freya.catalogs.ps1.methods import Methods_ps1 as mps1
+from ps1.methods import Methods_ps1 as mps1
 from Freya.core.utils import Utils
 
 class Configure_ps1():

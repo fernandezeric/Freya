@@ -2,17 +2,14 @@ from setuptools import setup
 
 # pip install -e .
 setup(
-      name='Freya',
-      version='0.1.3.3',
-      description='This is a Framework',
+      name='ps1',
+      version='0.1',
+      description='',
       url='',
-      author='Jonimott de Malpais',
+      author='',
       author_email='',
       license='',
-      packages=['Freya'],
-      entry_points = {
-            'console_scripts': ['freya-admin=Freya.freya:main'],
-      },
+      packages=['ps1'],
       zip_safe=False,
       install_requires=['astropy','pandas','requests']
 )
