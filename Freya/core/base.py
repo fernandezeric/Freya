@@ -138,7 +138,7 @@ class Base():
         path_new_api =  os.path.join(self.path,'FreyaAPI')
         # Install Flask - Astropy
         subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
-        #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'astropy'])
+        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'astropy'])
         try:
             # Create new folder empy for FreyaAPI
             os.mkdir(path_new_api)

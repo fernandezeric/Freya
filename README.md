@@ -1,5 +1,5 @@
-# GO GO MEMORI2 [Pensando que esta solamente Freya]
-### Here it is the module python catalog 'Freya'.
+# GO GO MEMORI2 
+### Here it is the module python 'Freya'.
 Freya is a Fremework <3, and this github is the python code.
 
 # Start (Commands CLI). 🚀
@@ -83,12 +83,12 @@ now inside 'configure.py' it find
 
   - def get_lc_hms_nearest()
 
-This methods need completed and return csv data 
+This methods need completed and return csv or VOtable data 
 with ligth curves.
 
 Opcional you can use 'methods.py' for not overburden 'configure.py'
 ```
-* For example default catalog ztf inside in Freya. 
+* For example, default catalog ztf inside in Freya. 
 
 '~/Freya/catalogs/ztf/configure.py'
 ```python

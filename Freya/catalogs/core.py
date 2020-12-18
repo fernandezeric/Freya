@@ -32,45 +32,45 @@ class GetData ():
     
 
     def generic_call_data(self,call_method):
-        # try :
-        """
-        Search catalog insiede Freya, if not exist search inside local folder.
-        """
-        if Verify().verify_catalog_inside(self.catalog):
-            module = f'Freya.catalogs.{self.catalog}.configure'
-        elif Verify().verify_catalog_local(self.catalog) :
-            module = f'LocalCatalogs.{self.catalog}.configure'
-        elif Verify().verify_catalog_local_(self.catalog):
-            module = f'{self.catalog}.configure'
+        try :
+            """
+            Search catalog insiede Freya, if not exist search inside local folder.
+            """
+            if Verify().verify_catalog_inside(self.catalog):
+                module = f'Freya.catalogs.{self.catalog}.configure'
+            elif Verify().verify_catalog_local(self.catalog) :
+                module = f'LocalCatalogs.{self.catalog}.configure'
+            else :
+                    module = f'{self.catalog}.configure'
 
-        # Import self.catalog
-        mod = importlib.import_module(module)
-        # Call class
-        class_ =  getattr(mod,f'Configure_{self.catalog}') 
-        # Call method especific of class
-        if call_method == 'get_lc_deg_all':
-            method_ = class_(ra = self.ra,
-                                dec = self.dec,
-                                radius = self.radius,
-                                format=self.format).get_lc_deg_all()
-        elif call_method == 'get_lc_deg_nearest':
-            method_ = class_(ra = self.ra,
-                                dec = self.dec,
-                                radius = self.radius,
-                                format=self.format).get_lc_deg_nearest()
-        
-        elif call_method == 'get_lc_hms_all':
-            method_ = class_(hms = self.hms,
-                                radius = self.radius,
-                                format = self.format).get_lc_hms_all()
-        
-        elif call_method == 'get_lc_hms_nearest':
-            method_ = class_(hms = self.hms,
-                                radius = self.radius,
-                                format = self.format).get_lc_hms_nearest()
-        return method_
-        # except :
-        #     print(f'No find the catalog : {self.catalog}')
+            # Import self.catalog
+            mod = importlib.import_module(module)
+            # Call class
+            class_ =  getattr(mod,f'Configure_{self.catalog}') 
+            # Call method especific of class
+            if call_method == 'get_lc_deg_all':
+                method_ = class_(ra = self.ra,
+                                    dec = self.dec,
+                                    radius = self.radius,
+                                    format=self.format).get_lc_deg_all()
+            elif call_method == 'get_lc_deg_nearest':
+                method_ = class_(ra = self.ra,
+                                    dec = self.dec,
+                                    radius = self.radius,
+                                    format=self.format).get_lc_deg_nearest()
+            
+            elif call_method == 'get_lc_hms_all':
+                method_ = class_(hms = self.hms,
+                                    radius = self.radius,
+                                    format = self.format).get_lc_hms_all()
+            
+            elif call_method == 'get_lc_hms_nearest':
+                method_ = class_(hms = self.hms,
+                                    radius = self.radius,
+                                    format = self.format).get_lc_hms_nearest()
+            return method_
+        except :
+            print(f'No find the catalog : {self.catalog}')
 
     # Return all light curve object in degrees area
     def get_lc_deg_all(self):

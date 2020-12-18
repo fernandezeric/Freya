@@ -8,7 +8,7 @@ setup(
       url='',
       author='Jonimott de Malpais',
       author_email='',
-      license=',
+      license='',
       packages=['Freya'],
       entry_points = {
             'console_scripts': ['freya-admin=Freya.freya:main'],
