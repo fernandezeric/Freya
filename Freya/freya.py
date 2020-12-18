@@ -4,7 +4,7 @@ from Freya.core.commands.addcataloglocal import AddCatalogLocal
 from Freya.core.commands.addresource import AddResource
 from Freya.core.commands.newapi import NewAPI
 from Freya.core.commands.newfolderlocal import NewFolderLocal
-from Freya.core.commands.registerlocalcatalogue import RegisterLocalCatalog
+from Freya.core.commands.registerlocalcatalog import RegisterLocalCatalog
 #
 import os
 import argparse
