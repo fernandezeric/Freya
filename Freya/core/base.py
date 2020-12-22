@@ -156,7 +156,7 @@ class Base():
     def create_new_resource(self):
 
         # Verify 
-        if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) :
+        if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) and not Verify().verify_catalog_local_(self.name):
             raise TypeError ('first created catalog inside Freya or local ')
         
         # Get path to template files
