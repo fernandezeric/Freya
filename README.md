@@ -214,6 +214,58 @@ And if you use catalog with source data base, need complete 'connect.py'
  - port
  - database
 ```
+## Catalogs Default 📖 
+
+### ZTF ()
+```
+Return:  oid,
+         expid,
+         hjd,
+         mjd,
+         mag,
+         magerr,
+         catflags,
+         filtercode,
+         ra,
+         dec,
+         chi,
+         sharp,
+         filefracday,
+         field,
+         ccdid,
+         qid,
+         limitmag,
+         magzp,
+         magzprms,
+         clrcoeff,
+         clrcounc,
+         exptime,
+         airmass,
+         programid,
+```
+### PS1 ()
+```
+Return : objID, 
+         detectID,
+         filterID,
+         obsTime,
+         ra,
+         dec,
+         psfFlux,
+         psfFluxErr,
+         psfMajorFWHM,
+         psfMinorFWHM,
+         psfQfPerfect,
+         apFlux,
+         apFluxErr,
+         infoFlag,
+         infoFlag2,
+         infoFlag3
+```
+
+* objID --> oid
+* obsTime --> mjd
+
 ## New FreyaAPI
 Other application of Freya is quick creation for the API used flask:
 ```

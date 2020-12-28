@@ -14,5 +14,7 @@ setup(
             'console_scripts': ['freya-admin=Freya.freya:main'],
       },
       zip_safe=False,
-      install_requires=['astropy','pandas','requests']
+      install_requires=['astropy==4.2',
+                        'pandas==1.2.0',
+                        'requests==2.25.1']
 )

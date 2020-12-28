@@ -136,9 +136,9 @@ class Base():
         path_template_api = self.path_file_template_new_api()
         # Get the path when create new api
         path_new_api =  os.path.join(self.path,'FreyaAPI')
-        # Install Flask - Astropy
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'flask'])
-        subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'astropy'])
+        # Install Flask - Astropy - Flask-restplus
+        subprocess.check_call([sys.executable, '-m','pip', 'install','-r',os.path.join(os.path.dirname(__file__),'requirementsAPI.txt')])
+        #subprocess.check_call([sys.executable, '-m', 'pip', 'install', 'astropy'])
         try:
             # Create new folder empy for FreyaAPI
             os.mkdir(path_new_api)

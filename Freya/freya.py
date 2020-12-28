@@ -16,25 +16,38 @@ Define the CLI for Freya specific command line.
 def main():
 
     #----------------------------COMMAND LINE----------------------------------------------#
-    parser = argparse.ArgumentParser()
+    #parser = argparse.ArgumentParser()
+    formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=70)
+    parser = argparse.ArgumentParser(formatter_class=formatter)
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-nc','--newcatalogue', action='store', type=str, nargs=2, 
-                            metavar=('<name>','<source>'),help="add new catalog inside Freya")
-    #--------------------------------------------------------------------------------------#
-    parser.add_argument('-ncl','--newcataloguelocal', action='store', type=str, nargs=2, 
-                            metavar=('<name>','<source>'),help="add new catalog who local module")
+    parser.add_argument('-nc','--newcatalogue', action='store', 
+                        metavar=('<name>','<source>'),
+                        help="add new catalog inside Freya",
+                        type=str, nargs=2)
     #--------------------------------------------------------------------------------------#     
-    parser.add_argument('-nfl','--newfolderlocal', action='store_true', help="create a new folder local from catalogs")
+    parser.add_argument('-nfl','--newfolderlocal', action='store_true',
+                        help="create a new folder local from catalogs")
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-rcl','--registercatalog',action='store_true',help="register local catalogue")
+    parser.add_argument('-ncl','--newcataloguelocal', action='store', 
+                        metavar=('<name>','<source>'),
+                        help="add new catalog who local module",
+                        type=str, nargs=2)
     #--------------------------------------------------------------------------------------# 
-    parser.add_argument('-na','--newapi', action='store_true', help="create a new FreyaAPI")
+    parser.add_argument('-na','--newapi', action='store_true', 
+                        help="create a new FreyaAPI")
     #--------------------------------------------------------------------------------------#                        
-    parser.add_argument('-ar','--addresource', action='store', type=str, nargs=1, 
-                            metavar=('<name>'),help="add module catalog who resource in FreyaApi")
-    #--------------------------------------------------------------------------------------#      
+    parser.add_argument('-ar','--addresource', action='store',
+                        metavar='<name>',
+                        help="add module catalog who resource in FreyaApi",
+                        type=str, nargs=1)
+    #--------------------------------------------------------------------------------------#     
+    parser.add_argument('-rcl','--registercatalog',action='store_true',
+                        help="register local catalogue")
+    #--------------------------------------------------------------------------------------#
     args = parser.parse_args()
 
+
+# metavar=''
     """
     Check what was the command line called, try call associated method.
     """

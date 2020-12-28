@@ -1,6 +1,3 @@
-"""
-
-"""
 import sys
 import importlib
 from Freya.catalogs.core import GetData
