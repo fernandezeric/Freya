@@ -20,7 +20,7 @@ def main():
     formatter = lambda prog: argparse.HelpFormatter(prog,max_help_position=70)
     parser = argparse.ArgumentParser(formatter_class=formatter)
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-nc','--newcatalogue', action='store', 
+    parser.add_argument('-nc','--newcatalog', action='store', 
                         metavar=('<name>','<source>'),
                         help="add new catalog inside Freya",
                         type=str, nargs=2)
@@ -28,7 +28,7 @@ def main():
     parser.add_argument('-nfl','--newfolderlocal', action='store_true',
                         help="create a new folder local from catalogs")
     #--------------------------------------------------------------------------------------#
-    parser.add_argument('-ncl','--newcataloguelocal', action='store', 
+    parser.add_argument('-ncl','--newcataloglocal', action='store', 
                         metavar=('<name>','<source>'),
                         help="add new catalog who local module",
                         type=str, nargs=2)
@@ -51,17 +51,17 @@ def main():
     """
     Check what was the command line called, try call associated method.
     """
-    if args.newcatalogue :
+    if args.newcatalog :
         print("Created new catalogue...")
         try:
-            AddCatalog(name=args.newcatalogue[0],source=args.newcatalogue[1])
+            AddCatalog(name=args.newcatalog[0],source=args.newcatalog[1])
         except:
-            raise TypeError (f'Failed to create new catalogue : {args.newcatalogue[0]} inside Freya')
+            raise TypeError (f'Failed to create new catalogue : {args.newcatalog[0]} inside Freya')
 
-    elif args.newcataloguelocal : 
+    elif args.newcataloglocal : 
         print("Created new local catalogue...")
         try:
-            AddCatalogLocal(name=args.newcataloguelocal[0],source =args.newcataloguelocal[1],path=os.getcwd())
+            AddCatalogLocal(name=args.newcataloglocal[0],source =args.newcataloglocal[1],path=os.getcwd())
         except:
             raise TypeError ('Fauled to create local module')
 

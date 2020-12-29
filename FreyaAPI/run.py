@@ -65,10 +65,11 @@ class GenericGet():
         first = True
 
         for catalog in args_['catalogs'].split(","):
+            catalog = catalog.upper()
             module = f'resources.{catalog}_resource.resource'
             print(module)
             mod = importlib.import_module(module)
-            my_class = getattr(mod, f'Resource_{catalog}')
+            my_class = getattr(mod, f'Resource{catalog}')
             if get_ == 0:
                 my_instance = my_class(ra=ra,dec=dec,radius=radius,format=format).get_lc_deg_all()
             elif get_ == 1:

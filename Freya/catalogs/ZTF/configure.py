@@ -3,10 +3,10 @@ Need with you return method as follow :
 
 """
 
-from Freya.catalogs.ztf.methods import Methods_ztf as mztf
+from Freya.catalogs.ZTF.methods import MethodsZTF as mztf
 from Freya.core.utils import Utils
 
-class Configure_ztf():
+class ConfigureZTF():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')

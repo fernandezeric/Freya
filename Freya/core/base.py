@@ -23,7 +23,7 @@ class Base():
     """
 
     def __init__(self,**kwargs):
-        self.name = kwargs.get('name')
+        self.name = kwargs.get('name').upper()
         self.source = kwargs.get('source')
         self.path = kwargs.get('path')
 

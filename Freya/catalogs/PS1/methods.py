@@ -1,6 +1,3 @@
-"""
-In this file you can created methods for 'configure.py'  
-"""
 import requests
 import io
 from Freya.core import utils
@@ -12,7 +9,7 @@ from astropy import units as u
 from astropy.io.votable import parse,parse_single_table, writeto
 
 
-class Methods_ps1():
+class MethodsPS1():
 
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')

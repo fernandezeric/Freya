@@ -20,7 +20,7 @@ class GetData ():
     """
 
     def __init__(self,**kwargs):
-        self.catalog = kwargs.get('catalog').strip()
+        self.catalog = kwargs.get('catalog').strip().upper()
         self.ra = kwargs.get('ra')
         self.dec = kwargs.get('dec')
         self.hms = kwargs.get('hms')
@@ -46,7 +46,7 @@ class GetData ():
             # Import self.catalog
             mod = importlib.import_module(module)
             # Call class
-            class_ =  getattr(mod,f'Configure_{self.catalog}') 
+            class_ =  getattr(mod,f'Configure{self.catalog}') 
             # Call method especific of class
             if call_method == 'get_lc_deg_all':
                 method_ = class_(ra = self.ra,
@@ -84,7 +84,3 @@ class GetData ():
     # Return the light curve most close to hh:mm:ss area
     def get_lc_hms_nearest(self):
         return self.generic_call_data('get_lc_hms_nearest')
-
-#Data = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.00356,format='csv').get_lc_hms_nearest()
-#Data = GetData(catalog='ps1',ra=139.33444972,dec=68.6350604,radius=0.00356,format='csv').get_lc_deg_all()
-#print(Data)

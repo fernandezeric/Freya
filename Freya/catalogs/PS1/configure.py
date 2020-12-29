@@ -1,8 +1,8 @@
 
-from Freya.catalogs.ps1.methods import Methods_ps1 as mps1
+from Freya.catalogs.PS1.methods import MethodsPS1 as mps1
 from Freya.core.utils import Utils
 
-class Configure_ps1():
+class ConfigurePS1():
 
     def __init__(self,*args,**kwagrs):
         self.ra = kwagrs.get('ra')
