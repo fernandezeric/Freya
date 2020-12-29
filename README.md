@@ -35,7 +35,7 @@ Have option by CLI 'freya-admin', the options are:
 # Install Freya. 🔧
 First clone repository.
 ```
-pip install . 
+pip3 install . 
 
 ```
 ## Add new catalogs in Freya or local folders. 🔧
@@ -218,49 +218,49 @@ And if you use catalog with source data base, need complete 'connect.py'
 
 ### ZTF ()
 ```
-Return:  oid,
-         expid,
-         hjd,
-         mjd,
-         mag,
-         magerr,
-         catflags,
-         filtercode,
-         ra,
-         dec,
-         chi,
-         sharp,
-         filefracday,
-         field,
-         ccdid,
-         qid,
-         limitmag,
-         magzp,
-         magzprms,
-         clrcoeff,
-         clrcounc,
-         exptime,
-         airmass,
-         programid,
+Return:  oid :  Object ID. 
+         expid : Exposure ID.
+         hjd : Heliocentric Julian Date of the midpoint of the exposure (using the mean ra and dec of the input catalog).
+         mjd : Modified Julian Date of the start of the exposure.
+         mag :  Magnitude.
+         magerr : Uncertainty in mag measurement. Includes correction to conform to photometric repeatability RMS derived from "non-variable" population.
+         catflags : Catalog flags for source from PSF-fitting catalog.
+         filtercode : Filter code (abbreviated name).
+         ra :  Right Ascension of source.
+         dec : Declination of source.
+         chi : Chi-squared of source.
+         sharp : Sharpness of source.
+         filefracday : Exposure file timestamp. with decimal representation YYYYMMDDdddddd: year. month. day. and fractional day.
+         field :  Field ID.
+         ccdid : CCD number (1..16).
+         qid : Quadrant ID (1..4).
+         limitmag : Approximate 5-sigma limiting magnitude corresponding to epoch- based PSF-fit catalog.
+         magzp : Magnitude zeropoint from photometric calibration.
+         magzprms : RMS deviation in magnitude zeropoint.
+         clrcoeff : Color coefficient from linear fit.
+         clrcounc : Color coefficient uncertainty from linear fit.
+         exptime : Exposure time from scheduler.
+         airmass : Airmass at approximately the center of the focal plane at time of exposure.
+         programid : Program ID.
 ```
 ### PS1 ()
 ```
-Return : objID, 
-         detectID,
-         filterID,
-         obsTime,
-         ra,
-         dec,
-         psfFlux,
-         psfFluxErr,
-         psfMajorFWHM,
-         psfMinorFWHM,
-         psfQfPerfect,
-         apFlux,
-         apFluxErr,
-         infoFlag,
-         infoFlag2,
-         infoFlag3
+Return : objID : Unique object identifier. 
+         detectID : Unique detection identifier.,
+         filterID : Filter identifier. Details in the Filter table.
+         obsTime : Modified Julian Date at the midpoint of the observation.
+         ra : Right ascension.
+         dec : Declination.
+         psfFlux : Flux from PSF fit.
+         psfFluxErr :  Error on flux from PSF fit.
+         psfMajorFWHM : PSF major axis FWHM.
+         psfMinorFWHM : PSF minor axis FWHM.
+         psfQfPerfect : PSF weighted fraction of pixels totally unmasked.
+         apFlux : Flux in seeing-dependent aperture.
+         apFluxErr : Error on flux in seeing-dependent aperture.
+         infoFlag : Information flag bitmask indicating details of the photometry. Values listed in DetectionFlags.
+         infoFlag2 : Information flag bitmask indicating details of the photometry. Values listed in DetectionFlags2. 
+         infoFlag3 : Information flag bitmask indicating details of the photometry. Values listed in DetectionFlags3.
 ```
 
 * objID --> oid
@@ -300,7 +300,7 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - radius: float (arcsec)
         - format: csv,votable
  Example:
-  http://localhost/get_lc?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=csv
+  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=csv
  
  # Get light curve of object most close to area in degrees.
  args : - catalogs: string
@@ -309,7 +309,7 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - radius: float (arcsec)
         - format: csv,votable
  Example:
-  http://localhost/get_lc_nearest?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=votable   
+  http://localhost/get_data/lc_degree_nearest?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=votable   
 ```
 ```
  # Get light curves of objects with area in hh:mm:ss.
@@ -318,7 +318,7 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - radius: float (arcsec)
         - format: csv,votable
  Example:
-    http://localhost/get_lc_hms?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=csv
+    http://localhost/get_data/lc_hms?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=csv
  
  # Get light curve of object most close to area in hh:mm:ss.
  args : - catalogs: string
@@ -326,7 +326,7 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - radius: float (arcsec)
         - format: csv,votable
  Example:
-   http://localhost/get_lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable 
+   http://localhost/get_data/lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable 
 ```
 ## How use a only Freya
 If you want use Freya but without installing, you can use the method 'GetData'.
