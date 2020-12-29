@@ -18,8 +18,13 @@ Aplication flask for Freya, name FreyaAPI.
 """
 
 flask_app = Flask(__name__)
-api =  Api(flask_app, version='1.0', title='FreyaAPI',
-            description='FreyaAPI is the default API for use the Freya module to getting light curves data')
+api =  Api(flask_app,
+             version='1.0', 
+             title='FreyaAPI',
+             description='FreyaAPI is the default API for use the Freya module for getting light curves data from diferent astronomical catalogs',
+             contact= '',
+             license='',
+            )
 
 ns = api.namespace('get_data', description='get ligth curves data using degree or hms area.')
 
@@ -30,7 +35,7 @@ link_ = '\n https://github.com/fernandezeric/Memoria#catalogs-default-'
 
 parser = api.parser()
 parser.add_argument('catalogs', type=str, required=True, default='ztf,ps1',
-                            help='names of catalogs you can obtained ligh curve data, need this catalogs existing in Freya.\
+                            help='Names of the catalogs to consult , first need the catalogs are in Freya.\
                                 Look catalogs and what return in '+link_, location='args')
 parser.add_argument('format', type=str, required=True, default='csv',choices=['csv','votable'],help='format data', location='args')
 parser.add_argument('radius', type=float, required=True, default=0.0002777, help='Search radius', location='args')
@@ -43,8 +48,9 @@ parser_hms = parser.copy()
 parser_hms.add_argument('hms', type=str, required=True, default='9h17m20.26793280000689s +4h34m32.414496000003936s', help='hh:mm:ss', location='args')
 
 type_response = ["text/csv","text/xml"]
-code_200 = 'Get the light curve data, if select two or more catalogs the data (csv/table) using vstack to join in one table'
-code_400 = 'Value Error'
+code_200 = 'Ligth curves data obtained.'
+code_400 = 'Value Error.'
+code_404 = 'Rute not valid.'
 
 class GenericGet():
 
@@ -116,7 +122,7 @@ class GenericGet():
                 ascii.write(results_,buf,format='csv')
                 # make responde data with headers
                 data =  make_response(buf.getvalue())
-                data.headers["Content-Disposition"] = "attachment; filename=.csv"
+                data.headers["Content-Disposition"] = "attachment; filename=LightCurveData[{}].csv".format(args_['catalogs'])
                 data.headers["Content-type"] = "text/csv"
                 return data
             except:
@@ -127,19 +133,24 @@ class GenericGet():
                 writeto(results_,buf)
                 # make responde data with headers
                 data = make_response(buf.getvalue().decode("utf-8"))
-                data.headers["Content-Disposition"] = "attachment; filename=.xml"
+                data.headers["Content-Disposition"] = "attachment; filename=LightCurveData[{}].xml".format(args_['catalogs'])
                 data.headers["Content-type"] = "text/xml"
                 return data
             except:
                 return make_response('no votable but votable')
     
-
+# if select two or more catalogs the data (csv/table) using vstack to join in one table
 @ns.route("/lc_degree")
 class GetLcAll(Resource):
     @api.expect(parser_degree)
     @api.response(200, code_200)
     @api.response(400, code_400)
+    @api.response(404,code_404)
     @api.produces(type_response)
+    @api.doc(description='With this rute you can get all ligth curves data from specific astronomical catalogs, \
+                          the area is noted by right ascension (ra), declination (dec) and radius. \
+                          The return is table CSV or table VOtable,     \
+                          if select two or more catalogs the FreyaAPI using vstack to join in one table')
     def get(self):
         args = parser_degree.parse_args()
         return GenericGet().get_data(args,0)
@@ -149,7 +160,12 @@ class GetLcNearest(Resource):
     @api.expect(parser_degree)
     @api.response(200, code_200)
     @api.response(400, code_400)
+    @api.response(404,code_404)
     @api.produces(type_response)
+    @api.doc(description='With this rute you can get the ligth curve data most nearest from specific astronomical catalogs, \
+                          the area is noted by right ascension (ra), declination (dec) and radius. \
+                          The return is table CSV or table VOtable,     \
+                          if select two or more catalogs the FreyaAPI using vstack to join in one table')
     def get(self):
         args = parser_degree.parse_args()
         return GenericGet().get_data(args,1)
@@ -159,7 +175,12 @@ class GetLcHmsAll(Resource):
     @api.expect(parser_hms)
     @api.response(200, code_200)
     @api.response(400, code_400)
+    @api.response(404,code_404)
     @api.produces(type_response)
+    @api.doc(description='With this rute you can get all ligth curves data from specific astronomical catalogs, \
+                          the area is noted by hh:mm:ss and radius. \
+                          The return is table CSV or table VOtable,     \
+                          if select two or more catalogs the FreyaAPI using vstack to join in one table')
     def get(self):
         args = parser_hms.parse_args()
         return GenericGet().get_data(args,2)
@@ -169,10 +190,16 @@ class GetLcHmsNearest(Resource):
     @api.expect(parser_hms)
     @api.response(200, code_200)
     @api.response(400, code_400)
+    @api.response(404,code_404)
     @api.produces(type_response)
+    @api.doc(description='With this rute you can get the ligth curve data most nearest from specific astronomical catalogs, \
+                          the area is noted by hh:mm:ss and radius. \
+                          The return is table CSV or table VOtable,     \
+                          if select two or more catalogs the FreyaAPI using vstack to join in one table')
     def get(self):
         args = parser_hms.parse_args()
         return GenericGet().get_data(args,3)
 
 if __name__ == '__main__':
     flask_app.run('0.0.0.0',5000,debug=True)
+ 
