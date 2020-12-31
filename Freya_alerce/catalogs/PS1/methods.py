@@ -1,6 +1,6 @@
 import requests
 import io
-from Freya.core import utils
+from Freya_alerce.core import utils
 
 from astropy.io import ascii
 from astropy.table import Table,vstack
@@ -8,9 +8,20 @@ from astropy.coordinates import SkyCoord
 from astropy import units as u
 from astropy.io.votable import parse,parse_single_table, writeto
 
-
+"""
+MethodsPS1, you can use this method if you do not want overburden configure.py, especially want to use module class to get data, you can replace all script.
+"""
 class MethodsPS1():
 
+    """
+    Parameters
+    ----------
+    ra : (float) Right ascension
+    dec :  (float) Declination
+    radius: (float) Search radius
+    format: (string) csv or votable
+    nearest: (bool) Flag to indicate if you get all or one light curve from the object.
+    """
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')

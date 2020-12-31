@@ -21,36 +21,39 @@ Have option by CLI 'freya-admin', the options are:
   ```
   freya-admin --addresource <name> 
   ```
-  * You can creates local catalgos but first need create new folder, this call creates new local folder in path with call freya-admin, 
-  and register path in sys.
-  ```
-  freya-admin --newfolderlocal
-  ```
-  * And want creates new catalog who module in local folder, need call --newcataloglocal inside the folder created with --newfolderlocal.
+  * And want creates new catalog who local module, can use --newcataloglocal.
   where name is the name of catalog what choose and source is where it comes from (available options: api,db).
   ```
   freya-admin --newcataloglocal <name> <source>
+
+  # then install module
+    pip install .
   ```
-
+* Important: the name register with in capital letters, but you can use lowercase name.
 # Install Freya. 🔧
-First clone repository.
-```
-pip3 install . 
 
 ```
-## Add new catalogs in Freya or local folders. 🔧
+pip install Freya_alerce
+
+#or clone repository and 
+
+pip install . 
+
+```
+## Add new catalogs in Freya or local. 🔧
 * If you want add modules catalogs inside Freya use for example:
 ```
 freya-admin --newcatalog ztf api
 
 ```
-* If you want use local folder and add new catalogs inside use for example:
+* If you want use local module:
 ```
-# In any place of you system
-freya-admin --newlocalfolder
-
 # Inside local folder catalogs
 freya-admin --newcataloglocal ztf_local api
+
+# then use
+
+pip install .
 
 ```
 * If you download any catalog for the github or other site you can install in environment python.
@@ -339,6 +342,6 @@ data_all_hms = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.41449
 data_one_hms = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable').get_lc_hms_nearest()
 ```
 # Build with 🛠️
-* python
+* Python : 3.9
 ###
 Jonimott de Malpais - [fernandezeric](https://github.com/fernandezeric)

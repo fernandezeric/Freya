@@ -1,6 +1,6 @@
 import os
 import importlib
-from Freya.files.verify_file import Verify
+from Freya_alerce.files.verify_file import Verify
 
 """
 Class to get data from module catalog configured in Freya, first check if catalog exist inside Freya
@@ -37,7 +37,7 @@ class GetData ():
             Search catalog insiede Freya, if not exist search inside local folder.
             """
             if Verify().verify_catalog_inside(self.catalog):
-                module = f'Freya.catalogs.{self.catalog}.configure'
+                module = f'Freya_alerce.catalogs.{self.catalog}.configure'
             elif Verify().verify_catalog_local(self.catalog) :
                 module = f'LocalCatalogs.{self.catalog}.configure'
             else :

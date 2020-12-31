@@ -1,5 +1,5 @@
 import fileinput #replace into files
-import Freya.catalogs # __path__
+import Freya_alerce.catalogs # __path__
 import os
 
 """

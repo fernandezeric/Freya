@@ -1,5 +1,5 @@
 
-import Freya.catalogs # __path__ # dir modules
+import Freya_alerce.catalogs # __path__ # dir modules
 import os
 import importlib
 
@@ -13,7 +13,7 @@ class Verify():
     """
     def verify_catalog_inside(self,name):
         self.name = name
-        dir_catalogs = Freya.catalogs.__path__[0]
+        dir_catalogs = Freya_alerce.catalogs.__path__[0]
         if self.name  in os.listdir(dir_catalogs) :
              return True 
         return False

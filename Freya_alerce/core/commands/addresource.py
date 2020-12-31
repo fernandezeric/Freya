@@ -1,4 +1,4 @@
-from Freya.core.base import Base
+from Freya_alerce.core.base import Base
 
 """
 Add resource to FreyaAPI, need call inside FreyaAPI
