@@ -1,7 +1,7 @@
 from Freya_alerce.core.base import Base
 
 """
-Add new catalogue inside Freya
+Add new catalogue inside Freya.
 
 Parameters
 --------------------------------------

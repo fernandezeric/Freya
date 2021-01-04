@@ -278,7 +278,7 @@ freya-admin --newapi
 ```
 In folder where is called create new flask application, it contains the
 necessary routes generic that you only call and not modified, but first you need
-add catalogs resources with :
+add resources(catalogs) with :
 
 ```
 # Inside folder FreyaAPI

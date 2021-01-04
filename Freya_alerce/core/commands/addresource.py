@@ -2,6 +2,8 @@ from Freya_alerce.core.base import Base
 
 """
 Add resource to FreyaAPI, need call inside FreyaAPI
+
+Parameters
 --------------------------------------
 name : (string) name catalogue in Freya what adds resource in FreyaAPI.
 """

@@ -11,21 +11,26 @@ Other option is get the only light curve of object most close to area selected.
 class GetData ():
     """
     Parameters
-    --------------------------------------
+    -------------------------------------- 
     ra (float): (degrees) Right Ascension
-    dec (float): (degrees) Declination
+    
+    dec (float): (degrees) Declination 
+
     hms (string): format hh:mm:ss
+
     radius (float): Search radius
+    
     format (string): csv,
     """
 
-    def __init__(self,**kwargs):
+    def __init__(self,radius=0.0002777,format='csv',**kwargs):
         self.catalog = kwargs.get('catalog').strip().upper()
+        #self.catalog = self.catalog.replace(self.catalog[0],self.catalog[0].upper(),1)
         self.ra = kwargs.get('ra')
         self.dec = kwargs.get('dec')
         self.hms = kwargs.get('hms')
-        self.radius = kwargs.get('radius')
-        self.format = kwargs.get('format')
+        self.radius = radius
+        self.format = format
 
         if self.format not in ['csv','votable']:
              return "inadmissible format in consult data"
@@ -72,15 +77,23 @@ class GetData ():
         except :
             print(f'No find the catalog : {self.catalog}')
 
-    # Return all light curve object in degrees area
+    """
+    Return all light curve object in degrees area.
+    """
     def get_lc_deg_all(self):
         return self.generic_call_data('get_lc_deg_all')
-    # Return the light curve most close to degrees area
+    """
+    Return the light curve most close to degrees area.
+    """
     def get_lc_deg_nearest(self):
         return self.generic_call_data('get_lc_deg_nearest')
-    # Return all light curve object in hh:mm:ss area
+    """
+    Return all light curve object in hh:mm:ss area.
+    """
     def get_lc_hms_all(self):
         return self.generic_call_data('get_lc_hms_all')
-    # Return the light curve most close to hh:mm:ss area
+    """
+    Return the light curve most close to hh:mm:ss area.
+    """
     def get_lc_hms_nearest(self):
         return self.generic_call_data('get_lc_hms_nearest')

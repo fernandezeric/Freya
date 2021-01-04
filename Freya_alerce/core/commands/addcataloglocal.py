@@ -3,8 +3,8 @@ from Freya_alerce.core.base import Base
 """
 Add new catalogue in local folder.
 --------------------------------------
-Parameters
 
+Parameters
 name : (string) name with add catalogue in local folder.
 source : (string) origin source catalogue [api,db]
 """
