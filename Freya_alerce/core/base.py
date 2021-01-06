@@ -20,6 +20,7 @@ class Base():
     name : (string) name with add catalog inside Freya or in local folder
             and is the same name with add resource in FreyaAPI
     source : (string) origin source catalog [api,db]
+
     path : (string) path where created FreyaAPI, local folder for catalogs and
             add resources in FreyaAPI.
     """
@@ -32,35 +33,35 @@ class Base():
         self.source = kwargs.get('source')
         self.path = kwargs.get('path')
 
-    """
-    Method for select path of *.zip to extract, depend the source catalog.
-    """
     def path_files_template_from(self):
+        """
+        Select path of *.zip to extract, depend the source catalog.
+        """
         if self.source == 'api':
             return os.path.join(Freya_alerce.files.__path__[0],'file_templates','fromapi.zip')
         else :
             return os.path.join(Freya_alerce.files.__path__[0],'file_templates','fromdb.zip')
     
-    """
-    Method for get the path of FreyaAPI generic data for extracted.
-    """
     def path_file_template_new_api(self):
+        """
+        Get the path of FreyaAPI generic data for extracted.
+        """
         return os.path.join(Freya_alerce.files.__path__[0],'file_templates','newapi.zip')
     
-    """
-    Method for get the path of FreyaAPI resource generic data for extracted.
-    """
     def path_file_template_resource(self):
+        """
+        Get the path of FreyaAPI resource generic data for extracted.
+        """
         return os.path.join(Freya_alerce.files.__path__[0],'file_templates','newresource.zip')
     
-    """
-    Method to create new catalog module inside Freya,
-    first verify if source catalog is valid, 
-    second verify the catalog already exist then get path
-    for new module catalog and path template data,
-    finaly try create the new module folder and extract the data.
-    """
     def create_module_catalog(self):
+        """
+        Create new catalog module inside Freya,
+        first verify if source catalog is valid, 
+        second verify the catalog already exist then get path
+        for new module catalog and path template data,
+        finaly try create the new module folder and extract the data.
+        """
         
         #self.name= self.name.upper()
         if Verify().verify_source(self.source):
@@ -94,18 +95,17 @@ class Base():
         except OSError as error:
             print(error)  
     
-    """
-    Method to create new local catalog module ,
-    first verify if source catalog is valid, 
-    second verify the catalog already exist then get path
-    for new module catalog and path template data,
-    finaly try create the new module folder and extract the data.
-
-    The catalog create in path with call the freya-admin.
-    Need call inside local folder to take Freya.
-    """
     def create_module_catalog_local(self):
-        #self.name= self.name.upper()
+        """
+        Create new local catalog module ,
+        first verify if source catalog is valid, 
+        second verify the catalog already exist then get path
+        for new module catalog and path template data,
+        finaly try create the new module folder and extract the data.
+
+        The catalog create in path with call the freya-admin.
+        Need call inside local folder to take Freya.
+        """
         if Verify().verify_source(self.source):
             raise TypeError (f'The source {self.source} not is valid')
 
@@ -146,11 +146,11 @@ class Base():
         except OSError as error:
             print(error)   
 
-    """
-    Method to create a new FreyaAPI, the new api created in path
-    with call the freya-admin --newapi
-    """
     def create_new_api(self):
+        """
+        Create a new FreyaAPI, the new api created in path
+        with call the freya-admin --newapi
+        """
         # Get the path template data for FreyaAPI
         path_template_api = self.path_file_template_new_api()
         # Get the path when create new api
@@ -168,13 +168,11 @@ class Base():
         except OSError as error:
             print(error)    
     
-
-    """
-    Method what add resource to FreyaAPI, first verify the catalog exist inside Freya 
-    or in the local catalogs folder.
-    """
     def create_new_resource(self):
-        #self.name= self.name.upper()
+        """
+        Add resource to FreyaAPI, first verify the catalog exist inside Freya 
+        or in the local catalogs folder.
+        """
         # Verify 
         if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) and not Verify().verify_catalog_local_(self.name):
             raise TypeError ('first created catalog inside Freya or local ')

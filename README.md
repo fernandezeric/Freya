@@ -219,7 +219,7 @@ And if you use catalog with source data base, need complete 'connect.py'
 ```
 ## Catalogs Default 📖 
 
-### ZTF ()
+### ZTF []
 ```
 Return:  oid :  Object ID. 
          expid : Exposure ID.
@@ -246,7 +246,7 @@ Return:  oid :  Object ID.
          airmass : Airmass at approximately the center of the focal plane at time of exposure.
          programid : Program ID.
 ```
-### PS1 ()
+### PS1 []
 ```
 Return : objID : Unique object identifier. 
          detectID : Unique detection identifier.,
@@ -302,17 +302,12 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - dec: float (degrees)
         - radius: float (arcsec)
         - format: csv,votable
+        - amount: all,nearest
  Example:
-  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=csv
+  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=csv&amount=all
  
- # Get light curve of object most close to area in degrees.
- args : - catalogs: string
-        - ra: float (degrees) 
-        - dec: float (degrees)
-        - radius: float (arcsec)
-        - format: csv,votable
  Example:
-  http://localhost/get_data/lc_degree_nearest?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=votable   
+  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=votable&amount=nearest   
 ```
 ```
  # Get light curves of objects with area in hh:mm:ss.
@@ -320,16 +315,12 @@ The rutes in FreyaAPI are get methods and have four rutes.
         - hms: string
         - radius: float (arcsec)
         - format: csv,votable
+        - amount: all,nearest
  Example:
-    http://localhost/get_data/lc_hms?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=csv
+    http://localhost/get_data/lc_hms?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=csv&amount=all
  
- # Get light curve of object most close to area in hh:mm:ss.
- args : - catalogs: string
-        - hms: string
-        - radius: float (arcsec)
-        - format: csv,votable
  Example:
-   http://localhost/get_data/lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable 
+   http://localhost/get_data/lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable&amount=nearest 
 ```
 ## How use a only Freya
 If you want use Freya but without installing, you can use the method 'GetData'.

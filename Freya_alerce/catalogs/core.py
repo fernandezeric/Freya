@@ -20,7 +20,7 @@ class GetData ():
 
     radius (float): Search radius
     
-    format (string): csv,
+    format (string): csv,votable
     """
 
     def __init__(self,radius=0.0002777,format='csv',**kwargs):
@@ -46,7 +46,7 @@ class GetData ():
             elif Verify().verify_catalog_local(self.catalog) :
                 module = f'LocalCatalogs.{self.catalog}.configure'
             else :
-                    module = f'{self.catalog}.configure'
+                module = f'{self.catalog}.configure'
 
             # Import self.catalog
             mod = importlib.import_module(module)
@@ -77,23 +77,26 @@ class GetData ():
         except :
             print(f'No find the catalog : {self.catalog}')
 
-    """
-    Return all light curve object in degrees area.
-    """
     def get_lc_deg_all(self):
+        """
+        Return all light curve object in degrees area.
+        """
         return self.generic_call_data('get_lc_deg_all')
-    """
-    Return the light curve most close to degrees area.
-    """
+
     def get_lc_deg_nearest(self):
+        """
+        Return the light curve most close to degrees area.
+        """
         return self.generic_call_data('get_lc_deg_nearest')
-    """
-    Return all light curve object in hh:mm:ss area.
-    """
+
     def get_lc_hms_all(self):
+        """
+        Return all light curve object in hh:mm:ss area.
+        """
         return self.generic_call_data('get_lc_hms_all')
-    """
-    Return the light curve most close to hh:mm:ss area.
-    """
+
     def get_lc_hms_nearest(self):
+        """
+        Return the light curve most close to hh:mm:ss area.
+        """
         return self.generic_call_data('get_lc_hms_nearest')
