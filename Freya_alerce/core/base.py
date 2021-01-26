@@ -9,20 +9,21 @@ import zipfile #read zip files
 from Freya_alerce.files.verify_file import Verify
 
 
-"""
-Base class to command line Freya, contains method for add new catalog inside Freya or in local folder, 
-created new local folder, new api (FreyaAPI), and add resources in FreyaAPI.
-"""
 class Base():
     """
+    Base class to command line Freya, contains method for add new catalog inside Freya or in local folder, 
+    created new local folder, new api (FreyaAPI), and add resources in FreyaAPI.
+
     Parameters
     --------------------------------------
-    name : (string) name with add catalog inside Freya or in local folder
-            and is the same name with add resource in FreyaAPI
-    source : (string) origin source catalog [api,db]
-
-    path : (string) path where created FreyaAPI, local folder for catalogs and
-            add resources in FreyaAPI.
+    name : (string) 
+        name with add catalog inside Freya or in local folder and 
+        is the same name with add resource in FreyaAPI
+    source : (string) 
+        origin source catalog [api,db]
+    path : (string) 
+        path where created FreyaAPI, local folder for catalogs and
+        add resources in FreyaAPI.
     """
 
     def __init__(self,**kwargs):
@@ -30,6 +31,9 @@ class Base():
         if self.name:
             #self.name = self.name.replace(self.name[0],self.name[0].upper(),1)
             self.name = self.name.upper()
+        self.new_name = kwargs.get('new_name')
+        if self.new_name:
+            self.new_name = self.new_name.upper()
         self.source = kwargs.get('source')
         self.path = kwargs.get('path')
 
@@ -196,5 +200,33 @@ class Base():
         except OSError as error:
             print(error)    
         
-
+    def rename_catalog(self):
+        """
+        Rename catalog inside Freya
+        """
+        dir_catalogs = Freya_alerce.catalogs.__path__[0]
+        try:
+            #replace name catalog inside files
+            path = os.path.join(dir_catalogs,self.name)
+            list_path = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
+            list_path = [os.path.join(path,f) for f in list_path] # add 
+            files_.Files(list_path,self.name,self.new_name).replace_in_files()
+            #replace folder name
+            path_ = path.split("/")
+            path_[-1] = self.new_name
+            path_ = "/".join(path_)
+            os.rename(path, path_)
+        except OSError as error:
+            print(error)    
+        
+    def delete_catalog(self):
+        """
+        Delete catalog inside Freya
+        """
+        dir_catalogs = Freya_alerce.catalogs.__path__[0]
+        try:
+            path = os.path.join(dir_catalogs,self.name)
+            shutil.rmtree(path)
+        except OSError as error:
+            print(error) 
 

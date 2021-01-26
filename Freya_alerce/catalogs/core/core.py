@@ -1,4 +1,3 @@
-import os
 import importlib
 from Freya_alerce.files.verify_file import Verify
 
@@ -23,7 +22,7 @@ class GetData ():
     format (string): csv,votable
     """
 
-    def __init__(self,radius=0.0002777,format='csv',**kwargs):
+    def __init__(self,radius=0.0002777,format='csv',nearest=False,**kwargs):
         self.catalog = kwargs.get('catalog').strip().upper()
         #self.catalog = self.catalog.replace(self.catalog[0],self.catalog[0].upper(),1)
         self.ra = kwargs.get('ra')
@@ -31,6 +30,7 @@ class GetData ():
         self.hms = kwargs.get('hms')
         self.radius = radius
         self.format = format
+        self.nearest = nearest
 
         if self.format not in ['csv','votable']:
              return "inadmissible format in consult data"
@@ -53,50 +53,10 @@ class GetData ():
             # Call class
             class_ =  getattr(mod,f'Configure{self.catalog}') 
             # Call method especific of class
-            if call_method == 'get_lc_deg_all':
-                method_ = class_(ra = self.ra,
-                                    dec = self.dec,
-                                    radius = self.radius,
-                                    format=self.format).get_lc_deg_all()
-            elif call_method == 'get_lc_deg_nearest':
-                method_ = class_(ra = self.ra,
-                                    dec = self.dec,
-                                    radius = self.radius,
-                                    format=self.format).get_lc_deg_nearest()
-            
-            elif call_method == 'get_lc_hms_all':
-                method_ = class_(hms = self.hms,
-                                    radius = self.radius,
-                                    format = self.format).get_lc_hms_all()
-            
-            elif call_method == 'get_lc_hms_nearest':
-                method_ = class_(hms = self.hms,
-                                    radius = self.radius,
-                                    format = self.format).get_lc_hms_nearest()
+            if call_method == 'get_lc_deg':
+                method_ = class_(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=self.nearest).get_lc_deg()      
+            elif call_method == 'get_lc_hms':
+                method_ = class_(hms=self.hms,radius=self.radius,format=self.format,nearest=self.nearest).get_lc_hms()
             return method_
         except :
             print(f'No find the catalog : {self.catalog}')
-
-    def get_lc_deg_all(self):
-        """
-        Return all light curve object in degrees area.
-        """
-        return self.generic_call_data('get_lc_deg_all')
-
-    def get_lc_deg_nearest(self):
-        """
-        Return the light curve most close to degrees area.
-        """
-        return self.generic_call_data('get_lc_deg_nearest')
-
-    def get_lc_hms_all(self):
-        """
-        Return all light curve object in hh:mm:ss area.
-        """
-        return self.generic_call_data('get_lc_hms_all')
-
-    def get_lc_hms_nearest(self):
-        """
-        Return the light curve most close to hh:mm:ss area.
-        """
-        return self.generic_call_data('get_lc_hms_nearest')

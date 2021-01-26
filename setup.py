@@ -3,7 +3,7 @@ from setuptools import setup,find_packages
 # pip install -e .
 setup(
       name='Freya_alerce',
-      version='0.1.4.8',
+      version='0.1.4.9',
       author='Jonimott de Malpais',
       author_email='',
       description='Freya is a Python framework that quick development queries in astronomical catalogs and use local or creating easy new API called FreyaAPI',

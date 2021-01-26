@@ -25,46 +25,17 @@ class ConfigureZTF():
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
+        self.nearest = kwagrs.get('nearest')
 
-    """
-    Need return light curves data from objects inside the area delimited for ra,dec,radius. 
-    The format return is the specific ‘format’ when called in the class.
-    """
-    def get_lc_deg_all(self):
+    def get_lc_deg(self):
         """
-        Return all ligth curves data inside degree area from ZTF catalog.
+        Return all ligth curves data or the most close object,inside degree area from ZTF catalog.
         """
-        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=False).zftcurves() 
+        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=self.nearest).zftcurves() 
         return data_return
-    """
-    Need return light curves data from objects inside the area delimited for hh:mm:ss,radius. 
-    The format return is the specific ‘format’ when called in the class.
-    """
-    def get_lc_hms_all(self):
-        """
-        Return all ligth curves data inside hh:mm:ss area from ZTF catalog.
-        """
+    
+    def get_lc_hms(self):
+        """Return all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog"""
         ra_,dec_ = Utils().hms_to_deg(self.hms)
-        data_return = mztf(ra=ra_,dec=dec_,radius=self.radius,format=self.format,nearest=False).zftcurves() 
-        return data_return
-    """
-    Need return light curve data from the object most nearest inside the area delimited for ra,dec,radius. 
-    The format return is the specific ‘format’ when called in the class.
-    """
-    def get_lc_deg_nearest(self):
-        """
-        Return the ligth curve data most close to point in degree area from ZTF catalog.
-        """
-        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=True).zftcurves() 
-        return data_return
-    """
-    Need return light curve data from the object most nearest inside the area delimited for hh:mm:ss, radius. 
-    The format return is the specific ‘format’ when called in the class.
-    """
-    def get_lc_hms_nearest(self):
-        """
-        Return the ligth curve data most close to point in hh:mm:ss area from ZTF catalog.
-        """
-        ra_,dec_ = Utils().hms_to_deg(self.hms)
-        data_return = mztf(ra=ra_,dec=dec_,radius=self.radius,format=self.format,nearest=True).zftcurves() 
+        data_return = mztf(ra=ra_,dec=dec_,radius=self.radius,format=self.format,nearest=self.nearest).zftcurves() 
         return data_return

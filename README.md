@@ -16,6 +16,14 @@ Have option by CLI 'freya-admin', the options are:
   ```
   freya-admin --newapi
   ```
+  * Rename catalog inside Freya, replace old_name for new_name in all files inside module-catalog and the folder name.
+  ```
+  freya-admin --renamecatalog <old_name> <new_name>
+  ```
+  * Delete catalog inside Freya.
+  ```
+  freya-admin --deletecatalog <name>
+  ```
   * Add new resource in FreyaAPI, but first need whit catalog exist in Freya or local folder and the call --addresource
   inside the folder FreyaAPI.
   ```
@@ -62,7 +70,7 @@ pip install .
 ```
 
 Independet how add catalog the next step is to connect catalog with Freya (if not completed before),
-for this need completed fourt generic methods.
+for this need completed two generic methods.
 ```
 Inside folder new catalog find the following files
 - configure.py
@@ -71,32 +79,20 @@ Inside folder new catalog find the following files
 
 now inside 'configure.py' it find 
 
-  - def get_lc_deg_all(ra,dec,radius,format)
+  - def get_lc_deg(ra,dec,radius,format,nearest)
 
-  - def get_lc_hms_all(hms,radius,format)
-
-  - def get_lc_deg_nearest(ra,dec,radius,format)
-
-  - def get_lc_hms_nearest(hms,radius,format)
+  - def get_lc_hms(hms,radius,format,nearest)
 
 Need to be completed such that
-    - ef get_lc_deg_all(ra,dec,radius,format)
-        return all light curves data in csv/votable in an 
-        area described in degrees with specific radius.
+    - def get_lc_deg(ra,dec,radius,format,nearest)
+        return all light curves data from all object find in area 
+        described in degrees with specific radius or return the data
+        from object most close. Then data return un csv/votable depent of format.
 
-    - def get_lc_hms_all(hms,radius,format)
-        return all light curves data in csv/votable in an 
-        area described in hh:mm:ss with specific radius.
-
-    - def get_lc_deg_nearest(ra,dec,radius,format)
-        return the light curve data from objecte most close to 
-        area described in degrees with specific radius, the data 
-        return in csv/votable.
-
-    - def get_lc_hms_nearest(hms,radius,format)
-        return the light curve data from objecte most close to 
-        area described in hh:mm:ss with specific radius, the data 
-        return in csv/votable.
+    - def get_lc_hms(hms,radius,format,nearest)
+        return all light curves data from all object find in area 
+        described in ICRS with specific radius or return the data
+        from object most close. Then data return un csv/votable depent of format.
 
 Opcional you can use 'methods.py' for not overburden 'configure.py' but yo can only write in 'configure.py'
 ```
@@ -115,21 +111,14 @@ class Configure_ztf():
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.format = kwagrs.get('format')
+        self.nearest = kwagrs.get('nearest')
 
-    def get_lc_deg_all(self):
-        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=False).zftcurves() 
+    def get_lc_deg(self):
+        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=self.nearest).zftcurves() 
         return data_return
 
-    def get_lc_hms_all(self):
-        data_return = mztf(hms=self.hms,radius=self.radius,format=self.format,nearest=False).zftcurves() 
-        return data_return
-
-    def get_lc_deg_nearest(self):
-        data_return = mztf(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=True).zftcurves() 
-        return data_return
-
-    def get_lc_hms_nearest(self):
-        data_return = mztf(hms=self.hms,radius=self.radius,format=self.format,nearest=True).zftcurves() 
+    def get_lc_hms(self):
+        data_return = mztf(hms=self.hms,radius=self.radius,format=self.format,nearest=self.nearest).zftcurves() 
         return data_return
 
 ```
@@ -269,7 +258,7 @@ Return : objID : Unique object identifier.
 * objID --> oid
 * obsTime --> mjd
 
-## New FreyaAPI
+# New FreyaAPI
 Other application of Freya is quick creation for the API used flask:
 ```
 # In any directory in your system
@@ -289,9 +278,18 @@ freya-admin --addresource ztf_local
 ```
 Now you can run the FreyaAPI using : 
 
-# Start (Who use)🚀
+## Start (Who use)🚀
 How to use the Freya and FreyaAPI.
 First you look the complete demo (link al git que tenga todo)
+
+## Install with Docker (optional)
+When you use the command "freya-admin --newapi", you have inside in the new folder a
+dockerfile. Now can install like :
+
+```
+sudo docker build -t freyapi .
+sudo docker run --name df-freyapi -d -p 5000:5000 freyapi
+```
 
 ## How use the rute FreyaAPI
 The rutes in FreyaAPI are get methods and have four rutes.
@@ -323,14 +321,14 @@ The rutes in FreyaAPI are get methods and have four rutes.
    http://localhost/get_data/lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable&amount=nearest 
 ```
 ## How use a only Freya
-If you want use Freya but without installing, you can use the method 'GetData'.
+If you want use Freya but without installing, you can use Freya's methods "DataLcDegree(),DataLcHms()".
 ```
-from Freya.catalogs.core import GetData
+from Freya_alerce.catalogs.core.data_lc import DataLcDegree,DataLcHms
 
-data_all_deg = GetData(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv').get_lc_deg_all()
-data_one_deg = GetData(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv').get_lc_deg_nearest()
-data_all_hms = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable').get_lc_hms_all()
-data_one_hms = GetData(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable').get_lc_hms_nearest()
+data_all_deg = DataLcDegree(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv',nearest=False).get_data()
+data_one_deg = DataLcDegree(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv',nearest=True).get_data()
+data_all_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=False).get_data()
+data_one_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=True).get_data()
 ```
 # Build with 🛠️
 * Python : 3.9
