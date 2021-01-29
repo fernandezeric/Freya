@@ -11,15 +11,16 @@ class GetData ():
     """
     Parameters
     -------------------------------------- 
-    ra (float): (degrees) Right Ascension
-    
-    dec (float): (degrees) Declination 
-
-    hms (string): format hh:mm:ss
-
-    radius (float): Search radius
-    
-    format (string): csv,votable
+    ra : (float) 
+        (degrees) Right Ascension
+    dec : (float) 
+        (degrees) Declination 
+    hms : (string)
+        format ICRS (hh:mm:ss)
+    radius : (float)
+        Search radius
+    format : (string)
+        [csv,votable]
     """
 
     def __init__(self,radius=0.0002777,format='csv',nearest=False,**kwargs):

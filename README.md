@@ -258,68 +258,6 @@ Return : objID : Unique object identifier.
 * objID --> oid
 * obsTime --> mjd
 
-# New FreyaAPI
-Other application of Freya is quick creation for the API used flask:
-```
-# In any directory in your system
-freya-admin --newapi
-
-```
-In folder where is called create new flask application, it contains the
-necessary routes generic that you only call and not modified, but first you need
-add resources(catalogs) with :
-
-```
-# Inside folder FreyaAPI
-
-freya-admin --addresource ztf
-freya-admin --addresource ztf_local
-
-```
-Now you can run the FreyaAPI using : 
-
-## Start (Who use)🚀
-How to use the Freya and FreyaAPI.
-First you look the complete demo (link al git que tenga todo)
-
-## Install with Docker (optional)
-When you use the command "freya-admin --newapi", you have inside in the new folder a
-dockerfile. Now can install like :
-
-```
-sudo docker build -t freyapi .
-sudo docker run --name df-freyapi -d -p 5000:5000 freyapi
-```
-
-## How use the rute FreyaAPI
-The rutes in FreyaAPI are get methods and have four rutes.
-```
- # Get light curves of objects with area in degrees.
- args : - catalogs: string
-        - ra: float (degrees) 
-        - dec: float (degrees)
-        - radius: float (arcsec)
-        - format: csv,votable
-        - amount: all,nearest
- Example:
-  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=csv&amount=all
- 
- Example:
-  http://localhost/get_data/lc_degree?catalogs=ztf&ra=139.33444972&dec=68.6350604&radius=0.0002777&format=votable&amount=nearest   
-```
-```
- # Get light curves of objects with area in hh:mm:ss.
- args : - catalogs: string
-        - hms: string
-        - radius: float (arcsec)
-        - format: csv,votable
-        - amount: all,nearest
- Example:
-    http://localhost/get_data/lc_hms?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=csv&amount=all
- 
- Example:
-   http://localhost/get_data/lc_hms_nearest?catalogs=ztf&hms=%279h17m20.26793280000689s%20+4h34m32.414496000003936s%27&radius=0.0002777&format=votable&amount=nearest 
-```
 ## How use a only Freya
 If you want use Freya but without installing, you can use Freya's methods "DataLcDegree(),DataLcHms()".
 ```
@@ -330,6 +268,15 @@ data_one_deg = DataLcDegree(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=
 data_all_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=False).get_data()
 data_one_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=True).get_data()
 ```
+
+# FreyaAPI
+
+If use the FreyaAPI, you can create the new API with CLI freya-admin or 
+donwload from the github [FreyaAPI](https://github.com/fernandezeric/FreayaAPI).
+
+Into github have the instruction of the use FreyaAPI, and how to as add the new resources with the freya-admin.
+
+
 # Build with 🛠️
 * Python : 3.9
 ###

@@ -13,11 +13,18 @@ class ConfigureZTF():
     """
     Parameters:
     ------------
-    ra : (float) Right ascension
-    dec :  (float) Declination
-    hms : (string) HH:MM:SS
-    radius: (float) Search radius
-    format: (string) csv or votable
+    ra : (float) 
+        Right ascension
+    dec :  (float) 
+        Declination
+    hms : (string) 
+        ICRS
+    radius: (float) 
+        Search radius
+    format: (string) 
+        csv or votable
+    nearest: (bool)
+        True or False
     """
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
