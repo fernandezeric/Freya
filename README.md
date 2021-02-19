@@ -93,8 +93,6 @@ Need to be completed such that
         return all light curves data from all object find in area 
         described in ICRS with specific radius or return the data
         from object most close. Then data return un csv/votable depent of format.
-
-Opcional you can use 'methods.py' for not overburden 'configure.py' but yo can only write in 'configure.py'
 ```
 * For example, ztf is default catalog inside in Freya. 
 
@@ -263,10 +261,10 @@ If you want use Freya but without installing, you can use Freya's methods "DataL
 ```
 from Freya_alerce.catalogs.core.data_lc import DataLcDegree,DataLcHms
 
-data_all_deg = DataLcDegree(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv',nearest=False).get_data()
-data_one_deg = DataLcDegree(catalog='ztf',ra=139.33444972,dec=68.6350604,radius=0.0002777,format='csv',nearest=True).get_data()
-data_all_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=False).get_data()
-data_one_hms = DataLcHms(catalog='ztf',hms='9h17m20.26793280000689s +4h34m32.414496000003936s',radius=0.0002777,format='votable',nearest=True).get_data()
+data_all_deg = DataLcDegree(catalog,ra,dec,radius,format,nearest).get_data()
+data_one_deg = DataLcDegree(catalog,ra,dec,radius,format,nearest).get_data()
+data_all_hms = DataLcHms(,radius,format='votable',nearest).get_data()
+data_one_hms = DataLcHms(,radius,format='votable',nearest).get_data()
 ```
 
 # FreyaAPI

@@ -8,9 +8,10 @@ need use ra and dec or hms, so that's why kwargs is used.
 """
 
 from Freya_alerce.catalogs.PS1.methods import MethodsPS1 as mps1
+from Freya_alerce.catalogs.core.abstract_catalog import BaseCatalog
 from Freya_alerce.core.utils import Utils
 
-class ConfigurePS1():
+class ConfigurePS1(BaseCatalog):
     """
     Parameters:
     ------------

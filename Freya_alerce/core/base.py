@@ -3,13 +3,13 @@ import sys
 import subprocess
 import tempfile
 import shutil
-import Freya_alerce.catalogs # __path__
-import Freya_alerce.files.list_file as files_
 import zipfile #read zip files
+import Freya_alerce.files # __path__
 from Freya_alerce.files.verify_file import Verify
+from Freya_alerce.files.list_file import ListFiles
 
 
-class Base():
+class Base(object):
     """
     Base class to command line Freya, contains method for add new catalog inside Freya or in local folder, 
     created new local folder, new api (FreyaAPI), and add resources in FreyaAPI.
@@ -74,7 +74,7 @@ class Base():
         if Verify().verify_catalog_inside(self.name) or Verify().verify_catalog_local(self.name):  
             raise TypeError ('catalog already created')
         
-        dir_catalogs = Freya_alerce.catalogs.__path__[0]
+        dir_catalogs = self.path
         path_new_catalog = os.path.join(dir_catalogs,self.name)
         path_tample_files_ = self.path_files_template_from()
 
@@ -82,19 +82,19 @@ class Base():
             with tempfile.TemporaryDirectory() as tmpdir:
                 #print('created temporary directory', tmpdirname)
                 extract_zip = zipfile.ZipFile(path_tample_files_)
-                if self.source == 'api':
-                    listOfFileNames = ['configure.py','methods.py','__init__.py']
+                if self.source == 'api' or self.source == 'other':
+                    listOfFileNames = ListFiles().files_api()
                 elif self.source == 'db':
-                    listOfFileNames = ['configure.py','methods.py','connect.py','__init__.py']
+                    listOfFileNames = ListFiles().files_db()
                 for fileName in listOfFileNames:
                     extract_zip.extract(fileName, tmpdir)
                 extract_zip.close()
                 # Replace word 'NAME' from the name catalog
-                if self.source == 'api':
-                    list_path = [os.path.join(tmpdir,'configure.py'),os.path.join(tmpdir,'methods.py')]
+                if self.source == 'api' or self.source == 'other':
+                    list_path = [os.path.join(tmpdir,f) for f in ListFiles().files_api()]
                 elif self.source == 'db':
-                    list_path = [os.path.join(tmpdir,'configure.py'),os.path.join(tmpdir,'methods.py'),os.path.join(tmpdir,'connect.py')]
-                files_.Files(list_path,'NAME',self.name).replace_in_files()
+                    list_path = [os.path.join(tmpdir,f) for f in ListFiles().files_db()]
+                ListFiles().replace_in_files(list_path,'NAME',self.name)
                 shutil.copytree(tmpdir,path_new_catalog)
         except OSError as error:
             print(error)  
@@ -127,24 +127,24 @@ class Base():
                 path_new_catalog_ = os.path.join(tmpdir,f'{self.name}')
                 os.mkdir(path_new_catalog_)
                 #
-                if self.source == 'api':
-                    listOfFileNames = ['configure.py','methods.py','__init__.py']
+                if self.source == 'api' or self.source == 'other':
+                    listOfFileNames = ListFiles().files_api()
                 elif self.source == 'db':
-                    listOfFileNames = ['configure.py','methods.py','connect.py','__init__.py']
+                    listOfFileNames = ListFiles().files_db()
                 for fileName in listOfFileNames:
                     extract_zip.extract(fileName, path_new_catalog_)
                 extract_zip.close()
                 # Replace word 'NAME' from the name catalog
-                if self.source == 'api':
-                    list_path = [os.path.join(path_new_catalog_,'configure.py'),os.path.join(path_new_catalog_,'methods.py')]
+                if self.source == 'api' or self.source == 'other':
+                    list_path = [os.path.join(path_new_catalog_,f) for f in ListFiles().files_api()]
                 elif self.source == 'db':
-                    list_path = [os.path.join(path_new_catalog_,'configure.py'),os.path.join(path_new_catalog_,'methods.py'),os.path.join(path_new_catalog_,'connect.py')]
+                    list_path = [os.path.join(path_new_catalog_,f) for f in ListFiles().files_db()]
                 #
-                files_.Files(list_path,'Freya_alerce.catalogs.','').replace_in_files()
-                files_.Files(list_path,'NAME',self.name).replace_in_files()
+                ListFiles().replace_in_files(list_path,'Freya_alerce.catalogs.','')
+                ListFiles().replace_in_files(list_path,'NAME',self.name)
                 #
                 list_path_ = [os.path.join(tmpdir,'setup.py')]
-                files_.Files(list_path_,'NAME',self.name).replace_in_files()
+                ListFiles().replace_in_files(list_path_,'NAME',self.name)
                 # 
                 shutil.copytree(tmpdir,path_new_catalog)
         except OSError as error:
@@ -184,7 +184,7 @@ class Base():
         # Get path to template files
         path_template_resource = self.path_file_template_resource()
         # New path 
-        path_api =  self.path
+        path_api = self.path
         # 
         path_new_resource = os.path.join(path_api,f'app/resources/{self.name}_resource')
 
@@ -195,7 +195,7 @@ class Base():
                 extract_zip.extractall(tmpdir)
                 extract_zip.close()
                 list_path = [os.path.join(tmpdir,'resource.py')]
-                files_.Files(list_path,'NAME',self.name).replace_in_files()
+                ListFiles().replace_in_files(list_path,'NAME',self.name)
                 shutil.copytree(tmpdir,path_new_resource)
         except OSError as error:
             print(error)    
@@ -204,13 +204,13 @@ class Base():
         """
         Rename catalog inside Freya
         """
-        dir_catalogs = Freya_alerce.catalogs.__path__[0]
+        dir_catalogs = self.path
         try:
             #replace name catalog inside files
             path = os.path.join(dir_catalogs,self.name)
             list_path = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
             list_path = [os.path.join(path,f) for f in list_path] # add 
-            files_.Files(list_path,self.name,self.new_name).replace_in_files()
+            ListFiles().replace_in_files(list_path,self.name,self.new_name)
             #replace folder name
             path_ = path.split("/")
             path_[-1] = self.new_name
@@ -223,7 +223,7 @@ class Base():
         """
         Delete catalog inside Freya
         """
-        dir_catalogs = Freya_alerce.catalogs.__path__[0]
+        dir_catalogs = self.path
         try:
             path = os.path.join(dir_catalogs,self.name)
             shutil.rmtree(path)

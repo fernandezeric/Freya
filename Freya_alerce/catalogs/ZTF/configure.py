@@ -7,9 +7,10 @@ need use ra and dec or hms, so that's why kwargs is used.
 """
 
 from Freya_alerce.catalogs.ZTF.methods import MethodsZTF as mztf
+from Freya_alerce.catalogs.core.abstract_catalog import BaseCatalog
 from Freya_alerce.core.utils import Utils
 
-class ConfigureZTF():
+class ConfigureZTF(BaseCatalog):
     """
     Parameters:
     ------------

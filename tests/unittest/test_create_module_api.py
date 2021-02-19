@@ -1,27 +1,17 @@
 import tempfile
-import shutil
-import zipfile
-import os
-import unittest
 
+from unittest import TestCase
 from Freya_alerce.core.base import Base
-import Freya_alerce.files.list_file as files_
 
-class TestCreateModuleApi(unittest.TestCase):
+class TestCreateModule(TestCase):
     
     def setUp(self):
         self.tmp_test = tempfile.TemporaryDirectory()
 
     def test(self):
-        path_template_api = Base(source='api').path_files_template_from()
-        extract_zip = zipfile.ZipFile(path_template_api)
-        listOfFileNames = ['configure.py','methods.py','__init__.py']
-        for fileName in listOfFileNames:
-            extract_zip.extract(fileName, self.tmp_test.name)
-        extract_zip.close()
-
-        list_path = [os.path.join(self.tmp_test.name,'configure.py'),os.path.join(self.tmp_test.name,'methods.py')]
-        files_.Files(list_path,'NAME','test').replace_in_files()
+        Base(name='test_api',source='api',path=self.tmp_test.name).create_module_catalog()
+        Base(name='test_db',source='db',path=self.tmp_test.name).create_module_catalog()
+        #Base(name='test_db',source='other',path=self.tmp_test.name).create_module_catalog()
 
     def tearDown(self):
         self.tmp_test.cleanup()

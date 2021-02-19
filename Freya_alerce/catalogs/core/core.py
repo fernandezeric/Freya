@@ -7,7 +7,7 @@ and if not exist try import catalog from local folder. The data get is all ligh 
 degrees (ra,dec,radius) or use the format hh:mm:ss (hh:mm:ss,radius).
 Other option is get the only light curve of object most close to area selected.
 """
-class GetData ():
+class GetData(object):
     """
     Parameters
     -------------------------------------- 

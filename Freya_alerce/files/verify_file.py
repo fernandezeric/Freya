@@ -6,7 +6,7 @@ import importlib
 """
 Class to verify if exist catalog inside Freya or in local folder, and if source is permitted.
 """
-class Verify():
+class Verify(object):
 
     """
     Verify name catalog already exist inside Freya, if exist return true.
@@ -52,6 +52,6 @@ class Verify():
     """  
     def verify_source(self,source):
         self.source = source
-        if self.source not in ['api','db']:
+        if self.source not in ['api','db','other']:
             return True
         return False
