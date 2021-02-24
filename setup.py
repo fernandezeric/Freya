@@ -29,5 +29,6 @@ setup(
       python_requires='>=3.9',
       install_requires=['astropy==4.2',
                         'pandas==1.2.0',
-                        'requests==2.25.1']
+                        'requests==2.25.1',
+                        'GitPython==3.1.13']
 )

@@ -5,6 +5,7 @@ import tempfile
 import shutil
 import zipfile #read zip files
 import Freya_alerce.files # __path__
+from git import Repo
 from Freya_alerce.files.verify_file import Verify
 from Freya_alerce.files.list_file import ListFiles
 
@@ -163,12 +164,16 @@ class Base(object):
         subprocess.check_call([sys.executable, '-m','pip', 'install','-r',os.path.join(os.path.dirname(__file__),'requirementsAPI.txt')])
         # Extract template data
         try: 
-            with tempfile.TemporaryDirectory() as tmpdir:
-                #print('created temporary directory', tmpdirname)
-                extract_zip = zipfile.ZipFile(path_template_api)
-                extract_zip.extractall(tmpdir)
-                extract_zip.close()
-                shutil.copytree(tmpdir,path_new_api)
+            # with tempfile.TemporaryDirectory() as tmpdir:
+            #     #print('created temporary directory', tmpdirname)
+            #     extract_zip = zipfile.ZipFile(path_template_api)
+            #     extract_zip.extractall(tmpdir)
+            #     extract_zip.close()
+            #     shutil.copytree(tmpdir,path_new_api)
+            tmpdir = tempfile.TemporaryDirectory()
+            Repo.clone_from("https://github.com/fernandezeric/FreyaAPI", tmpdir.name)
+            shutil.copytree(os.path.join(tmpdir.name,'FreyaAPI'),path_new_api)
+            tmpdir.cleanup()
         except OSError as error:
             print(error)    
     
@@ -179,14 +184,16 @@ class Base(object):
         """
         # Verify 
         if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) and not Verify().verify_catalog_local_(self.name):
-            raise TypeError ('first created catalog inside Freya or local ')
+            raise TypeError ('First created catalog inside Freya or local ')
         
         # Get path to template files
         path_template_resource = self.path_file_template_resource()
-        # New path 
+        # Path FreyaAPI 
         path_api = self.path
-        # 
-        path_new_resource = os.path.join(path_api,f'app/resources/{self.name}_resource')
+        if path_api.split('/')[-1] != 'FreyaAPI':
+            raise TypeError ('Needs to be on the root path of FreyaAPI')
+        else:
+            path_new_resource = os.path.join(path_api,f'app/main/resources_freya/{self.name}_resource')
 
         try: 
             with tempfile.TemporaryDirectory() as tmpdir:
