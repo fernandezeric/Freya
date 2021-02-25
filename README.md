@@ -263,10 +263,10 @@ from Freya_alerce.catalogs.core.data_lc import DataLcDegree,DataLcHms
 
 data_all_deg = DataLcDegree(catalog,ra,dec,radius,format,nearest).get_data()
 data_one_deg = DataLcDegree(catalog,ra,dec,radius,format,nearest).get_data()
-data_all_hms = DataLcHms(,radius,format='votable',nearest).get_data()
-data_one_hms = DataLcHms(,radius,format='votable',nearest).get_data()
+data_all_hms = DataLcHms(catalog,radius,format,nearest).get_data()
+data_one_hms = DataLcHms(catalog,radius,format,nearest).get_data()
 ```
-
+Reed the demo in this gitHub for complete example.
 # FreyaAPI
 
 If use the FreyaAPI, you can create the new API with CLI freya-admin or 
