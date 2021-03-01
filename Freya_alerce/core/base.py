@@ -158,21 +158,14 @@ class Base(object):
         """
         # Get the path template data for FreyaAPI
         path_template_api = self.path_file_template_new_api()
-        # Get the path when create new api
+        # Path create new api
         path_new_api =  os.path.join(self.path,'FreyaAPI')
-        # Install Flask - Astropy - Flask-restplus
-        subprocess.check_call([sys.executable, '-m','pip', 'install','-r',os.path.join(os.path.dirname(__file__),'requirementsAPI.txt')])
-        # Extract template data
         try: 
-            # with tempfile.TemporaryDirectory() as tmpdir:
-            #     #print('created temporary directory', tmpdirname)
-            #     extract_zip = zipfile.ZipFile(path_template_api)
-            #     extract_zip.extractall(tmpdir)
-            #     extract_zip.close()
-            #     shutil.copytree(tmpdir,path_new_api)
-            tmpdir = tempfile.TemporaryDirectory()
+            tmpdir = tempfile.TemporaryDirectory() # path temp
             Repo.clone_from("https://github.com/fernandezeric/FreyaAPI", tmpdir.name)
-            shutil.copytree(os.path.join(tmpdir.name,'FreyaAPI'),path_new_api)
+            path_temp = os.path.join(tmpdir.name,'FreyaAPI')
+            subprocess.check_call([sys.executable, '-m','pip', 'install','-r',os.path.join(path_temp,'requirements.txt')])
+            shutil.copytree(path_temp,path_new_api)
             tmpdir.cleanup()
         except OSError as error:
             print(error)    
