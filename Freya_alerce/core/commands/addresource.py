@@ -1,7 +1,7 @@
-from Freya_alerce.core.base import Base
+from Freya_alerce.core.commands.base_api import BaseAPI
 
 
-class AddResource(Base):
+class AddResource(BaseAPI):
     """
     Add resource to FreyaAPI, need call inside FreyaAPI.
 

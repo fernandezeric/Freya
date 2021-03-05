@@ -1,7 +1,7 @@
-from Freya_alerce.core.base import Base
+from Freya_alerce.core.commands.base_api import BaseAPI
 
 
-class NewAPI(Base):
+class NewAPI(BaseAPI):
     """
     Created new FreyaAPI.
     """

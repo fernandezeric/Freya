@@ -1,6 +1,7 @@
 import fileinput #replace into files
-import Freya_alerce.catalogs # __path__
+import Freya_alerce.files # __path__
 import os
+
 
 """
 Class to replace words in files.
@@ -30,3 +31,15 @@ class ListFiles(object):
         Return names files use in data base.
         """
         return ['configure.py','connect.py','__init__.py']
+
+    def path_files__from_(self):
+        """
+        Return path templeta file from db/api.
+        """
+        return os.path.join(Freya_alerce.files.__path__[0],'file_templates','from_.zip')
+
+    def path_files_resource(self):
+        """
+        Get the path resource generic.
+        """
+        return os.path.join(Freya_alerce.files.__path__[0],'file_templates','newresource.zip')

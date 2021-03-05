@@ -1,4 +1,4 @@
-from Freya_alerce.core.base import Base
+from Freya_alerce.core.commands.base_freya import Base
 
 class RenameCatalog(Base):
     """
