@@ -53,7 +53,7 @@ class BaseAPI(object):
         or in the local catalogs folder.
         """
         # Verify 
-        if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name) and not Verify().verify_catalog_local_(self.name):
+        if not Verify().verify_catalog_inside(self.name) and not Verify().verify_catalog_local(self.name):
             raise TypeError ('First created catalog inside Freya or local ')
         
         # Get path to template files

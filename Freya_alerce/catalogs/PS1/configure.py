@@ -9,12 +9,11 @@ need use ra and dec or hms, so that's why kwargs is used.
 
 import requests
 import io
-
+import numpy as np
 from astropy.io import ascii
 from astropy.table import Table,vstack
 from astropy.coordinates import SkyCoord
 from astropy import units as u
-from astropy.io.votable import parse,parse_single_table, writeto
 
 from Freya_alerce.catalogs.core.abstract_catalog import BaseCatalog
 from Freya_alerce.core.utils import Utils
@@ -31,8 +30,6 @@ class ConfigurePS1(BaseCatalog):
         ICRS
     radius: (float) 
         Search radius
-    format: (string) 
-        csv or votable
     nearest: (bool)
         True or False
     """
@@ -41,7 +38,6 @@ class ConfigurePS1(BaseCatalog):
         self.dec = kwagrs.get('dec')
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
-        self.format = kwagrs.get('format')
         self.nearest = kwagrs.get('nearest')
 
     def ps1cone(self, format='csv',baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs", **kw):
@@ -54,7 +50,6 @@ class ConfigurePS1(BaseCatalog):
         data['ra'] = self.ra
         data['dec'] = self.dec
         data['radius'] = self.radius
-        #data['format'] = self.format
         return self.ps1search(format=format,baseurl=baseurl, **data)
 
     def ps1search(self,format='csv',table="mean",release="dr1",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
@@ -69,10 +64,9 @@ class ConfigurePS1(BaseCatalog):
         data['columns'] = '[{}]'.format(','.join(columns))
         r = requests.get(url, params=data)
         r.raise_for_status()
-        if self.format == "json":
-            return r.json()
-        else:
-            return r.text
+        # if self.format == "json":
+        #     return r.json()
+        return r.text
 
     def ps1ids(self):
         """Get ids (ps1 id) of objects in a radius with respect to ra and dec
@@ -103,6 +97,16 @@ class ConfigurePS1(BaseCatalog):
             return results['objID']
 
 
+    def filter_id_to_str(self,filer_id):
+        id2filter = np.array(list('grizy'))
+        filer_str = id2filter[filer_id-1]
+        return filer_str
+
+    def flux_to_mag(self,flux):
+        ## convert flux in Jy to magnitudes
+        mag = -2.5*np.log10(flux) + 8.90
+        return mag
+
     def ps1curves(self):
         """Get light curves of objects in specific radio with respect ra and dec, and possible return the object most nearest to radio
         Parameters
@@ -123,55 +127,63 @@ class ConfigurePS1(BaseCatalog):
         #split ids in dict
         for id in ids:
             dconstraints = {'objID': id}
-            dresults = self.ps1search(format =self.format,table='detection',release='dr2',columns=dcolumns,**dconstraints)
-            if(self.format == 'csv'):
-                if first :
-                    dresults_ = ascii.read(dresults)
-                    first = False
-                #
-                else :
-                    dresults_ = vstack([dresults_,ascii.read(dresults)])
-                # 
-            elif(self.format == 'votable'):
-                votable = dresults.encode(encoding='UTF-8')
-                bio = io.BytesIO(votable)
-                votable = parse(bio)
-                table = parse_single_table(bio).to_table()
-                if first :
-                    dresults_ = table
-                    first = False
+            dresults = self.ps1search(format ='csv',table='detection',release='dr2',columns=dcolumns,**dconstraints)
 
-                else :
-                    dresults_ = vstack([dresults_,table])
-                               
-        
-        #remane colmun objID -> oid and obsTime -> mjd
-        if (self.format == 'csv'): 
-            dresults_.rename_column('objID', 'oid')
-            dresults_.rename_column('obsTime', 'mjd')
-            buf = io.StringIO()
-            ascii.write(dresults_,buf,format='csv')
-            ps1dic =  buf.getvalue()
-            return ps1dic
-            
-        elif (self.format == 'votable'):
-            dresults_.rename_column('objID', 'oid')
-            dresults_.rename_column('obsTime', 'mjd')
-            buf = io.BytesIO()
-            writeto(dresults_,buf)
-            ps1dic = (buf.getvalue().decode("utf-8"))
-            return ps1dic
+            if first :
+                dresults_ = ascii.read(dresults)
+                filer_str = self.filter_id_to_str(dresults_['filterID'])
+                mag = self.flux_to_mag(dresults_['psfFlux'])
+                ps1_matrix = np.array([dresults_['objID'],dresults_['ra'],dresults_['dec'],dresults_['obsTime'],mag,filer_str]).T
+                first = False
+            #
+            else :
+                r_aux = ascii.read(dresults)
+                filer_str = self.filter_id_to_str(r_aux['filterID'])
+                mag = self.flux_to_mag(r_aux['psfFlux'])
+                ps1_matrix_aux = np.array([r_aux['objID'],r_aux['ra'],r_aux['dec'],r_aux['obsTime'],mag,filer_str]).T
+                ps1_matrix = vstack([ps1_matrix,ps1_matrix_aux])
+        return ps1_matrix
 
     def get_lc_deg(self):
         """
-        Return all ligth curves data or the most close object, inside degree area from PS1 catalog.
+        Get all ligth curves data or the most close object, inside degree area from PS1 catalog.
+        Return
+        -------
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+            obj : double
+                Id of object in catalog
+            ra : double
+                Right ascension
+            dec : double
+                Declination
+            mjd : double
+                Julian day
+            mg : double
+                Magnitud
+            filter : str
+                Band 
         """
         data_return = self.ps1curves()
         return data_return
 
     def get_lc_hms(self):
         """
-        Return all ligth curves data or the most close object, inside hh:mm:ss area from PS1 catalog.
+        Get all ligth curves data or the most close object, inside hh:mm:ss area from PS1 catalog.
+        Return
+        -------
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+            obj : double
+                Id of object in catalog
+            ra : double
+                Right ascension
+            dec : double
+                Declination
+            mjd : double
+                Julian day
+            mg : double
+                Magnitud
+            filter : str
+                Band 
         """
         ra_,dec_ = Utils().hms_to_deg(self.hms)
         self.ra = ra_

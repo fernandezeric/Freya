@@ -7,12 +7,8 @@ need use ra and dec or hms, so that's why kwargs is used.
 """
 import requests
 import io
-import pandas
-
+import numpy as np
 from astropy.io import ascii
-from astropy.coordinates import SkyCoord
-from astropy import units as u
-from astropy.io.votable import parse,parse_single_table,from_table, writeto
 
 from Freya_alerce.catalogs.core.abstract_catalog import BaseCatalog
 from Freya_alerce.core.utils import Utils
@@ -29,8 +25,6 @@ class ConfigureZTF(BaseCatalog):
         ICRS
     radius: (float) 
         Search radius
-    format: (string) 
-        csv or votable
     nearest: (bool)
         True or False
     """
@@ -39,22 +33,19 @@ class ConfigureZTF(BaseCatalog):
         self.dec = kwagrs.get('dec')
         self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
-        self.format = kwagrs.get('format')
         self.nearest = kwagrs.get('nearest')
 
     def id_nearest (self,results):
-        """ Get object id most closet to ra dec use a min angle
-        Parameters
-        ----------
+        """ Get the idex of object id most closet to ra dec use a min angle
         """
-        angle = []
-        c1 = SkyCoord(ra=self.ra,dec=self.dec,unit=u.degree)
+        matrix = []
         for group in results.groups:
-            c2 = SkyCoord(group['ra'][0],group['dec'][0],unit=u.degree)
-            angle.append(c1.separation(c2))
-        return angle.index(min(angle))
+            matrix.append([group['ra'][0],group['dec'][0]])
+        matrix = np.array(matrix)
+        return_ = Utils().get_nearest(self.ra,self.dec,matrix)
+        return return_ 
 
-    def csv_format(self,result):
+    def get_matrix_data(self,result):
         ztfdic = ''
         result_ = ascii.read(result.text)
         if len(result_) <= 0:
@@ -66,42 +57,14 @@ class ConfigureZTF(BaseCatalog):
             
             result_ = result_.group_by('oid')
             minztf = self.id_nearest(result_)
-            
-            buf = io.StringIO()
-            ascii.write(result_.groups[minztf],buf,format='csv')
-            ztfdic =  buf.getvalue()
-            return ztfdic
-
+            ztf_matrix = np.array([result_.groups[minztf]['oid'],result_.groups[minztf]['ra'],
+                                    result_.groups[minztf]['dec'],result_.groups[minztf]['mjd'],
+                                    result_.groups[minztf]['mag'],result_.groups[minztf]['filtercode']]).T
+            return ztf_matrix
         # all objects in radius
         else:
-            ztfdic = result.text
-            return ztfdic
-
-    def votable_format(self,result):
-        ztfdic = ''
-        votable = result.text.encode(encoding='UTF-8')
-        bio = io.BytesIO(votable)
-        votable = parse(bio)
-        table = parse_single_table(bio).to_table()
-
-        if len(table) <= 0:
-            ztfdic['0'] = 'not found' 
-            return ztfdic #'not found'0
-
-
-        #the most close object to radius
-        if self.nearest is True:
-            tablas = table.group_by('oid')
-            minztf = self.id_nearest(tablas)
-            buf = io.BytesIO()
-            votable = from_table(tablas.groups[minztf])
-            writeto(votable,buf)
-            ztfdic = (buf.getvalue().decode("utf-8"))
-            return ztfdic
-        # all objects in radius
-        else :
-            ztfdic = result.text
-            return ztfdic
+            ztf_matrix = np.array([result_['oid'],result_['ra'],result_['dec'],result_['mjd'],result_['mag'],result_['filtercode']]).T
+            return ztf_matrix
 
     def zftcurves(self):
         """ Get light curves of ztf objects 
@@ -112,30 +75,58 @@ class ConfigureZTF(BaseCatalog):
         data = {}
         data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
         #data['BANDNAME']='r'
-        data['FORMAT'] = self.format
+        data['FORMAT'] = 'csv'#self.format
         result = requests.get(baseurl,params=data)
         ztfdic = ''
-        #self.csv_format(result)
         #return result
         if result.status_code != 200: 
             ztfdic = result.status_code 
             return ztfdic
         #if select csv 
-        if self.format == 'csv':
-            return self.csv_format(result)
-        # if select VOTable 
-        elif self.format == 'votable':
-            return self.votable_format(result)
+        else:
+            return self.get_matrix_data(result)
 
     def get_lc_deg(self):
         """
-        Return all ligth curves data or the most close object,inside degree area from ZTF catalog.
+        Get all ligth curves data or the most close object,inside degree area from ZTF catalog.
+        Return
+        -------
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+            obj : double
+                Id of object in catalog
+            ra : float
+                Right ascension
+            dec : float
+                Declination
+            mjd : float
+                Julian day
+            mg : float
+                Magnitud
+            filter : str
+                Band 
         """
         data_return = self.zftcurves() 
         return data_return
     
     def get_lc_hms(self):
-        """Return all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog"""
+        """
+        Get all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog
+        Return
+        -------
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+            obj : double
+                Id of object in catalog
+            ra : float
+                Right ascension
+            dec : float
+                Declination
+            mjd : float
+                Julian day
+            mg : float
+                Magnitud
+            filter : str
+                Band 
+        """
         ra_,dec_ = Utils().hms_to_deg(self.hms)
         self.ra = ra_
         self.dec = dec_

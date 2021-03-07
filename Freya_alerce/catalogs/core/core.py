@@ -1,4 +1,11 @@
 import importlib
+import io
+import numpy as np
+import pandas as pd
+from astropy.io import ascii
+from astropy.io.votable import parse,parse_single_table,from_table, writeto
+from astropy.io.votable.tree import VOTableFile, Resource, Table, Field
+from astropy.table import Table, Column
 from Freya_alerce.files.verify_file import Verify
 
 """
@@ -38,6 +45,26 @@ class GetData(object):
     
 
     def generic_call_data(self,call_method):
+        """
+        Get the LC of catalog called in format CSV/VOTable. 
+        Return
+        -------
+        Columns : ['obj','ra','dec','mjd','mg','filter','catalog'].
+            obj : double
+                Id of object in catalog
+            ra : float
+                Right ascension
+            dec : float
+                Declination
+            mjd : float
+                Julian day
+            mg : float
+                Magnitud
+            filter : str
+                Band
+            catalog : str
+                Catalog source
+        """
         try :
             """
             Search catalog insiede Freya, if not exist search inside local folder.
@@ -55,9 +82,21 @@ class GetData(object):
             class_ =  getattr(mod,f'Configure{self.catalog}') 
             # Call method especific of class
             if call_method == 'get_lc_deg':
-                method_ = class_(ra=self.ra,dec=self.dec,radius=self.radius,format=self.format,nearest=self.nearest).get_lc_deg()      
+                method_ = class_(ra=self.ra,dec=self.dec,radius=self.radius,nearest=self.nearest).get_lc_deg()      
             elif call_method == 'get_lc_hms':
-                method_ = class_(hms=self.hms,radius=self.radius,format=self.format,nearest=self.nearest).get_lc_hms()
-            return method_
+                method_ = class_(hms=self.hms,radius=self.radius,nearest=self.nearest).get_lc_hms()
+            # set de estructure return with format
+            if self.format == 'csv':
+                row_catalog = np.full(method_.shape[0],self.catalog)
+                df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],'dec':method_[:,2],'mjd':method_[:,3],'mag':method_[:,4],'filter':method_[:,5],'catalog':row_catalog})
+                return df.to_csv(index=False)
+            elif self.format == 'votable':
+                row_catalog = np.full(method_.shape[0],self.catalog)
+                method_ = np.column_stack((method_, row_catalog))
+                t = Table(rows=method_,names=('obj','ra','dec','mjd','mag','filter','catalog'))
+                votable= VOTableFile.from_table(t)
+                buf = io.BytesIO()
+                writeto(votable,buf)
+                return buf.getvalue().decode("utf-8")
         except :
             print(f'No find the catalog : {self.catalog}')

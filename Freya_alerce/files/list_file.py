@@ -2,15 +2,22 @@ import fileinput #replace into files
 import Freya_alerce.files # __path__
 import os
 
-
-"""
-Class to replace words in files.
-"""
 class ListFiles(object):
 
     def replace_in_files(self,paths,raplace_word,word):
         """
         Replace a 'word' for 'new word' in specific file.
+        Parameters
+        ----------
+        paths: list
+            List of paths of file what replece string.
+        relace_word: string
+            Original string in file.
+        word: string
+            New string to replace.
+        Return
+        ----------
+
         """
         self.list_path = paths
         self.replace_word = raplace_word
@@ -22,24 +29,44 @@ class ListFiles(object):
     
     def files_api(self):
         """
-        Return names files use in api.
+        Get names files use in api.
+        Parameters
+        ----------
+        Return
+        ----------
+        Return list with name files necessary to extract for api source.
         """
         return ['configure.py','__init__.py']
 
     def files_db(self):
         """
-        Return names files use in data base.
+        Get names files use in data base.
+        Parameters
+        ----------
+        Return
+        ----------
+        Return list with name files necessary to extract for data base source.
         """
         return ['configure.py','connect.py','__init__.py']
 
     def path_files__from_(self):
         """
-        Return path templeta file from db/api.
+        Get path templeta file from db/api.
+        Parameters
+        ----------
+        Return
+        ----------
+        Return path of file template for new module-catalog.
         """
         return os.path.join(Freya_alerce.files.__path__[0],'file_templates','from_.zip')
 
     def path_files_resource(self):
         """
         Get the path resource generic.
+        Parameters
+        ----------
+        Return
+        ----------
+        Return path of file template for new resource of and api.
         """
         return os.path.join(Freya_alerce.files.__path__[0],'file_templates','newresource.zip')
