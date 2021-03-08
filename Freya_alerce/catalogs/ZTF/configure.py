@@ -75,14 +75,13 @@ class ConfigureZTF(BaseCatalog):
         data = {}
         data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
         #data['BANDNAME']='r'
-        data['FORMAT'] = 'csv'#self.format
+        data['FORMAT'] = 'csv'
         result = requests.get(baseurl,params=data)
         ztfdic = ''
         #return result
         if result.status_code != 200: 
             ztfdic = result.status_code 
             return ztfdic
-        #if select csv 
         else:
             return self.get_matrix_data(result)
 

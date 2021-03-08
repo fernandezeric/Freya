@@ -88,12 +88,18 @@ class GetData(object):
             # set de estructure return with format
             if self.format == 'csv':
                 row_catalog = np.full(method_.shape[0],self.catalog)
-                df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],'dec':method_[:,2],'mjd':method_[:,3],'mag':method_[:,4],'filter':method_[:,5],'catalog':row_catalog})
+                df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],'dec':method_[:,2],'mjd':method_[:,3],
+                                   'mag':method_[:,4],'filter':method_[:,5],'catalog':row_catalog})
                 return df.to_csv(index=False)
             elif self.format == 'votable':
                 row_catalog = np.full(method_.shape[0],self.catalog)
                 method_ = np.column_stack((method_, row_catalog))
-                t = Table(rows=method_,names=('obj','ra','dec','mjd','mag','filter','catalog'))
+                names_column = ['obj','ra','dec','mjd','mag','filter','catalog']
+                descriptions_column = ['Id of object in catalog the original catalog',
+                                        'Right ascension','Declination','Julian Day',
+                                        'Magnitude','Filter code','Original Catalog']
+                #dtype_column = [] # dtype=dtype_column
+                t = Table(rows=method_,names=names_column,descriptions=descriptions_column)
                 votable= VOTableFile.from_table(t)
                 buf = io.BytesIO()
                 writeto(votable,buf)

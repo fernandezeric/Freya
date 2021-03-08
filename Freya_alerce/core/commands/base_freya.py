@@ -101,32 +101,32 @@ class Base(object):
         except OSError as error:
             print(error)  
 
-        def rename_catalog(self):
-            """
-            Rename catalog inside Freya
-            """
-            dir_catalogs = self.path
-            try:
-                #replace name catalog inside files
-                path = os.path.join(dir_catalogs,self.name)
-                list_path = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
-                list_path = [os.path.join(path,f) for f in list_path] # add 
-                ListFiles().replace_in_files(list_path,self.name,self.new_name)
-                #replace folder name
-                path_ = path.split("/")
-                path_[-1] = self.new_name
-                path_ = "/".join(path_)
-                os.rename(path, path_)
-            except OSError as error:
-                print(error)    
-            
-        def delete_catalog(self):
-            """
-            Delete catalog inside Freya
-            """
-            dir_catalogs = self.path
-            try:
-                path = os.path.join(dir_catalogs,self.name)
-                shutil.rmtree(path)
-            except OSError as error:
-                print(error)
+    def rename_catalog(self):
+        """
+        Rename catalog inside Freya
+        """
+        dir_catalogs = self.path
+        try:
+            #replace name catalog inside files
+            path = os.path.join(dir_catalogs,self.name)
+            list_path = [f for f in os.listdir(path) if os.path.isfile(os.path.join(path,f))]
+            list_path = [os.path.join(path,f) for f in list_path] # add 
+            ListFiles().replace_in_files(list_path,self.name,self.new_name)
+            #replace folder name
+            path_ = path.split("/")
+            path_[-1] = self.new_name
+            path_ = "/".join(path_)
+            os.rename(path, path_)
+        except OSError as error:
+            print(error)    
+        
+    def delete_catalog(self):
+        """
+        Delete catalog inside Freya
+        """
+        dir_catalogs = self.path
+        try:
+            path = os.path.join(dir_catalogs,self.name)
+            shutil.rmtree(path)
+        except OSError as error:
+            print(error)

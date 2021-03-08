@@ -1,7 +1,7 @@
 import tempfile
 
 from unittest import TestCase
-from Freya_alerce.core.base import Base
+from Freya_alerce.core.commands.base_freya import Base
 from Freya_alerce.files.list_file import ListFiles
 
 class TestRenameCatalog(TestCase):

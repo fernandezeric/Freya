@@ -1,7 +1,7 @@
 import tempfile
 
 from unittest import TestCase
-from Freya_alerce.core.base import Base
+from Freya_alerce.core.commands.base_api import BaseAPI
 
 
 class TestCreateApi(TestCase):
@@ -10,7 +10,7 @@ class TestCreateApi(TestCase):
         self.temp_FreyaApi = tempfile.TemporaryDirectory()
 
     def test(self):
-        Base(path=self.temp_FreyaApi.name).create_new_api()
+        BaseAPI(path=self.temp_FreyaApi.name).create_new_api()
 
     def tearDown(self):
         self.temp_FreyaApi.cleanup()

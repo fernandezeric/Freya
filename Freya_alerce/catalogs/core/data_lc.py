@@ -19,6 +19,11 @@ class DataLcDegree(GetData):
         super().__init__(**kwargs)
     
     def get_data(self):
+        """
+        Return
+        ------
+        Return the LCs from the selected catalog.
+        """
         return super().generic_call_data('get_lc_deg')
 
 class DataLcHms(GetData):
@@ -38,4 +43,9 @@ class DataLcHms(GetData):
         super().__init__(**kwargs)
 
     def get_data(self):
+        """
+        Return
+        ------
+        Return the LCs from the selected catalog.
+        """
         return super().generic_call_data('get_lc_hms')
