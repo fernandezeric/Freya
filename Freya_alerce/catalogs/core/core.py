@@ -27,10 +27,12 @@ class GetData(object):
     radius : (float)
         Search radius
     format : (string)
-        [csv,votable]
+        [numpy,csv,votable]
+    catalog: (string)
+        Catalog to search
     """
 
-    def __init__(self,radius=0.0002777,format='csv',nearest=False,**kwargs):
+    def __init__(self,radius=0.0002777,format='numpy',nearest=False,**kwargs):
         self.catalog = kwargs.get('catalog').strip().upper()
         #self.catalog = self.catalog.replace(self.catalog[0],self.catalog[0].upper(),1)
         self.ra = kwargs.get('ra')
@@ -49,7 +51,7 @@ class GetData(object):
         Get the LC of catalog called in format CSV/VOTable. 
         Return
         -------
-        Columns : ['obj','ra','dec','mjd','mg','filter','catalog'].
+        Columns : ['obj','ra','dec','mjd','mag','filter','catalog'].
             obj : double
                 Id of object in catalog
             ra : float
@@ -58,8 +60,10 @@ class GetData(object):
                 Declination
             mjd : float
                 Julian day
-            mg : float
+            mag : float
                 Magnitud
+            magerr : float
+                Magnitud error
             filter : str
                 Band
             catalog : str
@@ -72,9 +76,7 @@ class GetData(object):
             if Verify().verify_catalog_inside(self.catalog):
                 module = f'Freya_alerce.catalogs.{self.catalog}.configure'
             elif Verify().verify_catalog_local(self.catalog) :
-                module = f'LocalCatalogs.{self.catalog}.configure'
-            else :
-                module = f'{self.catalog}.configure'
+                 module = f'{self.catalog}.configure'
 
             # Import self.catalog
             mod = importlib.import_module(module)
@@ -86,18 +88,25 @@ class GetData(object):
             elif call_method == 'get_lc_hms':
                 method_ = class_(hms=self.hms,radius=self.radius,nearest=self.nearest).get_lc_hms()
             # set de estructure return with format
-            if self.format == 'csv':
+            if self.format == 'numpy':
                 row_catalog = np.full(method_.shape[0],self.catalog)
-                df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],'dec':method_[:,2],'mjd':method_[:,3],
-                                   'mag':method_[:,4],'filter':method_[:,5],'catalog':row_catalog})
+                method_ = np.column_stack((method_, row_catalog))
+                return method_
+            elif self.format == 'csv':
+                row_catalog = np.full(method_.shape[0],self.catalog)
+                df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],
+                                    'dec':method_[:,2],'mjd':method_[:,3],
+                                    'mag':method_[:,4],'magerr':method_[:,5],
+                                    'filter':method_[:,6],'catalog':row_catalog})
                 return df.to_csv(index=False)
             elif self.format == 'votable':
                 row_catalog = np.full(method_.shape[0],self.catalog)
                 method_ = np.column_stack((method_, row_catalog))
-                names_column = ['obj','ra','dec','mjd','mag','filter','catalog']
+                names_column = ['obj','ra','dec','mjd','mag','magerr','filter','catalog']
                 descriptions_column = ['Id of object in catalog the original catalog',
-                                        'Right ascension','Declination','Julian Day',
-                                        'Magnitude','Filter code','Original Catalog']
+                                        'Right ascension','Declination',
+                                        'Julian Day','Magnitude','Magnitude Error',
+                                        'Filter code','Original Catalog']
                 #dtype_column = [] # dtype=dtype_column
                 t = Table(rows=method_,names=names_column,descriptions=descriptions_column)
                 votable= VOTableFile.from_table(t)

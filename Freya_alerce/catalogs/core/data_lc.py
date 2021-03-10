@@ -11,7 +11,7 @@ class DataLcDegree(GetData):
     radius: (float) 
         Search radius | example: radius=0.0002777
     format: (string) 
-        csv or votable | example: format='votable'
+        [numpy,csv, votable] | example: format='votable'
     nearest: (bool)
         True or False | example: nearest=True
     """
@@ -35,7 +35,7 @@ class DataLcHms(GetData):
     radius: (float) 
         Search radius | example: radius=0.0002777
     format: (string) 
-        csv or votable | example: format='csv'
+        [numpy,csv, votable] | example: format='csv'
     nearest: (bool)
         True or False | example: nearest=False
     """

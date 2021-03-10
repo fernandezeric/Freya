@@ -59,11 +59,13 @@ class ConfigureZTF(BaseCatalog):
             minztf = self.id_nearest(result_)
             ztf_matrix = np.array([result_.groups[minztf]['oid'],result_.groups[minztf]['ra'],
                                     result_.groups[minztf]['dec'],result_.groups[minztf]['mjd'],
-                                    result_.groups[minztf]['mag'],result_.groups[minztf]['filtercode']]).T
+                                    result_.groups[minztf]['mag'],result_.groups[minztf]['magerr'],
+                                    result_.groups[minztf]['filtercode']]).T
             return ztf_matrix
         # all objects in radius
         else:
-            ztf_matrix = np.array([result_['oid'],result_['ra'],result_['dec'],result_['mjd'],result_['mag'],result_['filtercode']]).T
+            ztf_matrix = np.array([result_['oid'],result_['ra'],result_['dec'],result_['mjd'],
+                                    result_['mag'],result_['magerr'],result_['filtercode']]).T
             return ztf_matrix
 
     def zftcurves(self):
@@ -90,7 +92,7 @@ class ConfigureZTF(BaseCatalog):
         Get all ligth curves data or the most close object,inside degree area from ZTF catalog.
         Return
         -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag','magerr,'filter'].
             obj : double
                 Id of object in catalog
             ra : float
@@ -99,10 +101,12 @@ class ConfigureZTF(BaseCatalog):
                 Declination
             mjd : float
                 Julian day
-            mg : float
+            mag : float
                 Magnitud
+            magerr : float
+                Magnitud error
             filter : str
-                Band 
+                Band
         """
         data_return = self.zftcurves() 
         return data_return
@@ -112,7 +116,7 @@ class ConfigureZTF(BaseCatalog):
         Get all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog
         Return
         -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag',magerr,'filter'].
             obj : double
                 Id of object in catalog
             ra : float
@@ -121,10 +125,12 @@ class ConfigureZTF(BaseCatalog):
                 Declination
             mjd : float
                 Julian day
-            mg : float
+            mag : float
                 Magnitud
+            magerr : float
+                Magnitud error
             filter : str
-                Band 
+                Band
         """
         ra_,dec_ = Utils().hms_to_deg(self.hms)
         self.ra = ra_

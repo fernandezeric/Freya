@@ -9,19 +9,21 @@ class BaseCatalog(ABC):
 
         Return
         -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag','magerr,'filter'].
             obj : double
                 Id of object in catalog
-            ra : double
+            ra : float
                 Right ascension
-            dec : double
+            dec : float
                 Declination
-            mjd : double
+            mjd : float
                 Julian day
-            mg : double
+            mag : float
                 Magnitud
+            magerr : float
+                Magnitud error
             filter : str
-                Band 
+                Band
         """
         return ""
 
@@ -31,18 +33,20 @@ class BaseCatalog(ABC):
         Get all ligth curves data or the most close object, inside hh:mm:ss area.
         Return
         -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
+        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag','magerr,'filter'].
             obj : double
                 Id of object in catalog
-            ra : double
+            ra : float
                 Right ascension
-            dec : double
+            dec : float
                 Declination
-            mjd : double
+            mjd : float
                 Julian day
-            mg : double
+            mag : float
                 Magnitud
+            magerr : float
+                Magnitud error
             filter : str
-                Band 
+                Band
         """
         return ""
