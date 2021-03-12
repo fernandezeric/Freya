@@ -21,14 +21,12 @@ setup(
       zip_safe=False,
       classifiers=[
         "Programming Language :: Python :: 3.9",
-        "Operating System :: OS Linux",
+        "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
         "Natural Language :: English"
 
       ],
+      test_suite="tests",
       python_requires='>=3.9',
-      install_requires=['astropy==4.2',
-                        'pandas==1.2.0',
-                        'requests==2.25.1',
-                        'GitPython==3.1.13']
+      install_requires=[i.strip() for i in open("requirements.txt").readlines()]
 )

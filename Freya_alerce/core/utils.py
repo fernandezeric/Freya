@@ -61,7 +61,7 @@ class Utils:
 
     def flux_to_mag(self,flux):
         """
-        Convert flux in Jy to magnitudes, use -2.5*np.log10(flux) + 8.90 formule.
+        Convert flux in Jy to magnitudes, use -2.5*np.log10(flux) formule.
         Parameters
         ----------
         flux : numpy array
@@ -71,5 +71,5 @@ class Utils:
         ----------
         Return numpy array with magnitude 
         """
-        mag = -2.5*np.log10(flux) + 8.90
+        mag = -2.5*np.log10(flux)
         return mag

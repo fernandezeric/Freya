@@ -21,8 +21,6 @@ class ConfigureZTF(BaseCatalog):
         Right ascension
     dec :  (float) 
         Declination
-    hms : (string) 
-        ICRS
     radius: (float) 
         Search radius
     nearest: (bool)
@@ -31,7 +29,6 @@ class ConfigureZTF(BaseCatalog):
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')
-        self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.nearest = kwagrs.get('nearest')
 
@@ -87,7 +84,7 @@ class ConfigureZTF(BaseCatalog):
         else:
             return self.get_matrix_data(result)
 
-    def get_lc_deg(self):
+    def get_lc(self):
         """
         Get all ligth curves data or the most close object,inside degree area from ZTF catalog.
         Return
@@ -108,32 +105,5 @@ class ConfigureZTF(BaseCatalog):
             filter : str
                 Band
         """
-        data_return = self.zftcurves() 
-        return data_return
-    
-    def get_lc_hms(self):
-        """
-        Get all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog
-        Return
-        -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag',magerr,'filter'].
-            obj : double
-                Id of object in catalog
-            ra : float
-                Right ascension
-            dec : float
-                Declination
-            mjd : float
-                Julian day
-            mag : float
-                Magnitud
-            magerr : float
-                Magnitud error
-            filter : str
-                Band
-        """
-        ra_,dec_ = Utils().hms_to_deg(self.hms)
-        self.ra = ra_
-        self.dec = dec_
         data_return = self.zftcurves() 
         return data_return

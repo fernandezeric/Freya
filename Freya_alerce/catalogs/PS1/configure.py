@@ -26,8 +26,6 @@ class ConfigurePS1(BaseCatalog):
         Right ascension
     dec :  (float) 
         Declination
-    hms : (string) 
-        ICRS
     radius: (float) 
         Search radius
     nearest: (bool)
@@ -36,7 +34,6 @@ class ConfigurePS1(BaseCatalog):
     def __init__(self,*args,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')
-        self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.nearest = kwagrs.get('nearest')
 
@@ -125,21 +122,21 @@ class ConfigurePS1(BaseCatalog):
             if first :
                 dresults_ = ascii.read(dresults)
                 filer_str = self.filter_id_to_str(dresults_['filterID'])
-                mag = Utils().flux_to_mag(dresults_['psfFlux'])
-                magerr = Utils().flux_to_mag(dresults_['psfFluxErr'])
+                mag = (Utils().flux_to_mag(dresults_['psfFlux'])+ 8.90)
+                magerr = (Utils().flux_to_mag(dresults_['psfFluxErr']) * 0.0) # need fix
                 ps1_matrix = np.array([dresults_['objID'],dresults_['ra'],dresults_['dec'],dresults_['obsTime'],mag,magerr,filer_str]).T
                 first = False
             #
             else :
                 r_aux = ascii.read(dresults)
                 filer_str = self.filter_id_to_str(r_aux['filterID'])
-                mag = Utils().flux_to_mag(dresults_['psfFlux'])
-                magerr = Utils().flux_to_mag(dresults_['psfFluxErr'])
+                mag = (Utils().flux_to_mag(dresults_['psfFlux'])+ 8.90)
+                magerr = (Utils().flux_to_mag(dresults_['psfFluxErr']) * 0.0) # need fix
                 ps1_matrix_aux = np.array([r_aux['objID'],r_aux['ra'],r_aux['dec'],r_aux['obsTime'],mag,magerr,filer_str]).T
                 ps1_matrix = vstack([ps1_matrix,ps1_matrix_aux])
         return ps1_matrix
 
-    def get_lc_deg(self):
+    def get_lc(self):
         """
         Get all ligth curves data or the most close object, inside degree area from PS1 catalog.
         Return
@@ -160,32 +157,5 @@ class ConfigurePS1(BaseCatalog):
             filter : str
                 Band
         """
-        data_return = self.ps1curves()
-        return data_return
-
-    def get_lc_hms(self):
-        """
-        Get all ligth curves data or the most close object, inside hh:mm:ss area from PS1 catalog.
-        Return
-        -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mag','magerr,'filter'].
-            obj : double
-                Id of object in catalog
-            ra : float
-                Right ascension
-            dec : float
-                Declination
-            mjd : float
-                Julian day
-            mag : float
-                Magnitud
-            magerr : float
-                Magnitud error
-            filter : str
-                Band
-        """
-        ra_,dec_ = Utils().hms_to_deg(self.hms)
-        self.ra = ra_
-        self.dec = dec_
         data_return = self.ps1curves()
         return data_return

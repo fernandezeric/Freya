@@ -11,7 +11,7 @@ class DataLcDegree(GetData):
     radius: (float) 
         Search radius | example: radius=0.0002777
     format: (string) 
-        [numpy,csv, votable] | example: format='votable'
+        [numpy,csv,votable] | example: format='csv'
     nearest: (bool)
         True or False | example: nearest=True
     """
@@ -22,7 +22,7 @@ class DataLcDegree(GetData):
         """
         Return
         ------
-        Return the LCs from the selected catalog.
+        Return the LCs from the selected catalog in designated format.
         """
         return super().generic_call_data('get_lc_deg')
 
@@ -35,7 +35,7 @@ class DataLcHms(GetData):
     radius: (float) 
         Search radius | example: radius=0.0002777
     format: (string) 
-        [numpy,csv, votable] | example: format='csv'
+        [numpy,csv,votable] | example: format='csv'
     nearest: (bool)
         True or False | example: nearest=False
     """
@@ -46,6 +46,6 @@ class DataLcHms(GetData):
         """
         Return
         ------
-        Return the LCs from the selected catalog.
+        Return the LCs from the selected catalog in designated format.
         """
         return super().generic_call_data('get_lc_hms')

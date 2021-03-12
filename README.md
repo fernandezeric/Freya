@@ -70,7 +70,7 @@ pip install .
 ```
 
 Independet how add catalog the next step is to connect catalog with Freya (if not completed before),
-for this need completed two generic methods.
+for this need completed one generic method.
 ```
 Inside folder new catalog find the following files
 - configure.py
@@ -79,32 +79,14 @@ Inside folder new catalog find the following files
 
 now inside 'configure.py' it find 
 
-  - def get_lc_deg(ra,dec,radius,nearest)
-
-  - def get_lc_hms(hms,radius,nearest)
+  - def get_lc(ra,dec,radius,nearest)
 
 Need to be completed such that
-    - def get_lc_deg(ra,dec,radius,format,nearest)
+    - def get_lc_deg(ra,dec,radius,nearest)
         return all light curves data from all object find in area 
         described in degrees with specific radius or return the data
         from object most close. 
-        Then need return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
-            obj : double
-                Id of object in catalog
-            ra : float
-                Right ascension
-            dec : float
-                Declination
-            mjd : float
-                Julian day
-            mg : float
-                Magnitud
-            filter : str
-                Band 
 
-    - def get_lc_hms(hms,radius,format,nearest)
-        return all light curves data from all object find in area 
-        described in ICRS with specific radius or return the data.
         Then need return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
             obj : double
                 Id of object in catalog
@@ -139,8 +121,6 @@ class ConfigureZTF(BaseCatalog):
         Right ascension
     dec :  (float) 
         Declination
-    hms : (string) 
-        ICRS
     radius: (float) 
         Search radius
     nearest: (bool)
@@ -149,7 +129,6 @@ class ConfigureZTF(BaseCatalog):
     def __init__(self,**kwagrs):
         self.ra = kwagrs.get('ra')
         self.dec = kwagrs.get('dec')
-        self.hms = kwagrs.get('hms')
         self.radius = kwagrs.get('radius')
         self.nearest = kwagrs.get('nearest')
 
@@ -202,7 +181,7 @@ class ConfigureZTF(BaseCatalog):
         else:
             return self.get_matrix_data(result)
 
-    def get_lc_deg(self):
+    def get_lc(self):
         """
         Get all ligth curves data or the most close object,inside degree area from ZTF catalog.
         Return
@@ -224,31 +203,6 @@ class ConfigureZTF(BaseCatalog):
         data_return = self.zftcurves() 
         return data_return
     
-    def get_lc_hms(self):
-        """
-        Get all ligth curves data or the most close object, inside hh:mm:ss area from ZTF catalog
-        Return
-        -------
-        Return numpy array 2d with rows represent the objects and columns : ['obj','ra','dec','mjd','mg','filter'].
-            obj : double
-                Id of object in catalog
-            ra : float
-                Right ascension
-            dec : float
-                Declination
-            mjd : float
-                Julian day
-            mg : float
-                Magnitud
-            filter : str
-                Band 
-        """
-        ra_,dec_ = Utils().hms_to_deg(self.hms)
-        self.ra = ra_
-        self.dec = dec_
-        data_return = self.zftcurves() 
-        return data_return
-
 ```
 
 
