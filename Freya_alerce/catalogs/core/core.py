@@ -132,7 +132,7 @@ class GetData(object):
         method_ = np.column_stack((method_, row_catalog))
         names_column = ['obj','ra','dec','mjd','mag','magerr','filter','catalog']
         descriptions_column = ['Id of object in catalog the original catalog',
-                                'Right ascension','Declination',
+                                'Right ascension of source','Declination of source',
                                 'Julian Day','Magnitude','Magnitude Error',
                                 'Filter code','Original Catalog']
         #dtype_column = [] # dtype=dtype_column

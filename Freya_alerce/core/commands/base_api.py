@@ -57,7 +57,7 @@ class BaseAPI(object):
             raise TypeError ('First created catalog inside Freya or local ')
         
         # Get path to template files
-        path_template_resource = ListFiles().path_files_resource()    # Path FreyaAPI 
+        path_template_resource = ListFiles().path_files_resource() # Path resource
         path_api = self.path
         if path_api.split('/')[-1] != 'FreyaAPI':
             raise TypeError ('Needs to be on the root path of FreyaAPI')
@@ -66,7 +66,6 @@ class BaseAPI(object):
 
         try: 
             with tempfile.TemporaryDirectory() as tmpdir:
-                #print('created temporary directory', tmpdirname)
                 extract_zip = zipfile.ZipFile(path_template_resource)
                 extract_zip.extractall(tmpdir)
                 extract_zip.close()

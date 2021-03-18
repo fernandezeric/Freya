@@ -49,6 +49,17 @@ class ListFiles(object):
         """
         return ['configure.py','connect.py','__init__.py']
 
+    def files_local(self):
+        """
+        Get names files use in local catalog.
+        Parameters
+        ----------
+        Return
+        ----------
+        Return list with name files necessary to extract in local module-catalog.
+        """
+        return ['setup.py','requirements.txt']
+
     def path_files__from_(self):
         """
         Get path templeta file from db/api.

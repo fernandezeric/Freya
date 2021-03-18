@@ -91,11 +91,15 @@ class ConfigurePS1(BaseCatalog):
         else :
             return results['objID']
 
-
     def filter_id_to_str(self,filer_id):
         id2filter = np.array(list('grizy'))
         filer_str = id2filter[filer_id-1]
         return filer_str
+    
+    def flux_to_fluxerr(self,val):
+        print(val*val)
+        print(-1.08574/(val*val))
+        return (-1.08574/val) #* np.absolute(-1.08574/val)
 
     def ps1curves(self):
         """Get light curves of objects in specific radio with respect ra and dec, and possible return the object most nearest to radio
@@ -124,6 +128,7 @@ class ConfigurePS1(BaseCatalog):
                 filer_str = self.filter_id_to_str(dresults_['filterID'])
                 mag = (Utils().flux_to_mag(dresults_['psfFlux'])+ 8.90)
                 magerr = (Utils().flux_to_mag(dresults_['psfFluxErr']) * 0.0) # need fix
+                #self.flux_to_fluxerr(dresults_['psfFlux'])
                 ps1_matrix = np.array([dresults_['objID'],dresults_['ra'],dresults_['dec'],dresults_['obsTime'],mag,magerr,filer_str]).T
                 first = False
             #

@@ -57,11 +57,11 @@ class Base(object):
                 #print('created temporary directory', tmpdirname)
                 extract_zip = zipfile.ZipFile(path_tample_files_)
                 if self.source == 'api' or self.source == 'other':
-                    listOfFileNames = ListFiles().files_api()
+                    list_names_files = ListFiles().files_api()
                 elif self.source == 'db':
-                    listOfFileNames = ListFiles().files_db()
-                for fileName in listOfFileNames:
-                    extract_zip.extract(fileName, tmpdir)
+                    list_names_files = ListFiles().files_db()
+                for file_ in list_names_files:
+                    extract_zip.extract(file_, tmpdir)
                 extract_zip.close()
                 # Replace word 'NAME' from the name catalog
                 if self.source == 'api' or self.source == 'other':
@@ -93,7 +93,9 @@ class Base(object):
                 self.create_module_catalog()
                 # extract setup
                 extract_zip = zipfile.ZipFile(path_tample_files_)
-                extract_zip.extract('setup.py', tmpdir)
+                list_names_files = ListFiles().files_local()
+                for file_ in list_names_files:
+                    extract_zip.extract(file_, tmpdir)
                 extract_zip.close()
                 list_path_ = [os.path.join(tmpdir,'setup.py')]
                 ListFiles().replace_in_files(list_path_,'NAME',self.name)

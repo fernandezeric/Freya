@@ -41,6 +41,12 @@ class ConfigureZTF(BaseCatalog):
         matrix = np.array(matrix)
         return_ = Utils().get_nearest(self.ra,self.dec,matrix)
         return return_ 
+    
+    def __split_filter(self,filter_):
+        b = []
+        for a_ in filter_:
+            b.append(a_.split('z')[1])
+        return b
 
     def get_matrix_data(self,result):
         ztfdic = ''
@@ -57,12 +63,12 @@ class ConfigureZTF(BaseCatalog):
             ztf_matrix = np.array([result_.groups[minztf]['oid'],result_.groups[minztf]['ra'],
                                     result_.groups[minztf]['dec'],result_.groups[minztf]['mjd'],
                                     result_.groups[minztf]['mag'],result_.groups[minztf]['magerr'],
-                                    result_.groups[minztf]['filtercode']]).T
+                                    self.__split_filter(result_.groups[minztf]['filtercode'])]).T
             return ztf_matrix
         # all objects in radius
         else:
             ztf_matrix = np.array([result_['oid'],result_['ra'],result_['dec'],result_['mjd'],
-                                    result_['mag'],result_['magerr'],result_['filtercode']]).T
+                                    result_['mag'],result_['magerr'],self.__split_filter(result_['filtercode'])]).T
             return ztf_matrix
 
     def zftcurves(self):
@@ -73,7 +79,7 @@ class ConfigureZTF(BaseCatalog):
         baseurl="https://irsa.ipac.caltech.edu/cgi-bin/ZTF/nph_light_curves"
         data = {}
         data['POS']=f'CIRCLE {self.ra} {self.dec} {self.radius}'
-        #data['BANDNAME']='r'
+        data['BANDNAME']='g,r,i'
         data['FORMAT'] = 'csv'
         result = requests.get(baseurl,params=data)
         ztfdic = ''
