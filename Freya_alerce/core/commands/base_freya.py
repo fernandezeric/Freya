@@ -43,7 +43,7 @@ class Base(object):
         """
         
         #self.name= self.name.upper()
-        if Verify().verify_source(self.source):
+        if not Verify().verify_source(self.source):
             raise TypeError (f'The source not is valid')
 
         if Verify().verify_catalog_inside(self.name) or Verify().verify_catalog_local(self.name):  

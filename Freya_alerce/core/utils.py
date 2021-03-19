@@ -59,17 +59,34 @@ class Utils:
             angle.append(c1.separation(c2))
         return angle.index(min(angle))
 
-    def flux_to_mag(self,flux):
+    def flux_to_mag(self,psfFlux):
         """
-        Convert flux in Jy to magnitudes, use -2.5*np.log10(flux) formule.
+        Convert psfFlux in AB magnitude, use [-2.5*np.log10(psfFlux) + 8.90].
         Parameters
         ----------
-        flux : numpy array
-            flux in Jy
+        psfFlux : numpy array
+            psfFlux in janskys
         
         Return
         ----------
-        Return numpy array with magnitude 
+        Return numpy array with mag
         """
-        mag = -2.5*np.log10(flux)
+        mag = (-2.5*np.log10(psfFlux))+8.90
         return mag
+    
+    def fluxerr_to_magerr(self,psfFluxerror,psfFlux):
+        """
+        Convert psfFlux and psfFluxerr in AB mag, use [1.08574*(psfFluxerror / psfFlux)] for calcule magerr.
+        Parameters
+        ----------
+        psfFluxerror : numpy array
+            psfFluxerror in janskys
+        psfFlux : numpy array
+            psfFlux in janskys
+        
+        Return
+        ----------
+        Return numpy array with magerr 
+        """
+        magerr = 1.08574*(psfFluxerror/psfFlux) 
+        return magerr

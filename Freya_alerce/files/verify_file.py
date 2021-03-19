@@ -51,9 +51,9 @@ class Verify(object):
             valid source [api,db,other]
         Return: bool
         ----------
-        Return True if source not is valid.
+        Return True if source is valid.
         """
         self.source = source
-        if self.source not in ['api','db','other']:
+        if self.source in ['api','db','other']:
             return True
         return False
