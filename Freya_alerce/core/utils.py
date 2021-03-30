@@ -19,8 +19,8 @@ class Utils:
         ---------
         Return point in string
         """
-        coord_icrs = SkyCoord(ra=ra, dec=dec)
-        return c.to_string('hmsdms')
+        coord_icrs = SkyCoord(ra=ra*u.degree, dec=dec*u.degree)
+        return coord_icrs.to_string('hmsdms')
 
     def hms_to_deg(self,hms):
         """

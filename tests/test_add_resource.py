@@ -15,6 +15,7 @@ class TestAddResource(TestCase):
         BaseAPI(path=self.temp_FreyaAPI.name).create_new_api()
         path_api = os.path.join(self.temp_FreyaAPI.name,'FreyaAPI')
         BaseAPI(name='ztf',path=path_api).create_new_resource()
+        
 
     def tearDown(self):
         self.temp_FreyaAPI.cleanup()

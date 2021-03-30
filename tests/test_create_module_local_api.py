@@ -12,7 +12,7 @@ class TestCreateModuleLocal(TestCase):
     def test(self):
         Base(name='test_api',source='api',path=self.tmp_test.name).create_module_catalog_local()
         Base(name='test_db',source='db',path=self.tmp_test.name).create_module_catalog_local()
-        # Base(name='test_db',source='other',path=self.tmp_test.name).create_module_catalog_local()
+        Base(name='test_other',source='other',path=self.tmp_test.name).create_module_catalog_local()
 
     def tearDown(self):
         self.tmp_test.cleanup()

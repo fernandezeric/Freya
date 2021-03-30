@@ -15,7 +15,6 @@ class TestDeleteCatalog(TestCase):
         new_catalog = Base(name='test3',source='db',path=self.tmp_test.name).create_module_catalog()
         Base(name='test3',path=self.tmp_test.name).delete_catalog()
 
-
     def tearDown(self):
         self.tmp_test.cleanup()
 

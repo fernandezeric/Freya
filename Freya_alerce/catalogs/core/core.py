@@ -1,21 +1,14 @@
 import importlib
-import io
 import numpy as np
-import pandas as pd
-
-from astropy.io import ascii
-from astropy.io.votable import parse,parse_single_table,from_table, writeto
-from astropy.io.votable.tree import VOTableFile, Resource, Table, Field
-from astropy.table import Table, Column
 
 from Freya_alerce.files.verify_file import Verify
 from Freya_alerce.core.utils import Utils
+from Freya_alerce.catalogs.core.format_lc import FormatLC
 
 """
 Class to get data from module catalog configured in Freya, first check if catalog exist inside Freya
-and if not exist try import catalog from local folder. The data get is all ligh curve of object in area use
-degrees (ra,dec,radius) or use the format hh:mm:ss (hh:mm:ss,radius).
-Other option is get the only light curve of object most close to area selected.
+and if not exist try import catalog from local folder. The data get is the all light curves of object in area. Use
+degrees (ra,dec,radius) or  the format hh:mm:ss (hh:mm:ss,radius).
 """
 class GetData(object):
     """
@@ -26,7 +19,7 @@ class GetData(object):
     dec : (float) 
         (degrees) Declination 
     hms : (string)
-        format ICRS (hh:mm:ss)
+        format ICRS
     radius : (float)
         Search radius
     format : (string)
@@ -54,7 +47,7 @@ class GetData(object):
         Get the LC of catalog called in format CSV/VOTable. 
         Return
         -------
-        Columns : ['obj','ra','dec','mjd','mag','filter','catalog'].
+        Columns : ['obj','ra','dec','mjd','mag',''magerr,'filter','catalog'].
             obj : double
                 Id of object in catalog
             ra : float
@@ -91,53 +84,15 @@ class GetData(object):
             elif call_method == 'get_lc_hms':
                 ra_,dec_ = Utils().hms_to_deg(self.hms)
                 method_ = class_(ra=ra_,dec=dec_,radius=self.radius,nearest=self.nearest).get_lc()
+            # add catalog source
+            column_catalog = np.full(method_.shape[0],self.catalog)
+            method_ = np.column_stack((method_, column_catalog))
             # set de estructure return with format
             if self.format == 'numpy':
-                return self.format_numpy(method_)
+                return FormatLC(method_).format_numpy()
             elif self.format == 'csv':
-                return self.format_csv(method_)
+                return FormatLC(method_).format_csv()
             elif self.format == 'votable':
-                return self.format_votable(method_)
+                return FormatLC(method_).format_votable()
         except :
             print(f'No find the catalog : {self.catalog}')
-    
-    def format_numpy(self,method_):
-        """
-        Return data who numpy matrix.
-        """
-        row_catalog = np.full(method_.shape[0],self.catalog)
-        method_ = np.column_stack((method_, row_catalog))
-        return method_
-
-    def format_csv(self,method_):
-        """
-        Return
-        -------
-        Return data in CSV format.
-        """
-        row_catalog = np.full(method_.shape[0],self.catalog)
-        df = pd.DataFrame({'obj':method_[:,0],'ra':method_[:,1],
-                            'dec':method_[:,2],'mjd':method_[:,3],
-                            'mag':method_[:,4],'magerr':method_[:,5],
-                            'filter':method_[:,6],'catalog':row_catalog})
-        return df.to_csv(index=False)
-
-    def format_votable(self,method_):
-        """
-        Return
-        -------
-        Return data in VOTable format.
-        """
-        row_catalog = np.full(method_.shape[0],self.catalog)
-        method_ = np.column_stack((method_, row_catalog))
-        names_column = ['obj','ra','dec','mjd','mag','magerr','filter','catalog']
-        descriptions_column = ['Id of object in catalog the original catalog',
-                                'Right ascension of source','Declination of source',
-                                'Julian Day','Magnitude','Magnitude Error',
-                                'Filter code','Original Catalog']
-        #dtype_column = [] # dtype=dtype_column
-        t = Table(rows=method_,names=names_column,descriptions=descriptions_column)
-        votable= VOTableFile.from_table(t)
-        buf = io.BytesIO()
-        writeto(votable,buf)
-        return buf.getvalue().decode("utf-8")

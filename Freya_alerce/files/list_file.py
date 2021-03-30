@@ -1,8 +1,11 @@
 import fileinput #replace into files
-import Freya_alerce.files # __path__
 import os
 
+from Freya_alerce.files.file_templates.path_file_templates import basedir_tf
+
 class ListFiles(object):
+
+
 
     def replace_in_files(self,paths,raplace_word,word):
         """
@@ -69,7 +72,7 @@ class ListFiles(object):
         ----------
         Return path of file template for new module-catalog.
         """
-        return os.path.join(Freya_alerce.files.__path__[0],'file_templates','from_.zip')
+        return os.path.join(basedir_tf,'from_.zip')
 
     def path_files_resource(self):
         """
@@ -80,4 +83,4 @@ class ListFiles(object):
         ----------
         Return path of file template for new resource of and api.
         """
-        return os.path.join(Freya_alerce.files.__path__[0],'file_templates','newresource.zip')
+        return os.path.join(basedir_tf,'newresource.zip')

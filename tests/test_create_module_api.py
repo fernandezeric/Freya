@@ -11,7 +11,7 @@ class TestCreateModule(TestCase):
     def test(self):
         Base(name='test_api',source='api',path=self.tmp_test.name).create_module_catalog()
         Base(name='test_db',source='db',path=self.tmp_test.name).create_module_catalog()
-        #Base(name='test_db',source='other',path=self.tmp_test.name).create_module_catalog()
+        Base(name='test_other',source='other',path=self.tmp_test.name).create_module_catalog()
 
     def tearDown(self):
         self.tmp_test.cleanup()
