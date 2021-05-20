@@ -1,5 +1,4 @@
-# GO GO MEMORI2 
-### Here it is the module python 'Freya'.
+# Here it is the module python 'Freya'.
 Freya is a Fremework <3, and this github is the python code.
 
 # Start (Commands CLI). 🚀

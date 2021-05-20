@@ -1,13 +1,12 @@
 from setuptools import setup,find_packages
 
-# pip install -e .
 setup(
       name='Freya_alerce',
-      version='0.1.4.8.8',
-      author='Jonimott de Malpais',
+      version='0.2',
+      author='Eric "Jonimott" Fernández',
       author_email='',
       description='Freya is a Python framework that quick development queries in astronomical catalogs and use local or creating easy new API called FreyaAPI',
-      url='',
+      url='https://github.com/fernandezeric/Freya',
       license='',
       packages=find_packages(),
       #include_package_data=True,
@@ -24,7 +23,6 @@ setup(
         "Operating System :: OS Independent",
         "Development Status :: 4 - Beta",
         "Natural Language :: English"
-
       ],
       test_suite="tests",
       python_requires='>=3.9',
