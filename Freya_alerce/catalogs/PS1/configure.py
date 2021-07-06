@@ -11,7 +11,6 @@ import requests
 import io
 import numpy as np
 from astropy.io import ascii
-from astropy.table import Table,vstack
 from astropy.coordinates import SkyCoord
 from astropy import units as u
 
@@ -127,12 +126,12 @@ class ConfigurePS1(BaseCatalog):
                 first = False
             #
             else :
-                r_aux = ascii.read(dresults)
-                filer_str = self.filter_id_to_str(r_aux['filterID'])
+                dresults_ = ascii.read(dresults)
+                filer_str = self.filter_id_to_str(dresults_['filterID'])
                 mag = Utils().flux_to_mag(dresults_['psfFlux'])
                 magerr = Utils().fluxerr_to_magerr(dresults_['psfFluxErr'],dresults_['psfFlux']) 
-                ps1_matrix_aux = np.array([r_aux['objID'],r_aux['ra'],r_aux['dec'],r_aux['obsTime'],mag,magerr,filer_str]).T
-                ps1_matrix = vstack([ps1_matrix,ps1_matrix_aux])
+                ps1_matrix_aux = np.array([dresults_['objID'],dresults_['ra'],dresults_['dec'],dresults_['obsTime'],mag,magerr,filer_str]).T
+                ps1_matrix = np.vstack((ps1_matrix,ps1_matrix_aux))
         return ps1_matrix
 
     def get_lc(self):
