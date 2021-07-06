@@ -48,7 +48,7 @@ class ConfigurePS1(BaseCatalog):
         data['radius'] = self.radius
         return self.ps1search(format=format,baseurl=baseurl, **data)
 
-    def ps1search(self,format='csv',table="mean",release="dr1",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
+    def ps1search(self,format='csv',table="mean",release="dr2",columns=None,baseurl="https://catalogs.mast.stsci.edu/api/v0.1/panstarrs",**kw):
         """Do a general search of the PS1 catalog (possibly without ra/dec/radius)
         
         Parameters

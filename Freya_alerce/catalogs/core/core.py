@@ -65,34 +65,34 @@ class GetData(object):
             catalog : str
                 Catalog source
         """
-        try :
-            """
-            Search catalog insiede Freya, if not exist search inside local folder.
-            """
-            if Verify().verify_catalog_inside(self.catalog):
-                module = f'Freya_alerce.catalogs.{self.catalog}.configure'
-            elif Verify().verify_catalog_local(self.catalog) :
-                 module = f'{self.catalog}.configure'
+        # try :
+        """
+        Search catalog insiede Freya, if not exist search inside local folder.
+        """
+        if Verify().verify_catalog_inside(self.catalog):
+            module = f'Freya_alerce.catalogs.{self.catalog}.configure'
+        elif Verify().verify_catalog_local(self.catalog) :
+                module = f'{self.catalog}.configure'
 
-            # Import self.catalog
-            mod = importlib.import_module(module)
-            # Call class
-            class_ =  getattr(mod,f'Configure{self.catalog}') 
-            # Call method especific of class
-            if call_method == 'get_lc_deg':
-                method_ = class_(ra=self.ra,dec=self.dec,radius=self.radius,nearest=self.nearest).get_lc()      
-            elif call_method == 'get_lc_hms':
-                ra_,dec_ = Utils().hms_to_deg(self.hms)
-                method_ = class_(ra=ra_,dec=dec_,radius=self.radius,nearest=self.nearest).get_lc()
-            # add catalog source
-            column_catalog = np.full(method_.shape[0],self.catalog)
-            method_ = np.column_stack((method_, column_catalog))
-            # set de estructure return with format
-            if self.format == 'numpy':
-                return FormatLC(method_).format_numpy()
-            elif self.format == 'csv':
-                return FormatLC(method_).format_csv()
-            elif self.format == 'votable':
-                return FormatLC(method_).format_votable()
-        except :
-            print(f'No find the catalog : {self.catalog}')
+        # Import self.catalog
+        mod = importlib.import_module(module)
+        # Call class
+        class_ =  getattr(mod,f'Configure{self.catalog}') 
+        # Call method especific of class
+        if call_method == 'get_lc_deg':
+            method_ = class_(ra=self.ra,dec=self.dec,radius=self.radius,nearest=self.nearest).get_lc()      
+        elif call_method == 'get_lc_hms':
+            ra_,dec_ = Utils().hms_to_deg(self.hms)
+            method_ = class_(ra=ra_,dec=dec_,radius=self.radius,nearest=self.nearest).get_lc()
+        # add catalog source
+        column_catalog = np.full(method_.shape[0],self.catalog)
+        method_ = np.column_stack((method_, column_catalog))
+        # set de estructure return with format
+        if self.format == 'numpy':
+            return FormatLC(method_).format_numpy()
+        elif self.format == 'csv':
+            return FormatLC(method_).format_csv()
+        elif self.format == 'votable':
+            return FormatLC(method_).format_votable()
+        # except :
+        #     print(f'No find the catalog : {self.catalog}')

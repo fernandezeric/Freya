@@ -2,7 +2,7 @@ from setuptools import setup,find_packages
 
 setup(
       name='Freya_alerce',
-      version='0.2',
+      version='0.2.1',
       author='Eric "Jonimott" Fernández',
       author_email='',
       description='Freya is a Python framework that quick development queries in astronomical catalogs and use local or creating easy new API called FreyaAPI',
